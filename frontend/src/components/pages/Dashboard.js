@@ -7,7 +7,9 @@ function Dashboard () {
 
     return (
         <div>
-            BOOM DASHBOARD
+            <header>
+                BOOM DASHBOARD
+            </header>
         </div>
     )
 }

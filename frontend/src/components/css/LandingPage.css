@@ -1,0 +1,88 @@
+body{
+    /* background-image: url("../images/WRH");
+    background-size: cover;
+    background-repeat:   no-repeat;
+    background-position: 0% 8%; 
+    background-attachment: fixed; */
+    background-color: beige;
+  }
+  
+  .landing_header {
+    display: flex;
+    align-items:flex-end;
+    justify-content:flex-end;
+    flex-direction: row;
+  }
+  
+  .landing_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 2em;
+    margin-left: 30px;
+    border: 2px #ccc solid;
+    border-radius: 10px;
+  }
+  
+  .landing-nav_links{
+    list-style: none;
+    font-size: 20px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    color: #000000;
+    text-decoration: none;
+  }
+
+  .landing-nav_links li {
+    display: inline-block;
+    padding-right: 50px;
+  }
+  
+  .landing-nav_links li a {
+    transition: all 0.3s ease 0s;
+  }
+  
+  .landing-nav_links li a:hover {
+    color: #dca500;
+  }
+  
+  .landing_container_title {
+    border: 2px #ccc solid;
+    border-radius: 10px;
+    margin-top: 20px;
+    padding-left: 50px;
+  }
+
+  .p_landing_title {
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+    font-size: 50px;
+    font-weight:bolder;
+    font-style: italic;
+    color: rgb(143, 0, 0);
+    text-align: start;
+    
+  }
+
+  .login-button {
+    background-color: rgba(131, 0, 0, 0.9);
+    /* border: 2px #ccc solid; */
+    border-radius: 10px;
+    text-align: center;
+    width: 210px;
+    height: 50px;
+  }
+
+  .login-button a:link {
+   
+    text-decoration: none;
+  }
+
+  .login-button a {
+    font-size: 20px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+    text-shadow: 2px 2px 8px #888888;
+    color: rgb(255, 255, 255);
+  }
+

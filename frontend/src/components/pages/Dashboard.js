@@ -11,17 +11,18 @@ function Dashboard () {
         <div>
             <header className='dashboard_header'>
                 <div className='left-header'>
-                    <div class="dropdown">
-                        <button class="dropbtn">MENU</button>
-                        <div class="dropdown-content">
-                        <a href="#">Link 1</a>
-                        <a href="#">Link 2</a>
-                        <a href="#">Link 3</a>
+                    <div className='dropdown'>
+                        <img className='menu' src={DDMenu} alt='menu'/>
+                        <div className='dropdown-content'>
+                            <a href="#">Link 1</a>
+                            <a href="#">Link 2</a>
+                            <a href="#">Link 3</a>
                         </div>
                     </div>
+                    
+
                     <img className='uplblogo' src={UPLBLogoText} alt='logo' />
                 </div>
-                
                 <nav>
                     <ul className="dashboard-nav_links">
                         <li><a>Home</a></li>

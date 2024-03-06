@@ -12,6 +12,7 @@
     align-items:flex-end;
     justify-content:flex-end;
     flex-direction: row;
+    
   }
   
   .landing_container {
@@ -22,15 +23,17 @@
     margin-left: 30px;
     border: 2px #ccc solid;
     border-radius: 10px;
+
   }
   
-  .landing-nav_links{
+  .landing-nav_links {
     list-style: none;
     font-size: 20px;
     font-family: "Montserrat", sans-serif;
     font-weight: 500;
     color: #000000;
     text-decoration: none;
+    padding: 15px;
   }
 
   .landing-nav_links li {
@@ -44,12 +47,15 @@
   
   .landing-nav_links li a:hover {
     color: #dca500;
+    cursor: pointer;
   }
   
   .landing_container_title {
     border: 2px #ccc solid;
     border-radius: 10px;
     margin-top: 20px;
+    padding-top: 50px;
+    padding-bottom: 30px;
     padding-left: 50px;
   }
 
@@ -84,4 +90,3 @@
     text-shadow: 2px 2px 8px #888888;
     color: rgb(255, 255, 255);
   }
-

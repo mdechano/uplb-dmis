@@ -21,7 +21,11 @@ function LandingPage () {
             <div className="landing_container">
                 <div className="landing_container_title">
                     <p className='p_landing_title'>Welcome to the UPLB<br></br>Dormitory Management<br></br>Information System</p>
-                    <button className='login-button'><a><Link to="/dashboard">Login</Link></a></button>                
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <button className='login-button'><a><Link to="/login">Login</Link></a></button>        
                 </div>
             </div>
         </div>

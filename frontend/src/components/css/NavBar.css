@@ -1,0 +1,123 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard_header {
+    background-color: #E5E4E2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    box-shadow: 0px 2px #888888;
+    
+}
+
+.left-header {
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+}
+
+.menu {
+    width: 2%;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.uplblogo {
+ width: 15%;
+ /* display: block; */
+}
+
+.dashboard-nav_links {
+    text-decoration: none;
+    color: maroon;
+    font-weight: 500;
+    font-size: 16px;
+    font-family: "Montserrat", sans-serif;
+  }
+
+  .dashboard-nav_links {
+    list-style: none;
+    display: flex;
+  }
+
+  .dashboard-nav_links li {
+    display: inline-block;
+    padding: 0px 20px;
+  }
+
+  .dashboard-nav_links li a {
+    transition: all 0.3s ease 0s;
+  }
+
+  .dashboard-nav_links li a:hover {
+    color:rgb(203, 155, 0);
+  }
+
+  .logoutbtn {
+    /* text-decoration: none; */
+    padding: 9px 25px;
+    margin-right: 10px;
+    background-color: maroon;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+    
+  }
+
+  .logoutbtn a {
+    text-decoration: none;
+    color: white;
+  }
+
+  .logoutbtn:hover {
+    background-color: rgba(149, 5, 5, 0.659);
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    right: 50px;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .dropdown-content a:hover {background-color: #f1f1f1;}
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+  
+  .dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+  }
+
+  .profile-div {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .user-name {
+    font-size: 16px;
+    font-family: "Montserrat", sans-serif;
+  }
+
+  .user-image {
+    width: 50px;
+    padding: 5px;
+  }

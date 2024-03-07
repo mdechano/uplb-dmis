@@ -25,6 +25,7 @@ function NavBar () {
                     <div className='dropdown'>
                         <img className="user-image" alt="profile" src={profilepic}/>
                         <div className='dropdown-content'>
+                            <a href="#">Resident Profile</a>
                             <a href="#">Student Information Sheet</a>
                             <a href="#">Generate SOA</a>
                             <a href="#">Upload Receipt</a>

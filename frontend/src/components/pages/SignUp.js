@@ -28,8 +28,13 @@ function SignUp () {
                         <select>
                             <option value="">Women's Residence Hall</option>
                             <option value="">Men's Residence Hall</option>
-                            <option value="">International Residence Hall</option>
+                            <option value="">International House Residence Hall</option>
                             <option value="">VetMed Residence Hall</option>
+                            <option value="">Makiling Residence Hall</option>
+                            <option value="">ATI-NTC Residence Hall</option>
+                            <option value="">Forestry Residence Hall</option>
+                            <option value="">New Forestry Residence Hall</option>
+                            <option value="">New Dormitory Residence Hall</option>
                         </select>
                         </div>
                     </div>

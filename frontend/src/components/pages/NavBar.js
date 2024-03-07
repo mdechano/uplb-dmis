@@ -25,11 +25,11 @@ function NavBar () {
                     <div className='dropdown'>
                         <img className="user-image" alt="profile" src={profilepic}/>
                         <div className='dropdown-content'>
-                            <a href="#">Resident Profile</a>
-                            <a href="#">Student Information Sheet</a>
-                            <a href="#">Generate SOA</a>
-                            <a href="#">Upload Receipt</a>
-                            <a href="#">Dorm Information</a>
+                            <a><Link to='/resident-profile'>Resident Profile</Link></a>
+                            <a><Link to='/student-info-sheet'>Student Information Sheet</Link></a>
+                            <a><Link to='/generate-soa'>Generate SOA</Link></a>
+                            <a><Link to='/upload-receipt'>Upload Receipt</Link></a>
+                            <a><Link to='/dorm-information'>Dorm Information</Link></a>
                         </div>
                     </div>
                     <a>&nbsp;&nbsp;&nbsp;&nbsp;</a>

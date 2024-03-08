@@ -27,12 +27,12 @@ function StudentInfoSheetPersonal () {
                             </div>
                         </div>
                         <div className='nav-div'>
-                            <button className='stud-info-sheet-nav-personal'>PERSONAL</button>
-                            <button className='stud-info-sheet-nav'>FAMILY</button>
-                            <button className='stud-info-sheet-nav'>CHECK IN</button>
-                            <button className='stud-info-sheet-nav'>EMERGENCY</button>
-                            <button className='stud-info-sheet-nav'>PAYMENT</button>
-                            <button className='stud-info-sheet-nav'>VIOLATION</button>
+                            <button className='stud-info-sheet-nav-personal'><Link to='/student-info-sheet-personal'><a className='info-sheet-btn'>PERSONAL</a></Link></button>
+                            <button className='stud-info-sheet-nav'><Link to='/student-info-sheet-family'><a className='info-sheet-btn'>FAMILY</a></Link></button>
+                            <button className='stud-info-sheet-nav'><Link to='/student-info-sheet-check-in'><a className='info-sheet-btn'>CHECK IN</a></Link></button>
+                            <button className='stud-info-sheet-nav'><Link to='/student-info-sheet-emergency'><a className='info-sheet-btn'>EMERGENCY</a></Link></button>
+                            <button className='stud-info-sheet-nav'><Link to='/student-info-sheet-payment'><a className='info-sheet-btn'>PAYMENT</a></Link></button>
+                            <button className='stud-info-sheet-nav'><Link to='/student-info-sheet-violation'><a className='info-sheet-btn'>VIOLATION</a></Link></button>
                         </div>
                     </div>
                     <div className='right-div'>

@@ -44,6 +44,7 @@
   
   .landing-nav_links li a {
     transition: all 0.3s ease 0s;
+    color: #000000;
   }
   
   .landing-nav_links li a:hover {

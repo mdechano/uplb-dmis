@@ -40,7 +40,7 @@ function StudentInfoSheetFamily () {
                             <h3>Parents' Status</h3>
                             <br></br>
                             <label class="container"> 
-                            <input type="radio" checked="checked" name="radio" />
+                            <input type="radio" name="radio" />
                             <span class="checkmark"></span>
                             Still Married <br></br>
                             </label>

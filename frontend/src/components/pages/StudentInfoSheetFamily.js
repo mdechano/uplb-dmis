@@ -37,87 +37,99 @@ function StudentInfoSheetFamily () {
                     </div>
                     <div className='right-div'>
                         <form className='form-div'>
-                            <h3>Parents' Status</h3>
-                            <br></br>
-                            <label class="container"> 
-                            <input type="radio" name="radio" />
-                            <span class="checkmark"></span>
-                            Still Married <br></br>
-                            </label>
+                            <table>
+                                <h3>Parents' Status</h3>
+                                <br></br>
+                                <tr>
+                                    <td>
+                                        <label class="container"> 
+                                        <input type="radio" name="radio" />
+                                        <span class="checkmark"></span>
+                                        Still Married
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label class="container"> 
+                                        <input type="radio" name="radio" />
+                                        <span class="checkmark"></span>
+                                        Separated
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label class="container"> 
+                                        <input type="radio" name="radio" />
+                                        <span class="checkmark"></span>
+                                        Remarried
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label class="container"> 
+                                        <input type="radio" name="radio" />
+                                        <span class="checkmark"></span>
+                                        Single Parent
+                                        </label>
+                                    </td>
+                                </tr>
 
-                            <label class="container"> 
-                            <input type="radio" name="radio" />
-                            <span class="checkmark"></span>
-                            Separated <br></br>
-                            </label>
+                                <h3>Father's Information</h3>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Occupation</td>
+                                    <td>Monthly Income</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" id="fathername" name="fathername"></input></td>
+                                    <td><input type="text" id="fatheroccupation" name="fatheroccupation"></input></td>
+                                    <td><input type="text" id="fatherincome" name="fatherincome"></input></td>
+                                </tr>
 
-                            <label class="container"> 
-                            <input type="radio" name="radio" />
-                            <span class="checkmark"></span>
-                            Remarried <br></br>
-                            </label>
+                                <tr>
+                                    <td>Name of Firm/Employer</td>
+                                    <td>Office Address</td>
+                                    <td>Cellphone/Telephone no.</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" id="fatheremployer" name="fatheremployer"></input></td>
+                                    <td><input type="text" id="fatheroffice" name="fatheroffice"></input></td>
+                                    <td><input type="text" id="fatherphone" name="fatherphone"></input></td>
+                                </tr>
 
-                            <label class="container"> 
-                            <input type="radio" name="radio" />
-                            <span class="checkmark"></span>
-                            Single Parent <br></br>
-                            </label>
+                                <h3>Mother's Information</h3>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Occupation</td>
+                                    <td>Monthly Income</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" id="mothername" name="mothername"></input></td>
+                                    <td><input type="text" id="motheroccupation" name="motheroccupation"></input></td>
+                                    <td><input type="text" id="motherincome" name="motherincome"></input></td>
+                                </tr>
 
-                            <br></br>
+                                <tr>
+                                    <td>Name of Firm/Employer</td>
+                                    <td>Office Address</td>
+                                    <td>Cellphone/Telephone no.</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" id="motheremployer" name="motheremployer"></input></td>
+                                    <td><input type="text" id="motheroffice" name="motheroffice"></input></td>
+                                    <td><input type="text" id="motherphone" name="motherphone"></input></td>
+                                </tr>
 
-                            <h3>Father's Information</h3>
+                                <h3>Sibling Information</h3>
+                                <tr>
+                                    <td>Number of brother/s</td>
+                                    <td>Number of sister/s</td>
+                                    <td>Birth Order</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" id="numberbrothers" name="numberbrothers"></input></td>
+                                    <td><input type="text" id="numbersisters" name="numbersisters"></input></td>
+                                    <td><input type="text" id="birthorder" name="birthorder"></input></td>
+                                </tr>
 
-                            <label for='fathername'>Name</label>
-                            <input type="text" id="fathername" name="fathername"></input>
-
-                            <label for='fatheroccupation'>Occupation</label>
-                            <input type="text" id="fatheroccupation" name="fatheroccupation"></input>
-
-                            <label for='fatherincome'>Monthly Income</label>
-                            <input type="text" id="fatherincome" name="fatherincome"></input>
-
-                            <label for='fatheremployer'>Name of Firm/Employer</label>
-                            <input type="text" id="fatheremployer" name="fatheremployer"></input>
-
-                            <label for='fatheroffice'>Office Address</label>
-                            <input type="text" id="fatheroffice" name="fatheroffice"></input>
-
-                            <label for='fatherphone'>Cellphone/Telephone no.</label>
-                            <input type="text" id="fatherphone" name="fatherphone"></input>
-                            
-                            <br></br>
-                            
-                            <h3>Mother's Information</h3>
-
-                            <label for='mothername'>Name</label>
-                            <input type="text" id="mothername" name="mothername"></input>
-
-                            <label for='motheroccupation'>Occupation</label>
-                            <input type="text" id="motheroccupation" name="motheroccupation"></input>
-
-                            <label for='motherincome'>Monthly Income</label>
-                            <input type="text" id="motherincome" name="motherincome"></input>
-
-                            <label for='motheremployer'>Name of Firm/Employer</label>
-                            <input type="text" id="motheremployer" name="motheremployer"></input>
-
-                            <label for='motheroffice'>Office Address</label>
-                            <input type="text" id="motheroffice" name="motheroffice"></input>
-
-                            <label for='motherphone'>Cellphone/Telephone no.</label>
-                            <input type="text" id="motherphone" name="motherphone"></input>
-
-                            <h3>Sibling Information</h3>
-
-                            <label for='numberbrothers'>Number of brother/s</label>
-                            <input type="text" id="numberbrothers" name="numberbrothers"></input>
-
-                            <label for='numbersisters'>Number of sister/s</label>
-                            <input type="text" id="numbersisters" name="numbersisters"></input>
-
-                            <label for='birthorder'>Birth Order</label>
-                            <input type="text" id="birthorder" name="birthorder"></input>
-                            
+                            </table>
                         </form>
                         
                     </div>

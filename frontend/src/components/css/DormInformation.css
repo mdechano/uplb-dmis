@@ -1,0 +1,21 @@
+.dorm-info-content {
+    border: 0px solid grey;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px 2px #8888888f;
+    margin-top: 20px;
+    margin-left: 15%;
+    margin-right: 15%;
+    padding: 50px;
+    /* padding-left: 10%;
+    padding-right: 10%; */
+    font-size: 20px;
+}
+
+.title-bg {
+    background-color: #0A4424;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin: 0px;
+}

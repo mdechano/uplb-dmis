@@ -24,6 +24,7 @@ function StudentInfoSheetPayment () {
                                 <p>ANNA DELA CRUZ</p>
                                 <p>2019-08206</p>
                                 <p>ROOM NO. 1209</p>
+                                <p>ROLE</p>
                             </div>
                         </div>
                         <div className='nav-div'>
@@ -43,19 +44,19 @@ function StudentInfoSheetPayment () {
                             <br></br>
                             <table>
                                 <tr>
-                                    <th>Term</th>
-                                    <th>Period Covered</th>
-                                    <th>OR#</th>
-                                    <th>Dorm Fee</th>
-                                    <th>Appliances</th>
-                                    <th>Date Paid</th>
+                                    <th className='cell-title'>Term</th>
+                                    <th className='cell-title'>Period Covered</th>
+                                    <th className='cell-title'>OR#</th>
+                                    <th className='cell-title'>Dorm Fee</th>
+                                    <th className='cell-title'>Appliances</th>
+                                    <th className='cell-title'>Date Paid</th>
                                 </tr>
                                 <tr className='table-form-tr'>
-                                    <td>1st</td>
-                                    <td>September</td>
-                                    <td>5660978</td>
-                                    <td>500</td>
-                                    <td>169</td>
+                                    <td className='cell-input'>1st</td>
+                                    <td className='cell-input'>September</td>
+                                    <td className='cell-input'>5660978</td>
+                                    <td className='cell-input'>500</td>
+                                    <td className='cell-input'>169</td>
                                 </tr>
                                 <tr className='table-form-tr'>
                                     

@@ -24,6 +24,7 @@ function StudentInfoSheetCheckIn () {
                                 <p>ANNA DELA CRUZ</p>
                                 <p>2019-08206</p>
                                 <p>ROOM NO. 1209</p>
+                                <p>ROLE</p>
                             </div>
                         </div>
                         <div className='nav-div'>
@@ -41,7 +42,7 @@ function StudentInfoSheetCheckIn () {
                             <table>
                                 <div className='check-in-upper-form'>
                                     <tr>
-                                        <td><th>DATE CHECK IN &nbsp;&nbsp;</th></td>
+                                        <td className='cell-title'><th>DATE CHECK IN &nbsp;&nbsp;</th></td>
                                         <td>1st Sem &nbsp;&nbsp;</td>
                                         <td><input type="text" id="first-sem-checkin" name="first-sem-checkin"></input></td>
                                         <td>&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;</td>
@@ -49,7 +50,7 @@ function StudentInfoSheetCheckIn () {
                                     </tr>
                                     
                                     <tr>
-                                        <td><th>DATE CHECK OUT &nbsp;&nbsp;</th></td>
+                                        <td className='cell-title'><th>DATE CHECK OUT &nbsp;&nbsp;</th></td>
                                         <td>1st Sem &nbsp;&nbsp;</td>
                                         <td><input type="text" id="first-sem-checkout" name="first-sem-checkout"></input></td>
                                         <td>&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;</td>
@@ -57,7 +58,7 @@ function StudentInfoSheetCheckIn () {
                                     </tr>
 
                                     <tr>
-                                        <td><th>FORM 5</th></td>
+                                        <td className='cell-title'><th>FORM 5</th></td>
                                         <td>1st Sem &nbsp;&nbsp;</td>
                                         <td><input type="text" id="first-sem-form5" name="first-sem-form5"></input></td>
                                         <td>&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;</td>
@@ -65,7 +66,7 @@ function StudentInfoSheetCheckIn () {
                                     </tr>
 
                                     <tr>
-                                        <td><th>ROOM NUMBER</th></td>
+                                        <td className='cell-title'><th>ROOM NUMBER</th></td>
                                         <td>1st Sem &nbsp;&nbsp;</td>
                                         <td><input type="text" id="room-number-1" name="room-number-1"></input></td>
                                         <td>&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;</td>
@@ -188,32 +189,32 @@ function StudentInfoSheetCheckIn () {
                                 <h3>APPLIANCES INFORMATION</h3>
                                 <table>
                                     <tr>
-                                        <th>Appliance</th>
-                                        <th>Date Installed in 1st Sem</th>
-                                        <th>Date Installed in 2nd Sem</th>
-                                        <th>Date Returned in 1st Sem</th>
-                                        <th>Date Returned in 2nd Sem</th>
+                                        <th className='cell-title'>Appliance</th>
+                                        <th className='cell-title'>Date Installed in 1st Sem</th>
+                                        <th className='cell-title'>Date Installed in 2nd Sem</th>
+                                        <th className='cell-title'>Date Returned in 1st Sem</th>
+                                        <th className='cell-title'>Date Returned in 2nd Sem</th>
                                     </tr>
                                     <tr className='table-form-tr'>
-                                        <td><input type = "text" id = "appliance-1"></input></td>
-                                        <td><input type = "text" id = "date-installed-1st-sem-1" ></input></td>
-                                        <td><input type = "text" id = "date-installed-2nd-sem-1" ></input></td>
-                                        <td><input type = "text" id = "date-returned-1st-sem-1" ></input></td>
-                                        <td><input type = "text" id = "date-returned-2nd-sem-1" ></input></td>
+                                        <td className='cell-input'><input type = "text" id = "appliance-1"></input></td>
+                                        <td className='cell-input'><input type = "text" id = "date-installed-1st-sem-1" ></input></td>
+                                        <td className='cell-input'><input type = "text" id = "date-installed-2nd-sem-1" ></input></td>
+                                        <td className='cell-input'><input type = "text" id = "date-returned-1st-sem-1" ></input></td>
+                                        <td className='cell-input'><input type = "text" id = "date-returned-2nd-sem-1" ></input></td>
                                     </tr>
                                     <tr className='table-form-tr'>
-                                        <td><input type = "text" id = "appliance-2" ></input></td>
-                                        <td><input type = "text" id = "date-installed-1st-sem-2" ></input></td>
-                                        <td><input type = "text" id = "date-installed-2nd-sem-2" ></input></td>
-                                        <td><input type = "text" id = "date-returned-1st-sem-2" ></input></td>
-                                        <td><input type = "text" id = "date-returned-2nd-sem-2" ></input></td>
+                                        <td className='cell-input'><input type = "text" id = "appliance-2" ></input></td>
+                                        <td className='cell-input'><input type = "text" id = "date-installed-1st-sem-2" ></input></td>
+                                        <td className='cell-input'><input type = "text" id = "date-installed-2nd-sem-2" ></input></td>
+                                        <td className='cell-input'><input type = "text" id = "date-returned-1st-sem-2" ></input></td>
+                                        <td className='cell-input'><input type = "text" id = "date-returned-2nd-sem-2" ></input></td>
                                     </tr>
                                     <tr className='table-form-tr'>
-                                        <td><input type = "text" id = "appliance-3" ></input></td>
-                                        <td><input type = "text" id = "date-installed-1st-sem-3" ></input></td>
-                                        <td><input type = "text" id = "date-installed-2nd-sem-3" ></input></td>
-                                        <td><input type = "text" id = "date-returned-1st-sem-3" ></input></td>
-                                        <td><input type = "text" id = "date-returned-2nd-sem-3" ></input></td>
+                                        <td className='cell-input'><input type = "text" id = "appliance-3" ></input></td>
+                                        <td className='cell-input'><input type = "text" id = "date-installed-1st-sem-3" ></input></td>
+                                        <td className='cell-input'><input type = "text" id = "date-installed-2nd-sem-3" ></input></td>
+                                        <td className='cell-input'><input type = "text" id = "date-returned-1st-sem-3" ></input></td>
+                                        <td className='cell-input'><input type = "text" id = "date-returned-2nd-sem-3" ></input></td>
                                     </tr>
                                 </table>
                            </div>

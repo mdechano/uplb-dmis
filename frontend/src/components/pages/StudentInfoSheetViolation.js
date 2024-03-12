@@ -24,6 +24,7 @@ function StudentInfoSheetViolation () {
                                 <p>ANNA DELA CRUZ</p>
                                 <p>2019-08206</p>
                                 <p>ROOM NO. 1209</p>
+                                <p>ROLE</p>
                             </div>
                         </div>
                         <div className='nav-div'>
@@ -41,10 +42,10 @@ function StudentInfoSheetViolation () {
                             <br></br>
                             <table>
                                 <tr>
-                                    <th>Date</th>
-                                    <th>Time</th>
-                                    <th>Nature</th>
-                                    <th>Remarks</th>
+                                    <th className='cell-title'>Date</th>
+                                    <th className='cell-title'>Time</th>
+                                    <th className='cell-title'>Nature</th>
+                                    <th className='cell-title'>Remarks</th>
                                 </tr>
                                 <tr className='table-form-tr'>
                                     <td>3-4-24</td>

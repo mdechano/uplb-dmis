@@ -24,6 +24,7 @@ function StudentInfoSheetPersonal () {
                                 <p>ANNA DELA CRUZ</p>
                                 <p>2019-08206</p>
                                 <p>ROOM NO. 1209</p>
+                                <p>ROLE</p>
                             </div>
                         </div>
                         <div className='nav-div'>
@@ -38,51 +39,54 @@ function StudentInfoSheetPersonal () {
                     <div className='right-div'>
                         <form className='form-div'>
                             <table>
-                                <tr>
-                                    <td>First Name</td>
-                                    <td>Middle Name</td>
-                                    <td>Last Name</td>
-                                    <td>Suffix</td>
-                                    <td>Assigned Sex</td>
+                                <tr className='table-row'>
+                                    <td className='cell-title'>First Name</td>
+                                    <td className='cell-title'>Middle Name</td>
+                                    <td className='cell-title'>Last Name</td>
+                                    <td className='cell-title'>Suffix</td>
+                                    
                                 </tr>
-                                <tr>
-                                    <td><input type="text" id="fname" name="firstname"></input></td>
-                                    <td><input type="text" id="mname" name="middlename"></input></td>
-                                    <td><input type="text" id="lname" name="lastname"></input></td>
-                                    <td><input type="text" id="suffix" name="suffix"></input></td>
-                                    <td>
+                                <tr className='table-row'>
+                                    <td className='cell-input'><input type="text" id="fname" name="firstname"></input></td>
+                                    <td className='cell-input'><input type="text" id="mname" name="middlename"></input></td>
+                                    <td className='cell-input'><input type="text" id="lname" name="lastname"></input></td>
+                                    <td className='cell-input'><input type="text" id="suffix" name="suffix"></input></td>
+                                    
+                                </tr>
+
+                                <tr className='table-row'>
+                                    <td className='cell-title'>Assigned Sex</td>
+                                    <td className='cell-title'>Student Number</td>
+                                    <td className='cell-title'>Civil Status</td>
+                                    <td className='cell-title'>Birthday</td>
+                                    
+                                </tr>
+                                <tr className='table-row'>
+                                    <td className='cell-input'>
                                         <select id="sex" name="sex">
+                                            <option>Select Sex</option>
                                             <option value="female">Female</option>
                                             <option value="male">Male</option>
                                             <option value="intersex">Intersex</option>
                                         </select>
                                     </td>
+                                    <td className='cell-input'><input type="text" id="studnum" name="studentnum"></input></td>
+                                    <td className='cell-input'><input type="text" id="civstatus" name="civilstatus"></input></td>
+                                    <td className='cell-input'><input type='date' id='birthday' name='birthday'></input></td>
+                                    
                                 </tr>
 
-                                <tr>
-                                    <td>Student Number</td>
-                                    <td>Civil Status</td>
-                                    <td>Birthday</td>
-                                    <td>Contact Number</td>
-                                    <td>Email</td>
+                                <tr className='table-row'>
+                                    <td className='cell-title'>Contact Number</td>
+                                    <td className='cell-title'>Email</td>
+                                    <td className='cell-title'>Home Address</td>
+                                    <td className='cell-title'>Region</td>
                                 </tr>
-                                <tr>
-                                    <td><input type="text" id="studnum" name="studentnum"></input></td>
-                                    <td><input type="text" id="civstatus" name="civilstatus"></input></td>
-                                    <td><input type='date' id='birthday' name='birthday'></input></td>
-                                    <td><input type='text' id='contactnumber' name='contactnumber'></input></td>
-                                    <td><input type='text' id='email' name='email'></input></td>
-                                </tr>
-
-                                <tr>
-                                    <td>Home Address</td>
-                                    <td>Region</td>
-                                    <td>College</td>
-                                    <td>Degree Program</td>
-                                </tr>
-                                <tr>
-                                    <td><input type='text' id='address' name='address'></input></td>
-                                    <td>
+                                <tr className='table-row'>
+                                    <td className='cell-input'><input type='text' id='contactnumber' name='contactnumber'></input></td>
+                                    <td className='cell-input'><input type='text' id='email' name='email'></input></td>
+                                    <td className='cell-input'><input type='text' id='address' name='address'></input></td>
+                                    <td className='cell-input'>
                                         <select id='region' name='region'>
                                             <option>Select Region</option>
                                             <option value="region-1">Region I</option>
@@ -104,7 +108,18 @@ function StudentInfoSheetPersonal () {
                                             <option value="BARMM">BARMM</option>
                                         </select>
                                     </td>
-                                    <td>
+                                    
+                                </tr>
+
+                                <tr className='table-row'>
+                                    <td className='cell-title'>College</td>
+                                    <td className='cell-title'>Degree Program</td>
+                                    <td className='cell-title'>Last School Attended</td>
+                                    <td className='cell-title'>Classification</td>
+                                    
+                                </tr>
+                                <tr className='table-row'>
+                                    <td className='cell-input'>
                                         <select id='college' name='college'>
                                             <option>Select College</option>
                                             <option value="CAS">CAS</option>
@@ -117,42 +132,36 @@ function StudentInfoSheetPersonal () {
                                             <option value="CEM">CEM</option>
                                         </select>
                                     </td>
-                                    <td><input type='text' id='degprog' name='degprog'></input></td>
+                                    <td className='cell-input'><input type='text' id='degprog' name='degprog'></input></td>
+                                    <td className='cell-input'><input type='text' id='last-school' name='last-school'></input></td>
+                                    <td className='cell-input'><input type='text' id='classification' name='classification'></input></td>
+                                    
                                 </tr>
 
-                                <tr>
-                                    <td>Last School Attended</td>
-                                    <td>Classification</td>
-                                    <td>Honors Received</td>
+                                <tr className='table-row'>
+                                    <td className='cell-title'>Honors Received</td>
+                                    <td className='cell-title'>Talents</td>
+                                    <td className='cell-title'>Hobbies</td>
+                                    <td className='cell-title'>Organizations</td>
                                 </tr>
-                                <tr>
-                                    <td><input type='text' id='last-school' name='last-school'></input></td>
-                                    <td><input type='text' id='classification' name='classification'></input></td>
-                                    <td><input type='text' id='honors' name='honors'></input></td>
-                                </tr>
-
-                                <tr>
-                                    <td>Talents</td>
-                                    <td>Hobbies</td>
-                                    <td>Organizations</td>
-                                </tr>
-                                <tr>
-                                    <td><input type='text' id='talents' name='talents'></input></td>
-                                    <td><input type='text' id='hobbies' name='hobbies'></input></td>
-                                    <td><input type='text' id='organizations' name='organizations'></input></td>
+                                <tr className='table-row'>
+                                    <td className='cell-input'><input type='text' id='honors' name='honors'></input></td>
+                                    <td className='cell-input'><input type='text' id='talents' name='talents'></input></td>
+                                    <td className='cell-input'><input type='text' id='hobbies' name='hobbies'></input></td>
+                                    <td className='cell-input'><input type='text' id='organizations' name='organizations'></input></td>
                                 </tr>
 
-                                <tr>
-                                    <td>Ailments</td>
-                                    <td>Medications</td>
-                                    <td>Scholarships</td>
-                                    <td>Monthly Stipend</td>
+                                <tr className='table-row'>
+                                    <td className='cell-title'>Ailments</td>
+                                    <td className='cell-title'>Medications</td>
+                                    <td className='cell-title'>Scholarships</td>
+                                    <td className='cell-title'>Monthly Stipend</td>
                                 </tr>
-                                <tr>
-                                    <td><input type='text' id='ailments' name='ailments'></input></td>
-                                    <td><input type='text' id='medications' name='medications'></input></td>
-                                    <td><input type='text' id='scholarships' name='scholarships'></input></td>
-                                    <td><input type='text' id='stipend' name='stipend'></input></td>
+                                <tr className='table-row'>
+                                    <td className='cell-input'><input type='text' id='ailments' name='ailments'></input></td>
+                                    <td className='cell-input'><input type='text' id='medications' name='medications'></input></td>
+                                    <td className='cell-input'><input type='text' id='scholarships' name='scholarships'></input></td>
+                                    <td className='cell-input'><input type='text' id='stipend' name='stipend'></input></td>
                                 </tr>
 
                             </table>

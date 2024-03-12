@@ -24,6 +24,7 @@ function StudentInfoSheetEmergency () {
                                 <p>ANNA DELA CRUZ</p>
                                 <p>2019-08206</p>
                                 <p>ROOM NO. 1209</p>
+                                <p>ROLE</p>
                             </div>
                         </div>
                         <div className='nav-div'>
@@ -38,21 +39,22 @@ function StudentInfoSheetEmergency () {
                     <div className='right-div'>
                         <form className='form-div'>
                             <h3>IN CASE OF EMERGENCY, PLEASE CONTACT THE FOLLOWING: </h3>
+                            <br></br>
                             <table>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Address</th>
-                                    <th>Cellphone/Telephone No.</th>
+                                    <th className='cell-title'>Name</th>
+                                    <th className='cell-title'>Address</th>
+                                    <th className='cell-title'>Cellphone/Telephone No.</th>
                                 </tr>
                                 <tr className='table-form-tr'>
-                                    <td><input type = "text" id = "emergency-contact-name-1" ></input></td>
-                                    <td><input type = "text" id = "emergency-contact-address-1" ></input></td>
-                                    <td><input type = "text" id = "emergency-contact-phone-1" ></input></td>
+                                    <td className='cell-input'><input type = "text" id = "emergency-contact-name-1" ></input></td>
+                                    <td className='cell-input'><input type = "text" id = "emergency-contact-address-1" ></input></td>
+                                    <td className='cell-input'><input type = "text" id = "emergency-contact-phone-1" ></input></td>
                                 </tr>
                                 <tr className='table-form-tr'>
-                                    <td><input type = "text" id = "emergency-contact-name-2" ></input></td>
-                                    <td><input type = "text" id = "emergency-contact-address-2" ></input></td>
-                                    <td><input type = "text" id = "emergency-contact-phone-2" ></input></td>
+                                    <td className='cell-input'><input type = "text" id = "emergency-contact-name-2" ></input></td>
+                                    <td className='cell-input'><input type = "text" id = "emergency-contact-address-2" ></input></td>
+                                    <td className='cell-input'><input type = "text" id = "emergency-contact-phone-2" ></input></td>
                                 </tr>
                             </table>
                         </form>

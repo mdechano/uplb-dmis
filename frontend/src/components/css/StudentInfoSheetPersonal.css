@@ -24,7 +24,7 @@
     border-radius: 35px;
     background-color: #0A4424;
     font-weight: bold;
-    font-family: "Montserrat", sans-serif;;
+    font-family: "Montserrat", sans-serif;
 }
 
 .page-title {
@@ -61,6 +61,7 @@
     width: 80%; 
     height: 100%;
     margin: 5px;
+    /* margin-left: 50px; */
     padding: 5px;
     align-items: flex-start;
     /* text-align: center; */
@@ -93,6 +94,7 @@
 
 .profile-info {
     padding: 5px;
+    font-family: "Montserrat", sans-serif;
 }
 
 .stud-info-sheet-nav {
@@ -122,6 +124,55 @@ a {
 }
 
 .form-div {
-    margin: auto;
+    /* margin: auto; */
     padding: 15px;
+}
+
+/* .table-row {
+    display:flex;
+    justify-content: space-between;
+} */
+
+.cell-title {
+    color: #76090C;
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+    /* padding-top: 5px;
+    padding-bottom: 5px; */
+    /* margin: 10px; */
+    padding: 5px 5px 5px 5px;
+    /* display:flex;
+    justify-content: space-between; */
+}
+
+.cell-title-family {
+    color:#0A4424 ;
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+    padding: 5px 5px 5px 5px;
+}
+
+.cell-input {
+    padding: 5px 5px 5px 5px;
+    /* display:flex;
+    justify-content: space-between; */
+}
+
+input[type=text] {
+    /* box-sizing: border-box; */
+    border: none;
+    background-color: #f5f5f5;
+    border-bottom: 2px solid #5555556d;
+    /* padding: 10px 10px 10px 19px; */
+    margin-right: 50px;
+    outline: none;
+}
+
+
+input[type=date] {
+    padding: 10px;
+    /* width: 90%;
+    height: 100%; */
+    /* box-sizing: border-box; */
+    border: 2px solid #ccc;
 }

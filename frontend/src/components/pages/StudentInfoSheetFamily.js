@@ -24,6 +24,7 @@ function StudentInfoSheetFamily () {
                                 <p>ANNA DELA CRUZ</p>
                                 <p>2019-08206</p>
                                 <p>ROOM NO. 1209</p>
+                                <p>ROLE</p>
                             </div>
                         </div>
                         <div className='nav-div'>
@@ -38,95 +39,94 @@ function StudentInfoSheetFamily () {
                     <div className='right-div'>
                         <form className='form-div'>
                             <table>
-                                <h3>Parents' Status</h3>
+                                <h3 className='cell-title-family'>Parents' Status</h3>
                                 <br></br>
                                 <tr>
-                                    <td>
                                         <label class="container"> 
                                         <input type="radio" name="radio" />
                                         <span class="checkmark"></span>
                                         Still Married
                                         </label>
-                                    </td>
-                                    <td>
+                                    <br></br>
                                         <label class="container"> 
                                         <input type="radio" name="radio" />
                                         <span class="checkmark"></span>
                                         Separated
                                         </label>
-                                    </td>
-                                    <td>
+                                    <br></br>
                                         <label class="container"> 
                                         <input type="radio" name="radio" />
                                         <span class="checkmark"></span>
                                         Remarried
                                         </label>
-                                    </td>
-                                    <td>
+                                    <br></br>
                                         <label class="container"> 
                                         <input type="radio" name="radio" />
                                         <span class="checkmark"></span>
                                         Single Parent
                                         </label>
-                                    </td>
+                                    
                                 </tr>
-
-                                <h3>Father's Information</h3>
+                                <br></br>
+                                <br></br>
+                                <h3 className='cell-title-family'>Father's Information</h3>
                                 <tr>
-                                    <td>Name</td>
-                                    <td>Occupation</td>
-                                    <td>Monthly Income</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="text" id="fathername" name="fathername"></input></td>
-                                    <td><input type="text" id="fatheroccupation" name="fatheroccupation"></input></td>
-                                    <td><input type="text" id="fatherincome" name="fatherincome"></input></td>
-                                </tr>
-
-                                <tr>
-                                    <td>Name of Firm/Employer</td>
-                                    <td>Office Address</td>
-                                    <td>Cellphone/Telephone no.</td>
+                                    <td className='cell-title'>Name</td>
+                                    <td className='cell-title'>Occupation</td>
+                                    <td className='cell-title'>Monthly Income</td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" id="fatheremployer" name="fatheremployer"></input></td>
-                                    <td><input type="text" id="fatheroffice" name="fatheroffice"></input></td>
-                                    <td><input type="text" id="fatherphone" name="fatherphone"></input></td>
-                                </tr>
-
-                                <h3>Mother's Information</h3>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Occupation</td>
-                                    <td>Monthly Income</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="text" id="mothername" name="mothername"></input></td>
-                                    <td><input type="text" id="motheroccupation" name="motheroccupation"></input></td>
-                                    <td><input type="text" id="motherincome" name="motherincome"></input></td>
+                                    <td className='cell-input'><input type="text" id="fathername" name="fathername"></input></td>
+                                    <td className='cell-input'><input type="text" id="fatheroccupation" name="fatheroccupation"></input></td>
+                                    <td className='cell-input'><input type="text" id="fatherincome" name="fatherincome"></input></td>
                                 </tr>
 
                                 <tr>
-                                    <td>Name of Firm/Employer</td>
-                                    <td>Office Address</td>
-                                    <td>Cellphone/Telephone no.</td>
+                                    <td className='cell-title'>Name of Firm/Employer</td>
+                                    <td className='cell-title'>Office Address</td>
+                                    <td className='cell-title'>Cellphone/Telephone no.</td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" id="motheremployer" name="motheremployer"></input></td>
-                                    <td><input type="text" id="motheroffice" name="motheroffice"></input></td>
-                                    <td><input type="text" id="motherphone" name="motherphone"></input></td>
+                                    <td className='cell-input'><input type="text" id="fatheremployer" name="fatheremployer"></input></td>
+                                    <td className='cell-input'><input type="text" id="fatheroffice" name="fatheroffice"></input></td>
+                                    <td className='cell-input'><input type="text" id="fatherphone" name="fatherphone"></input></td>
+                                </tr>
+                                <br></br>
+                                <br></br>
+                                <h3 className='cell-title-family'>Mother's Information</h3>
+                                <tr>
+                                    <td className='cell-title'>Name</td>
+                                    <td className='cell-title'>Occupation</td>
+                                    <td className='cell-title'>Monthly Income</td>
+                                </tr>
+                                <tr>
+                                    <td className='cell-input'><input type="text" id="mothername" name="mothername"></input></td>
+                                    <td className='cell-input'><input type="text" id="motheroccupation" name="motheroccupation"></input></td>
+                                    <td className='cell-input'><input type="text" id="motherincome" name="motherincome"></input></td>
                                 </tr>
 
-                                <h3>Sibling Information</h3>
                                 <tr>
-                                    <td>Number of brother/s</td>
-                                    <td>Number of sister/s</td>
-                                    <td>Birth Order</td>
+                                    <td className='cell-title'>Name of Firm/Employer</td>
+                                    <td className='cell-title'>Office Address</td>
+                                    <td className='cell-title'>Cellphone/Telephone no.</td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" id="numberbrothers" name="numberbrothers"></input></td>
-                                    <td><input type="text" id="numbersisters" name="numbersisters"></input></td>
-                                    <td><input type="text" id="birthorder" name="birthorder"></input></td>
+                                    <td className='cell-input'><input type="text" id="motheremployer" name="motheremployer"></input></td>
+                                    <td className='cell-input'><input type="text" id="motheroffice" name="motheroffice"></input></td>
+                                    <td className='cell-input'><input type="text" id="motherphone" name="motherphone"></input></td>
+                                </tr>
+                                <br></br>
+                                <br></br>
+                                <h3 className='cell-title-family'>Sibling Information</h3>
+                                <tr>
+                                    <td className='cell-title'>Number of brother/s</td>
+                                    <td className='cell-title'>Number of sister/s</td>
+                                    <td className='cell-title'>Birth Order</td>
+                                </tr>
+                                <tr>
+                                    <td className='cell-input'><input type="text" id="numberbrothers" name="numberbrothers"></input></td>
+                                    <td className='cell-input'><input type="text" id="numbersisters" name="numbersisters"></input></td>
+                                    <td className='cell-input'><input type="text" id="birthorder" name="birthorder"></input></td>
                                 </tr>
 
                             </table>

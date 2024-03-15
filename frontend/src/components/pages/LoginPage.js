@@ -1,22 +1,16 @@
-import {Link, Routes, Router, useNavigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import '../css/LoginPage.css'
-import React, {Component} from "react";
-import Cookies from "universal-cookie";
-import { Navigate, Route} from 'react-router';
+import { useEffect} from "react";
+import {apiUrl} from '../utilities/apiUrl';
+import useStore from '../utilities/authHook';
+import Cookies from 'universal-cookie';
 
-export default class LoginPage extends Component  {
+function LoginPage () {
 
-    constructor(props) {
-        super(props);
+    const navigate = useNavigate();
+    const {user, isAuthenticated, setAuth} = useStore();
 
-        // this.state = {
-        //     success: false
-        // };
-
-        this.login = this.login.bind(this);
-    }
-
-    login(e) {
+    function login(e){
         e.preventDefault();
 
         const credentials = {
@@ -24,27 +18,19 @@ export default class LoginPage extends Component  {
             password: document.getElementById("password").value
         }
 
-        // const navigate = useNavigate();
+        fetch((apiUrl("/user/")), {
+            method: "POST",
+            credentials: "include", 
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(credentials),
 
-        // send a POST request
-        fetch(
-            "http://localhost:3001/login",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(credentials)
-            }
-        )
-        .then(response => response.json())
-        .then(body => {
-            if (!body.success) {
-                alert("Failed to log in!");
-            }
-            else {
-                // successful log in, store token as cookie
-            
+        })
+        .then((response) => response.json())
+        .then((body) => {
+            if(body.success === true){
+
                 const cookies = new Cookies();
                 cookies.set(
                     "authToken",
@@ -58,23 +44,36 @@ export default class LoginPage extends Component  {
 
                 localStorage.setItem("email", body.email);
                 alert("Successfully logged in!");
-                // navigate('/dashboard');
-                // this.setState({success:true});
-
-                
-                
-                
+                navigate("/dashboard");
             }
+            
         })
-
-        // if(this.setState({success:true})) {
-        //     <Navigate to='/dashboard' />
-        // }
+        .catch((error) => {
+            console.error("Error:", error);
+        });
     }
 
+    useEffect(()=> {
+        fetch((apiUrl("/user/check-if-logged-in")), {
+            method: "POST",
+            credentials:'include',
+            withCredentials: true,
+            headers:{
+                'Content-Type':'application/json'
+            },
+        }).then(response => {return response.json()})
+        .then((body)=> {
+            setAuth(body.User, body.status);
+            if(body.isLoggedIn === true){
+                navigate("/dashboard")
+            }
+        })
+    },[]);
 
 
-    render() {
+
+
+    // render() {
         return (
             <div className='form-div'>
                 <form action="action_page.php" method="post">
@@ -93,7 +92,7 @@ export default class LoginPage extends Component  {
                         <input type="password" placeholder="Enter Password" name="psw" id="password" required />
 
                         {/* <button type="submit" class='loginbtn'><a><Link to='/dashboard'>Login</Link></a></button> */}
-                        <button id="login" onClick={this.login}>Login</button>
+                        <button id="login" onClick={login}>Login</button>
                         <label>
                         <input type="checkbox" checked="checked" name="remember"/> Remember me
                         </label>
@@ -104,14 +103,15 @@ export default class LoginPage extends Component  {
                     </div>
                 </form>
 
+
             
             </div>
 
             
 
         )
-    }
+    // }
 
 }
 
-// export default LoginPage;
+export default LoginPage;

@@ -60,7 +60,7 @@ exports.login = (req, res) => {
         })
     })
 }
-
+ 
 exports.checkIfLoggedIn = (req, res) => {
 
     if (!req.cookies || !req.cookies.authToken) {

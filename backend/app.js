@@ -1,6 +1,9 @@
-const express = require("express");
+// dependencies
+const express = require('express')
 const cookieParser = require("cookie-parser");
 const Router = require('./router');
+// const formData = require('express-form-data');
+const path = require('path')
 require("dotenv").config();
 
 // initialize express app
@@ -21,10 +24,10 @@ exports.start = () => {
     // define route
     App.use('/', Router);
 
-    
-    // start server
-    App.listen(3001, (err) => {
-    if (err) { console.log(err); }
-    else { console.log("Server listening at port 3001"); }
-    });
+    // start server at port
+
+    App.listen(process.env.PORT || 3001, '0.0.0.0', (err) => {
+        if (err) { console.log(err) }
+        else {console.log(`Server started at port ${process.env.PORT}`)}
+    })
 }

@@ -1,41 +1,42 @@
 const User = require('../handlers/user');
 const jwt = require("jsonwebtoken");
-// const UserLogs = require('../handlers/userlog');
-// const Deleted = require('../handlers/deleted');
 require('dotenv').config()
 
 exports.verifyToken = (req) => {
     
     return jwt.verify(
-        req.cookies.authToken,
-            "THIS_IS_A_SECRET_STRING",
+        req.cookies.authToken, 
+        process.env.SECRET_ACCESS_TOKEN, //signature of the token
             async (err, tokenPayload) => {
-            if (err) {
-                // Scenario 2: FAIL - Error validating token
-                return res.send({ isLoggedIn: false , status:false});
+            //error in validation of token
+            if(err){
+              console.log('Invalid token')
+              return {status:false, message: 'Invalid token', code: 401}
             }
-        
-            const userId = tokenPayload._id;
+            //no error in validating the token
 
-            let user = null;
-
-            try {
-                user = await User.getOne({_id:userId})
-
-                if(!user) {
-                    // Scenario 3: FAIL - Failed to find user based on id inside token payload
-                return { isLoggedIn: false, status: false, message: `User not known.`, code:401 };
-                } else {
-                    // Scenario 4: SUCCESS - token and user id are valid
-                    console.log("User is currently logged in.");
-                    return { isLoggedIn: true, status: true, code: 200, user };
-                }
-            } catch (err) {
-                console.log("Error validating token");
-                return {status: false, message: "Error validating token", code:500}
-            }
-        
+            //get the id of the user
+            let userId = tokenPayload._id;
             
+            let user=null
+          try{
+              user = await User.getOne({_id:userId})
+
+            //no user found given an id
+            if(!user){  
+                console.log(`User not known`);
+                return {status: false, message: `User not known`,code:401}
+
+            //else user is found
+            }else{                
+                console.log(`User logged in!`);
+                return {status: true, code: 200, user}
             }
-    );
+              
+          //error when the database was queried given the id
+          }catch(err){
+            console.log("Error validating token");
+            return {status: false, message: "Error validating token", code:500}
+          }       
+  })
 }

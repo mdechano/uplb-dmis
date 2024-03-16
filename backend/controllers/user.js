@@ -1,90 +1,100 @@
 const User = require('../handlers/user');
-const jwt_decode = require('jwt-decode');
+const UserLog = require('../handlers/userlog');
+const {jwtDecode} = require('jwt-decode');
 const jwt = require('jsonwebtoken');
 const utils = require('./utils');
 require('dotenv').config()
 
 exports.login = async (req, res) => {
+    //check if user email alrdy in database
+    //if not, check if user is using up.edu.ph email
+        //if yes, add user to database with elevated guest perms
+        //if no, add user to database with guest perms
+    //if yes, check the user's role
+    //return user's role
+    //console.log(req.body)
+    const userobject = jwtDecode(req.body.token);
 
 
-    const email = req.body.email.trim();
-    const password = req.body.password;
+    const newUser = {
+        email: userobject.email,
+        first_name: userobject.given_name,
+        last_name: userobject.family_name,
+        picture: userobject.picture,
+        role: 'student',
+    }
 
-    User.getOne({email}, (err, user) => {
-
-        // check if email exists
-        if (err || !user) {
-            console.log("User does not exist!");
-            return res.send({success:false});
+    // checking if user already in database and has correct role
+    try{
+        var existing = null
+        existing = await User.getOne({email: newUser.email});
+        if(!existing){
+            if(userobject.hd && userobject.hd == 'up.edu.ph'){
+                newUser.role = 'student'
+            }      
         }
-
-        // check if password is correct
-        user.comparePassword(password, (err, isMatch) => {
-            if (err || !isMatch) {
-                // Scenario 2: Fail - wrong password
-                console.log("Wrong password!");
-                return res.send({success:false});
-            }
-
-            console.log("Successfully logged in!");
-
-            // Scenario 3: SUCCESS - time to create a token
+        else{
             const tokenPayload = {
-                _id: user._id
+                _id: existing._id
             }
+            const token = jwt.sign(tokenPayload, process.env.SECRET_ACCESS_TOKEN)
+            const response = {
+                success: true,
+                token
+            }
+            await UserLog.create(existing, 'login', `user ${existing._id} logged in`)
+            return res.status(200).cookie('authToken', token, {maxAge: 60 * 60 * 1000, httpOnly: true}).send(response)
+        }
+    }
+    catch(err){
+        console.log(`Unable to add user. Error: ${err}`);
+        res.status(500).send({ message: "Error adding new user" });
+        return;
+    }
+    // creating user
+    try {
+        
+        const user = await User.create(newUser);
+        const tokenPayload = {
+            _id: user._id
+        }
+        const token = jwt.sign(tokenPayload, process.env.SECRET_ACCESS_TOKEN)
+            const response = {
+                success: true,
+                token
+            }
+            await UserLog.create(user, 'login', `user ${user._id} logged in`)
+            return res.status(200).cookie('authToken', token, {maxAge: 15 * 60 * 1000, httpOnly: true}).send(response)
+    }
+    catch(err) {
+        console.log(`Unable to add new user. Error: ${err}`);
+        res.status(500).send({ message: "Error adding new user" })
+    }
 
-            const token = jwt.sign(tokenPayload, "THIS_IS_A_SECRET_STRING");
-
-            //return the token to the client
-            return res.send({success:true, token, email: user.email});
-        })
-    })
 }
 
 exports.checkifloggedin = async (req, res) => {
-    if (!req.cookies || !req.cookies.authToken) {
-        // scenario 1: FAIL - no cookies / no authToken cookie sent
-        console.log("User is not logged in.");
-        return res.send({ isLoggedIn: false, status: false });
-        // console.log("User is currently logged in.");
+
+    //no authentication cookie sent
+    if(!req.cookies || !req.cookies.authToken){
+        console.log('Unauthorized access')
+        return res.status(200).send({message:'Unauthorized access', status: false})
     }
 
-    // Token is present. Validate token
-    return jwt.verify(
-        req.cookies.authToken,
-        "THIS_IS_A_SECRET_STRING",
-        (err, tokenPayload) => {
-          if (err) {
-            // Scenario 2: FAIL - Error validating token
-            return res.send({ isLoggedIn: false });
-          }
+    //a token is sent, validating token..
+    let tokenDetails = await utils.verifyToken(req);
+
+
+    if(!tokenDetails.status){
+      return res.status(tokenDetails.code).send({message: tokenDetails.message, status: false})
+      
+    }
+
+    //if success, send first name, last name, and email
+    const user = tokenDetails.user
+    // console.log(user);
+    let {_id, email, first_name, last_name, picture, role} = user
+
+    return res.status(tokenDetails.code).send({User: {_id, email, first_name, last_name, picture, role}, status: true})
     
-          const userId = tokenPayload._id;
-    
-          // check if user exists
-          return User.findById(userId, (userErr, user) => {
-            if (userErr || !user) {
-              // Scenario 3: FAIL - Failed to find user based on id inside token payload
-              return res.send({ isLoggedIn: false, status: false, code:401 });
-            }
-    
-            // Scenario 4: SUCCESS - token and user id are valid
-            console.log("User is currently logged in.");
-            return res.send({ isLoggedIn: true, status: true, code: 200, user });
-          });
-        });
-
-    // // a token is send, validating token...
-    // let tokenDetails = await utils.verifyToken(req);
-
-    // if(!tokenDetails.status){
-    //     return res.status(tokenDetails.code).send({message: tokenDetails.message, status: false})
-        
-    //   }
-
-    // // if success, send email, password of user
-    // const user = tokenDetails.user;
-    // let {_id, email, password} = user
-
-    // return res.status(tokenDetails.code).send({User: {_id, email, password}, status: true, isLoggedIn: true})
 }

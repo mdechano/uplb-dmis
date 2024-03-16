@@ -1,3 +1,4 @@
 exports.models = {
-    User: require('./user')
+    User: require('./user'),
+    UserLog: require('./userlog')
 }

@@ -98,3 +98,8 @@ exports.checkifloggedin = async (req, res) => {
     return res.status(tokenDetails.code).send({User: {_id, email, first_name, last_name, picture, role}, status: true})
     
 }
+
+exports.logout = (req, res) => {
+    console.log("logged out")
+    res.clearCookie('authToken').send({isAuthenticated: false})
+  }

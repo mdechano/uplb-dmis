@@ -92,7 +92,7 @@ function LandingPage () {
                     <br></br>
                     <br></br>
                     <br></br>
-                    <button className='login-button' id='signInDiv'><Link to="/dashboard"></Link></button>        
+                    <button className='login-button' id='signInDiv'></button>        
                 </div>
             </div>
         </div>

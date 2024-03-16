@@ -40,3 +40,36 @@ exports.verifyToken = (req) => {
           }       
   })
 }
+
+exports.getLogs = async (req,res) => {
+  try{
+    const logs = await UserLogs.getAll();
+    if(!logs){
+      return res.status(400).send({message: "No logs found"})
+    }
+    else{
+      return res.status(200).send(logs)
+    }
+  }
+  catch(err){
+      console.log(`Error gettings logs ${err}` );
+      return res.status(500).send({message: 'Error searching for user'})
+  }
+
+}
+
+exports.getDeleted = async(req,res) => {
+  try{
+    const data = await Deleted.getAll();
+    if(!data){
+      return res.status(400).send({message: "No deleted objects found"})
+    }
+    else{
+      return res.status(200).send(data)
+    }
+  }
+  catch(err){
+    console.log(`Error gettings deleted objects ${err}` );
+    return res.status(500).send({message: 'Error searching for deleted objects'})
+  }
+}

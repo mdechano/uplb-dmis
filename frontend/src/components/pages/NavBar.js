@@ -1,10 +1,38 @@
 import {Link} from 'react-router-dom'
+import {React, useState, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
+import useStore from '../utilities/authHook';
+import {apiUrl} from '../utilities/apiUrl';
 import UPLBLogoText from '../images/UPLBLogoText.png'
 import DDMenu from '../images/DDMenu.png'
 import profilepic from '../images/userprofile.png'
 import '../css/NavBar.css'
 
 function NavBar () {
+
+    const navigate = useNavigate();
+    const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
+
+    const logout = () => {
+        fetch(apiUrl("/user/"), {
+            method: "DELETE",
+            credentials:'include',
+            headers:{
+                'Content-Type':'application/json'
+            },
+        })
+        .then(response => {
+            return response.json()
+            
+        })
+        .then(navigate("/"))
+    }
+
+    useEffect(()=> {
+        if(isAuthenticated === false){
+            navigate("/")
+        }
+    });
 
     return (
         <div>
@@ -32,7 +60,7 @@ function NavBar () {
                         </div>
                     </div>
                     <a>&nbsp;&nbsp;&nbsp;&nbsp;</a>
-                    <button className='logoutbtn'><a><Link to="/">Logout</Link></a></button>
+                    <button className='logoutbtn' onClick={logout}>Logout</button>
                 </div>
                 
             </header>

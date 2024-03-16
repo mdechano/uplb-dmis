@@ -25,7 +25,7 @@ const Dashboard = () => {
             <NavBar></NavBar>
 
             <div className='dashboard-notice'>
-                {role === 'student' ?
+                {user ?
                 <p className='greet'><b>Greetings, {user.first_name}!</b></p>:
                 ""
                 }

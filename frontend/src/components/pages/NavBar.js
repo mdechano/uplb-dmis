@@ -12,6 +12,8 @@ function NavBar () {
 
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
+    const [role, setRole] = useState();
+
 
     const logout = () => {
         fetch(apiUrl("/user/"), {
@@ -31,6 +33,8 @@ function NavBar () {
     useEffect(()=> {
         if(isAuthenticated === false){
             navigate("/")
+        } else {
+            setRole(user.role);
         }
     });
 
@@ -47,11 +51,11 @@ function NavBar () {
                         </ul>
                     </nav>
                 </div>
-                
+                { user ?
                 <div className='profile-div'>
-                    <a className='user-name'>USER&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    <a className='user-name'>{user.first_name}&nbsp;&nbsp;&nbsp;&nbsp;</a>
                     <div className='dropdown'>
-                        <img className="user-image" alt="profile" src={profilepic}/>
+                        <img className="user-image" alt="profile" src={user.picture}/>
                         <div className='dropdown-content'>
                             <a><Link to='/student-info-sheet-personal'>Student Information Sheet</Link></a>
                             <a><Link to='/generate-soa'>Generate SOA</Link></a>
@@ -62,7 +66,8 @@ function NavBar () {
                     <a>&nbsp;&nbsp;&nbsp;&nbsp;</a>
                     <button className='logoutbtn' onClick={logout}>Logout</button>
                 </div>
-                
+                :
+                ""}
             </header>
         </div>
     )

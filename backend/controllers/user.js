@@ -21,7 +21,7 @@ exports.login = async (req, res) => {
         first_name: userobject.given_name,
         last_name: userobject.family_name,
         picture: userobject.picture,
-        role: 'student',
+        role: 'user',
     }
 
     // checking if user already in database and has correct role
@@ -30,7 +30,7 @@ exports.login = async (req, res) => {
         existing = await User.getOne({email: newUser.email});
         if(!existing){
             if(userobject.hd && userobject.hd == 'up.edu.ph'){
-                newUser.role = 'student'
+                newUser.role = 'user'
             }      
         }
         else{
@@ -97,6 +97,55 @@ exports.checkifloggedin = async (req, res) => {
 
     return res.status(tokenDetails.code).send({User: {_id, email, first_name, last_name, picture, role}, status: true})
     
+}
+
+exports.changeRole = async(req,res) => {
+
+    if (!req.cookies || !req.cookies.authToken) {
+        res.status(401).send({message: "Unauthorized access"});
+        return;
+      }
+      
+      // validate token
+    const token = await utils.verifyToken(req);
+    
+      // error validating token
+    if(!token.status){
+        res.status(token.code).send({ message: token.message });
+        return;
+    }
+
+    if(token.user.role == 'user'){
+        const email = req.body.email
+        const newRole = req.body.role
+        try{
+            const existing = await User.getOne({email: email});
+            if(existing){
+                // if(existing.role == 'user'){
+                //     console.log("Unauthorized Access")
+                //     return res.status(401).send({message: "Unauthorized access"});
+                // }
+                const user = {
+                    email: existing.email,
+                    first_name: existing.first_name,
+                    last_name: existing.last_name,
+                    picture: existing.picture,
+                    role: newRole
+                }
+                const edit = await User.edit(user)
+                console.log(`User role changed: ${edit}`)
+                return res.status(200).send({ message: 'User role updated' })
+            }
+        }
+        catch(err){
+            console.log(err)
+            return res.status(500).send({ message: `Error changing user's role` })
+        }
+    }
+    else{
+        console.log("Unauthorized Access")
+        return res.status(401).send({message: "Unauthorized access"});
+    }
 }
 
 exports.logout = (req, res) => {

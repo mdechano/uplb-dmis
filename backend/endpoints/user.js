@@ -6,7 +6,7 @@ const User = Router();
 
 // access controller
 User.post('/', UserController.login); 
-// User.put('/', UserController.changeRole);
+User.put('/', UserController.changeRole);
 User.get('/check-if-logged-in', UserController.checkifloggedin);
 // User.get('/', UserController.findAll);
 User.delete('/', UserController.logout);

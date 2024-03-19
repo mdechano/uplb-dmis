@@ -9,15 +9,46 @@ const Dashboard = () => {
 
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth} = useStore();     // from zustand store
-    const [role, setRole] = useState();
+    const [role, setInitialRole] = useState("");
+    const [userRole, setNewRole] = useState("");
+    // const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
 
     useEffect(()=>{
         if(isAuthenticated === false){
             navigate("/")
-        } else {
-            setRole(user.role)
+        }
+        else {
+            // cannot change to new role because of this
+            setInitialRole(user.role)
         }
     },[]);
+
+    const changeRole = (person) => {
+        console.log(userRole)
+        fetch(apiUrl("/user"), {
+            method: "PUT",
+            credentials:'include',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                email: person.email,
+                role: userRole
+            })
+        })
+        .then(response => {return response.json()})
+        .then(
+
+            setTimeout(() => window.location.reload(), 200)
+            )
+    }
+
+    const handleChange=()=>{
+        console.log(document.getElementById("user_role").value);
+        setNewRole(document.getElementById("user_role").value);
+    }
+
+ 
 
    
     return (
@@ -33,13 +64,13 @@ const Dashboard = () => {
                 <br></br>
                 <br></br>
 
-                { role === 'student' ?
+                { role === 'user' ?
                     <form className='complete-sign-up'>
                         <h3>Let's get you set up</h3>
                         <p>Please choose a role.</p>
                         <div className='custom-select'>
-                        <select className='user-role' id='user-role'>
-                            <option>Choose Role</option>
+                        <select className='user-role' id='user_role' value={userRole} onChange={handleChange}>
+                            <option value=""disabled defaultValue hidden>Choose Role</option>
                             <option value='dorm manager'>Dorm Manager</option>
                             <option value='resident'>Resident</option>
                         </select>   
@@ -47,7 +78,7 @@ const Dashboard = () => {
                         
                         <br></br>
                         <p>Choose your assigned dormitory.</p>
-                        <div class="custom-select">
+                        {/* <div class="custom-select">
                         <select id="resident_hall">
                             <option value="Women's Residence Hall">Women's Residence Hall</option>
                             <option value="Men's Residence Hall">Men's Residence Hall</option>
@@ -59,13 +90,17 @@ const Dashboard = () => {
                             <option value="New Forestry Residence Hall">New Forestry Residence Hall</option>
                             <option value="New Dormitory Residence Hall">New Dormitory Residence Hall</option>
                         </select>
-                        </div>
+                        </div> */}
 
                         <br></br>
-                        <button className='complete-sign-up'>Complete Sign Up</button>
+                        <button className='complete-sign-up' onClick={()=> changeRole(user)}>Complete Sign Up</button>
                     </form>
                     :
                     ""
+                }
+
+                {
+
                 }
                 
             </div>

@@ -31,6 +31,7 @@ exports.edit = (object) =>{
         User.findOne({ email: object.email }, (err, user) => {
             if (err) { reject(err); }
             user.role = object.role
+            user.dorm = object.dorm
             user.save((err, user) => {
                 if(err) { reject(err); }
                 resolve(user);

@@ -4,6 +4,7 @@ import '../css/Dashboard.css'
 import NavBar from '../pages/NavBar';
 import useStore from '../utilities/authHook';
 import {apiUrl} from '../utilities/apiUrl';
+// import { changeRoleandDorm } from '../../../../backend/controllers/user';
 
 const Dashboard = () => {
 
@@ -11,6 +12,7 @@ const Dashboard = () => {
     const { user, isAuthenticated, setAuth} = useStore();     // from zustand store
     const [role, setInitialRole] = useState("");
     const [userRole, setNewRole] = useState("");
+    const [userDorm, setNewDorm] = useState("");
     // const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
 
     useEffect(()=>{
@@ -18,12 +20,12 @@ const Dashboard = () => {
             navigate("/")
         }
         else {
-            // cannot change to new role because of this
+            // change in role buggy because of this
             setInitialRole(user.role)
         }
     },[]);
 
-    const changeRole = (person) => {
+    const changeRoleandDorm = (person) => {
         console.log(userRole)
         fetch(apiUrl("/user"), {
             method: "PUT",
@@ -33,19 +35,22 @@ const Dashboard = () => {
             },
             body: JSON.stringify({
                 email: person.email,
-                role: userRole
+                role: userRole,
+                dorm: userDorm
             })
         })
         .then(response => {return response.json()})
         .then(
 
-            setTimeout(() => window.location.reload(), 200)
+            setTimeout(() => window.location.reload(), 450)
             )
     }
 
     const handleChange=()=>{
         console.log(document.getElementById("user_role").value);
         setNewRole(document.getElementById("user_role").value);
+        console.log(document.getElementById("user_dorm").value);
+        setNewDorm(document.getElementById("user_dorm").value);
     }
 
  
@@ -78,8 +83,8 @@ const Dashboard = () => {
                         
                         <br></br>
                         <p>Choose your assigned dormitory.</p>
-                        {/* <div class="custom-select">
-                        <select id="resident_hall">
+                        <div class="custom-select">
+                        <select className='user-dorm' id="user_dorm" value={userDorm} onChange={handleChange}>
                             <option value="Women's Residence Hall">Women's Residence Hall</option>
                             <option value="Men's Residence Hall">Men's Residence Hall</option>
                             <option value="International House Residence Hall">International House Residence Hall</option>
@@ -90,10 +95,10 @@ const Dashboard = () => {
                             <option value="New Forestry Residence Hall">New Forestry Residence Hall</option>
                             <option value="New Dormitory Residence Hall">New Dormitory Residence Hall</option>
                         </select>
-                        </div> */}
+                        </div>
 
                         <br></br>
-                        <button className='complete-sign-up' onClick={()=> changeRole(user)}>Complete Sign Up</button>
+                        <button className='complete-sign-up' onClick={()=> changeRoleandDorm(user)}>Complete Sign Up</button>
                     </form>
                     :
                     ""

@@ -22,6 +22,7 @@ exports.login = async (req, res) => {
         last_name: userobject.family_name,
         picture: userobject.picture,
         role: 'user',
+        dorm: 'UP Dorm'
     }
 
     // checking if user already in database and has correct role
@@ -31,6 +32,7 @@ exports.login = async (req, res) => {
         if(!existing){
             if(userobject.hd && userobject.hd == 'up.edu.ph'){
                 newUser.role = 'user'
+                newUser.dorm ='UP Dorm'
             }      
         }
         else{
@@ -99,7 +101,7 @@ exports.checkifloggedin = async (req, res) => {
     
 }
 
-exports.changeRole = async(req,res) => {
+exports.changeRoleandDorm = async(req,res) => {
 
     if (!req.cookies || !req.cookies.authToken) {
         res.status(401).send({message: "Unauthorized access"});
@@ -118,6 +120,7 @@ exports.changeRole = async(req,res) => {
     if(token.user.role == 'user'){
         const email = req.body.email
         const newRole = req.body.role
+        const newDorm = req.body.dorm
         try{
             const existing = await User.getOne({email: email});
             if(existing){
@@ -130,16 +133,17 @@ exports.changeRole = async(req,res) => {
                     first_name: existing.first_name,
                     last_name: existing.last_name,
                     picture: existing.picture,
-                    role: newRole
+                    role: newRole,
+                    dorm: newDorm
                 }
                 const edit = await User.edit(user)
                 console.log(`User role changed: ${edit}`)
-                return res.status(200).send({ message: 'User role updated' })
+                return res.status(200).send({ message: 'User role and dorm updated' })
             }
         }
         catch(err){
             console.log(err)
-            return res.status(500).send({ message: `Error changing user's role` })
+            return res.status(500).send({ message: `Error changing user's role and dorm` })
         }
     }
     else{

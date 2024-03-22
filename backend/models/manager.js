@@ -26,4 +26,4 @@ ManagerSchema.pre("save", function(next){
     return next();
 });
 
-module.exports = mongoose.model("Dorm Manager", ManagerSchema);
+module.exports = mongoose.model("DormManager", ManagerSchema);

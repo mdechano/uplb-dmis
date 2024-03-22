@@ -56,12 +56,23 @@ function NavBar () {
                     <a className='user-name'>{user.first_name}&nbsp;&nbsp;&nbsp;&nbsp;</a>
                     <div className='dropdown'>
                         <img className="user-image" alt="profile" src={user.picture}/>
+                        { role === 'resident' ?
                         <div className='dropdown-content'>
                             <a><Link to='/student-info-sheet-personal'>Student Information Sheet</Link></a>
                             <a><Link to='/generate-soa'>Generate SOA</Link></a>
                             <a><Link to='/upload-receipt'>Upload Receipt</Link></a>
                             <a><Link to='/dorm-information'>Dorm Information</Link></a>
+                            
                         </div>
+                        : "" }
+                        { role === 'dorm manager' ?
+                        <div className='dropdown-content'>
+                            <a><Link>Resident List</Link></a>
+                            <a><Link>Manager Profile</Link></a>
+                            <a><Link>Dorm Assistants</Link></a>
+                            <a><Link to='/dorm-information'>Dorm Information</Link></a>
+                        </div>
+                        : "" }
                     </div>
                     <a>&nbsp;&nbsp;&nbsp;&nbsp;</a>
                     <button className='logoutbtn' onClick={logout}>Logout</button>

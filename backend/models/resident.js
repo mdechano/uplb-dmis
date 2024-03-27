@@ -40,7 +40,7 @@ const ResidentSchema = new mongoose.Schema(
         payment_details: {type: Object},
         violation_details: {type: Object},
         picture_id: {type: String},
-        dorm_id: {type: String, required: true}
+        dorm_id: {type: String}
     }
 );
 

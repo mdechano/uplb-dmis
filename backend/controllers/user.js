@@ -152,6 +152,39 @@ exports.changeRoleandDorm = async(req,res) => {
     }
 }
 
+exports.findAll = async (req, res) => {
+
+    if (!req.cookies || !req.cookies.authToken) {
+        res.status(401).send({message: "Unauthorized access"});
+        return;
+      }
+      
+      // validate token
+    const token = await utils.verifyToken(req);
+    
+      // error validating token
+    if(!token.status){
+        res.status(token.code).send({ message: token.message });
+        return;
+    }
+
+    let user;
+    try{
+        user = await User.getAll()
+        if(!user){
+            console.log("User database is empty")
+            return res.status(404).send({message: `No user in database`})
+        }
+        else{
+            return res.status(200).send(user)
+        }
+    }
+    catch(err){
+        console.log(`Error searching for user in the DB ${err}` );
+        return res.status(500).send({message: 'Error searching for user'})
+    }
+}
+
 exports.logout = (req, res) => {
     console.log("logged out")
     res.clearCookie('authToken').send({isAuthenticated: false})

@@ -1,8 +1,106 @@
-import {Link} from 'react-router-dom'
+import {React, useEffect, useState} from 'react';
+import {Link, useNavigate} from 'react-router-dom';
+import {apiUrl} from '../utilities/apiUrl';
+import useStore from '../utilities/authHook';
+import axios from "axios";
 import '../css/StudentInfoSheetFamily.css'
 import NavBar from './NavBar';
 
 function StudentInfoSheetFamily () {
+
+    const navigate = useNavigate();
+    const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
+
+    const sendData = (e) => {
+        e.preventDefault();
+        // var tempEmail = document.getElementById("email").value;
+        // var notuniqueEmail = checkEmailExists(tempEmail);
+
+        // if (notuniqueEmail === false) {
+        //     allEmails.push(tempEmail);
+
+        //     fetch(apiUrl("/resident"),{
+        //         method: "POST",
+        //         credentials:'include',
+        //         headers:{
+        //             'Content-Type':'application/json'
+        //         },
+        //         body: JSON.stringify({
+        //             first_name: document.getElementById("first_name").value,
+        //             last_name: document.getElementById("last_name").value,
+        //             middle_name: document.getElementById("middle_name").value,
+        //             suffix: document.getElementById("suffix").value,
+        //             sex: document.getElementById("sex").value,
+        //             student_no: document.getElementById("student_no").value,
+        //             civil_status: document.getElementById("civil_status").value,
+        //             birthday: document.getElementById("birthday").value,
+        //             contact_number: document.getElementById("contact_number").value,
+        //             email:document.getElementById("email").value,
+        //             address: document.getElementById("address").value,
+        //             region: document.getElementById("region").value,
+        //             college: document.getElementById("college").value,
+        //             degree_program: document.getElementById("degree_program").value,
+        //             last_school_attended: document.getElementById("last_school_attended").value,
+        //             classification: document.getElementById("classification").value,
+        //             honors_received: document.getElementById("honors_received").value,
+        //             talents: document.getElementById("talents").value,
+        //             hobbies: document.getElementById("hobbies").value,
+        //             organizations: document.getElementById("organizations").value,
+        //             ailments: document.getElementById("ailments").value,
+        //             medications: document.getElementById("medications").value,
+        //             scholarships: document.getElementById("scholarships").value,
+        //             monthly_stipend: document.getElementById("monthly_stipend").value,
+        //         })
+        //     })
+        //     .then(response => {return response.json()})
+        // } else {
+        //     alert("Inputted email address already exists!");
+        // }
+
+        const father_details = {
+            father_name: document.getElementById("fathername").value,
+            father_occupation: document.getElementById("fatheroccupation").value,
+            father_monthly_income: document.getElementById("fatherincome").value,
+            father_employer: document.getElementById("fatheremployer").value,
+            father_office: document.getElementById("fatheroffice").value,
+            father_phone: document.getElementById("fatherphone").value,
+        }
+
+        const mother_details = {
+            mother_name: document.getElementById("mothername").value,
+            mother_occupation: document.getElementById("motheroccupation").value,
+            mother_monthly_income: document.getElementById("motherincome").value,
+            mother_employer: document.getElementById("motheremployer").value,
+            mother_office: document.getElementById("motheroffice").value,
+            mother_phone: document.getElementById("motherphone").value,
+        }
+
+        fetch(apiUrl("/resident"),{
+            method: "POST",
+            credentials:'include',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                // parents_status: 
+                father_detials: father_details,
+                mother_details: mother_details,
+                number_of_brothers: document.getElementById("numberbrothers").value,
+                number_of_sisters: document.getElementById("numbersisters").value,
+                birth_order: document.getElementById("birthorder").value,
+            })
+        })
+        .then(response => {return response.json()})
+    }
+
+    useEffect(()=>{
+        if(isAuthenticated === false){
+            navigate("/")
+        } 
+        // else {
+        //     fetchData()
+        // }
+    },[]);
 
     return (
         <div>
@@ -12,7 +110,7 @@ function StudentInfoSheetFamily () {
             <div className='upper-div'>
                     <button className='back-button'>BACK</button>
                     <p className='page-title'>STUDENT INFORMATION SHEET</p>
-                    <button className='save-button'>SAVE</button>
+                    
                 </div>
                 <div className='body-div'>
                     <div className='left-div'>
@@ -38,30 +136,31 @@ function StudentInfoSheetFamily () {
                     </div>
                     <div className='right-div'>
                         <form className='form-div'>
+                            <button className='save-button' onClick={sendData}>SAVE</button>
                             <table>
                                 <h3 className='cell-title-family'>Parents' Status</h3>
                                 <br></br>
                                 <tr>
                                         <label class="container"> 
-                                        <input type="radio" name="radio" />
+                                        <input type="radio" id="still_married" name="radio" />
                                         <span class="checkmark"></span>
                                         Still Married
                                         </label>
                                     <br></br>
                                         <label class="container"> 
-                                        <input type="radio" name="radio" />
+                                        <input type="radio" id="separated" name="radio" />
                                         <span class="checkmark"></span>
                                         Separated
                                         </label>
                                     <br></br>
                                         <label class="container"> 
-                                        <input type="radio" name="radio" />
+                                        <input type="radio" id="remarried" name="radio" />
                                         <span class="checkmark"></span>
                                         Remarried
                                         </label>
                                     <br></br>
                                         <label class="container"> 
-                                        <input type="radio" name="radio" />
+                                        <input type="radio" id="single_parent" name="radio" />
                                         <span class="checkmark"></span>
                                         Single Parent
                                         </label>

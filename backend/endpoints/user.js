@@ -8,7 +8,7 @@ const User = Router();
 User.post('/', UserController.login); 
 User.put('/', UserController.changeRoleandDorm);
 User.get('/check-if-logged-in', UserController.checkifloggedin);
-// User.get('/', UserController.findAll);
+User.get('/', UserController.findAll);
 User.delete('/', UserController.logout);
 
 module.exports = User;

@@ -1,8 +1,129 @@
-import {Link} from 'react-router-dom'
-import '../css/StudentInfoSheetPersonal.css'
+import {React, useEffect, useState} from 'react';
+import {Link, useNavigate} from 'react-router-dom';
+import {apiUrl} from '../utilities/apiUrl';
+import useStore from '../utilities/authHook';
+import axios from "axios";
+import '../css/StudentInfoSheetPersonal.css';
 import NavBar from './NavBar';
 
 function StudentInfoSheetPersonal () {
+
+    const navigate = useNavigate();
+    const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
+
+    const [fileData, setFileData] = useState();
+    const [fileId, setFileId] = useState();
+    let allEmails = []
+
+    // const fetchData = () => {
+    //     const getResidents = axios.get(apiUrl("/resident"), { withCredentials: true });
+    //     axios.all([getResidents]).then(
+    //         axios.spread((...allData) => {
+    //             for (let i = 0; i < allData[0].data.length; i++) {
+    //                 allEmails.push(allData[0].data[i].email)
+    //             }
+    //         })
+    //     )
+    // }
+
+    // const checkEmailExists = (tempEmail) => {
+    //     if (allEmails.includes(tempEmail)) {
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
+
+    const sendData = (e) => {
+        e.preventDefault();
+        // var tempEmail = document.getElementById("email").value;
+        // var notuniqueEmail = checkEmailExists(tempEmail);
+
+        // if (notuniqueEmail === false) {
+        //     allEmails.push(tempEmail);
+
+        //     fetch(apiUrl("/resident"),{
+        //         method: "POST",
+        //         credentials:'include',
+        //         headers:{
+        //             'Content-Type':'application/json'
+        //         },
+        //         body: JSON.stringify({
+        //             first_name: document.getElementById("first_name").value,
+        //             last_name: document.getElementById("last_name").value,
+        //             middle_name: document.getElementById("middle_name").value,
+        //             suffix: document.getElementById("suffix").value,
+        //             sex: document.getElementById("sex").value,
+        //             student_no: document.getElementById("student_no").value,
+        //             civil_status: document.getElementById("civil_status").value,
+        //             birthday: document.getElementById("birthday").value,
+        //             contact_number: document.getElementById("contact_number").value,
+        //             email:document.getElementById("email").value,
+        //             address: document.getElementById("address").value,
+        //             region: document.getElementById("region").value,
+        //             college: document.getElementById("college").value,
+        //             degree_program: document.getElementById("degree_program").value,
+        //             last_school_attended: document.getElementById("last_school_attended").value,
+        //             classification: document.getElementById("classification").value,
+        //             honors_received: document.getElementById("honors_received").value,
+        //             talents: document.getElementById("talents").value,
+        //             hobbies: document.getElementById("hobbies").value,
+        //             organizations: document.getElementById("organizations").value,
+        //             ailments: document.getElementById("ailments").value,
+        //             medications: document.getElementById("medications").value,
+        //             scholarships: document.getElementById("scholarships").value,
+        //             monthly_stipend: document.getElementById("monthly_stipend").value,
+        //         })
+        //     })
+        //     .then(response => {return response.json()})
+        // } else {
+        //     alert("Inputted email address already exists!");
+        // }
+
+        fetch(apiUrl("/resident"),{
+            method: "POST",
+            credentials:'include',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                first_name: document.getElementById("first_name").value,
+                last_name: document.getElementById("last_name").value,
+                middle_name: document.getElementById("middle_name").value,
+                suffix: document.getElementById("suffix").value,
+                sex: document.getElementById("sex").value,
+                student_no: document.getElementById("student_no").value,
+                civil_status: document.getElementById("civil_status").value,
+                birthday: document.getElementById("birthday").value,
+                contact_number: document.getElementById("contact_number").value,
+                email:document.getElementById("email").value,
+                home_address: document.getElementById("home_address").value,
+                region: document.getElementById("region").value,
+                college: document.getElementById("college").value,
+                degree_program: document.getElementById("degree_program").value,
+                last_school_attended: document.getElementById("last_school_attended").value,
+                classification: document.getElementById("classification").value,
+                honors_received: document.getElementById("honors_received").value,
+                talents: document.getElementById("talents").value,
+                hobbies: document.getElementById("hobbies").value,
+                organizations: document.getElementById("organizations").value,
+                ailments: document.getElementById("ailments").value,
+                medications: document.getElementById("medications").value,
+                scholarships: document.getElementById("scholarships").value,
+                monthly_stipend: document.getElementById("monthly_stipend").value
+            })
+        })
+        .then(response => {return response.json()})
+    }
+
+    useEffect(()=>{
+        if(isAuthenticated === false){
+            navigate("/")
+        } 
+        // else {
+        //     fetchData()
+        // }
+    },[]);
 
     return (
         <div>
@@ -12,7 +133,7 @@ function StudentInfoSheetPersonal () {
                 <div className='upper-div'>
                     <button className='back-button'>BACK</button>
                     <p className='page-title'>STUDENT INFORMATION SHEET</p>
-                    <button className='save-button'>SAVE</button>
+                    <button className='save-button' onClick = {sendData}>SAVE</button>
                 </div>
                 <div className='body-div'>
                     <div className='left-div'>
@@ -38,6 +159,7 @@ function StudentInfoSheetPersonal () {
                     </div>
                     <div className='right-div'>
                         <form className='form-div'>
+                        {/* <button className='save-button' onClick = {sendData}>SAVE</button> */}
                             <table>
                                 <tr className='table-row'>
                                     <td className='cell-title'>First Name</td>
@@ -47,9 +169,9 @@ function StudentInfoSheetPersonal () {
                                     
                                 </tr>
                                 <tr className='table-row'>
-                                    <td className='cell-input'><input type="text" id="fname" name="firstname"></input></td>
-                                    <td className='cell-input'><input type="text" id="mname" name="middlename"></input></td>
-                                    <td className='cell-input'><input type="text" id="lname" name="lastname"></input></td>
+                                    <td className='cell-input'><input type="text" id="first_name" name="firstname"></input></td>
+                                    <td className='cell-input'><input type="text" id="middle_name" name="middlename"></input></td>
+                                    <td className='cell-input'><input type="text" id="last_name" name="lastname"></input></td>
                                     <td className='cell-input'><input type="text" id="suffix" name="suffix"></input></td>
                                     
                                 </tr>
@@ -70,8 +192,8 @@ function StudentInfoSheetPersonal () {
                                             <option value="intersex">Intersex</option>
                                         </select>
                                     </td>
-                                    <td className='cell-input'><input type="text" id="studnum" name="studentnum"></input></td>
-                                    <td className='cell-input'><input type="text" id="civstatus" name="civilstatus"></input></td>
+                                    <td className='cell-input'><input type="text" id="student_no" name="studentnum"></input></td>
+                                    <td className='cell-input'><input type="text" id="civil_status" name="civilstatus"></input></td>
                                     <td className='cell-input'><input type='date' id='birthday' name='birthday'></input></td>
                                     
                                 </tr>
@@ -83,9 +205,9 @@ function StudentInfoSheetPersonal () {
                                     <td className='cell-title'>Region</td>
                                 </tr>
                                 <tr className='table-row'>
-                                    <td className='cell-input'><input type='text' id='contactnumber' name='contactnumber'></input></td>
+                                    <td className='cell-input'><input type='text' id='contact_number' name='contactnumber'></input></td>
                                     <td className='cell-input'><input type='text' id='email' name='email'></input></td>
-                                    <td className='cell-input'><input type='text' id='address' name='address'></input></td>
+                                    <td className='cell-input'><input type='text' id='home_address' name='address'></input></td>
                                     <td className='cell-input'>
                                         <select id='region' name='region'>
                                             <option>Select Region</option>
@@ -132,8 +254,8 @@ function StudentInfoSheetPersonal () {
                                             <option value="CEM">CEM</option>
                                         </select>
                                     </td>
-                                    <td className='cell-input'><input type='text' id='degprog' name='degprog'></input></td>
-                                    <td className='cell-input'><input type='text' id='last-school' name='last-school'></input></td>
+                                    <td className='cell-input'><input type='text' id='degree_program' name='degprog'></input></td>
+                                    <td className='cell-input'><input type='text' id='last_school_attended' name='last-school'></input></td>
                                     <td className='cell-input'><input type='text' id='classification' name='classification'></input></td>
                                     
                                 </tr>
@@ -145,7 +267,7 @@ function StudentInfoSheetPersonal () {
                                     <td className='cell-title'>Organizations</td>
                                 </tr>
                                 <tr className='table-row'>
-                                    <td className='cell-input'><input type='text' id='honors' name='honors'></input></td>
+                                    <td className='cell-input'><input type='text' id='honors_received' name='honors'></input></td>
                                     <td className='cell-input'><input type='text' id='talents' name='talents'></input></td>
                                     <td className='cell-input'><input type='text' id='hobbies' name='hobbies'></input></td>
                                     <td className='cell-input'><input type='text' id='organizations' name='organizations'></input></td>
@@ -161,7 +283,7 @@ function StudentInfoSheetPersonal () {
                                     <td className='cell-input'><input type='text' id='ailments' name='ailments'></input></td>
                                     <td className='cell-input'><input type='text' id='medications' name='medications'></input></td>
                                     <td className='cell-input'><input type='text' id='scholarships' name='scholarships'></input></td>
-                                    <td className='cell-input'><input type='text' id='stipend' name='stipend'></input></td>
+                                    <td className='cell-input'><input type='text' id='monthly_stipend' name='stipend'></input></td>
                                 </tr>
 
                             </table>

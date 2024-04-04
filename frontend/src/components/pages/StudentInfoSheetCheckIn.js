@@ -68,9 +68,9 @@ function StudentInfoSheetCheckIn () {
                                     <tr>
                                         <td className='cell-title'><th>ROOM NUMBER</th></td>
                                         <td>1st Sem &nbsp;&nbsp;</td>
-                                        <td><input type="text" id="room-number-1" name="room-number-1"></input></td>
+                                        <td><input type="text" id="first-sem-room-number" name="room-number-1"></input></td>
                                         <td>&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;</td>
-                                        <td><input type="text" id="room-number-2" name="room-number-2"></input></td>
+                                        <td><input type="text" id="second-sem-room-number" name="room-number-2"></input></td>
                                     </tr>
 
                                 </div>
@@ -185,7 +185,7 @@ function StudentInfoSheetCheckIn () {
 
                             </table>
 
-                           <div className='check-in-lower-form'>
+                            <div className='check-in-lower-form'>
                                 <h3>APPLIANCES INFORMATION</h3>
                                 <table>
                                     <tr>

@@ -221,11 +221,11 @@ exports.deleteResident = async (req,res) => {
             }
         
     
-            let applicant = null;
+            let resident = null;
             try{
-                applicant = await Resident.getOne({_id: idList[i]});  //call to handler here
-                //console.log(applicant);
-                if(applicant){
+                resident = await Resident.getOne({_id: idList[i]});  //call to handler here
+                //console.log(resident);
+                if(resident){
                     await Delete.create("resident", resident);
                     await UserLog.create(token.user, 'delete', `resident ${resident._id}`)
                     await Resident.delete({_id: idList[i]});
@@ -234,7 +234,7 @@ exports.deleteResident = async (req,res) => {
                     deleted++;
                 }
                 else{
-                    console.log('Invalid applicant id:', idList[i]);
+                    console.log('Invalid resident id:', idList[i]);
                     invalidId[failed] = idList[i];
                     failed++;
                 }
@@ -251,7 +251,7 @@ exports.deleteResident = async (req,res) => {
             res.status(200).send({message: `Successfully deleted ${deleted} resident`});
             return;
         }else{
-            res.status(201).send({body: invalidId ,message: `Successfully deleted ${deleted} resident/s but failed to delete ${failed} applicant/s`});
+            res.status(201).send({body: invalidId ,message: `Successfully deleted ${deleted} resident/s but failed to delete ${failed} resident/s`});
             return;
         }
         
@@ -294,19 +294,19 @@ exports.findResident = async (req,res) => {
 
 
     try{
-        applicant = await Resident.getOne({_id: id})
-        if(!applicant){
+        resident = await Resident.getOne({_id: id})
+        if(!resident){
             console.log("Resident not found")
             return res.status(404).send({message: `resident not found`})
         }
         else{
-            //console.log(applicant)
-            return res.status(200).send(applicant)
+            //console.log(resident)
+            return res.status(200).send(resident)
         }
     }
     catch(err){
         console.log(`Error searching for resident in the DB ${err}` );
-        return res.status(500).send({message: 'Error searching for appliresidentcant'})
+        return res.status(500).send({message: 'Error searching for resident'})
     }
 }
 
@@ -329,13 +329,13 @@ exports.findAll = async (req, res) => {
     let resident;
     try{
         resident = await Resident.getAll()
-        if(!applicant){
+        if(!resident){
             console.log("Resident database is empty")
             return res.status(404).send({message: `No resident in database`})
         }
         else{
-            //console.log(applicant)
-            return res.status(200).send(applicant)
+            //console.log(resident)
+            return res.status(200).send(resident)
         }
     }
     catch(err){
@@ -367,7 +367,7 @@ exports.searchResident = async (req, res) => {
             return res.status(200).send({result})
         }
         let resident = await Resident.getAll()
-        if(!applicant){
+        if(!resident){
             console.log("Resident database is empty")
             return res.status(400).send({message: `No resident in database`})
         }

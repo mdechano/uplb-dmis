@@ -3,6 +3,7 @@ exports.models = {
     UserLog: require('./userlog'),
     Dorm: require('./dorm'),
     Manager: require('./manager'),
-    Resident: require('./resident')
+    Resident: require('./resident'),
+    Deleted: require('./deleted')
 
 }

@@ -2,8 +2,8 @@ import React from 'react';
 import {BrowserRouter , Route , Routes} from 'react-router-dom';
 import LandingPage from './components/pages/LandingPage';
 import Dashboard from './components/pages/Dashboard';
-import LoginPage from './components/pages/LoginPage';
-import SignUp from './components/pages/SignUp';
+import CompleteProfile from './components/pages/CompleteProfile';
+import EditProfile from './components/pages/EditProfile';
 import StudentInfoSheetCheckIn from './components/pages/StudentInfoSheetCheckIn';
 import StudentInfoSheetEmergency from './components/pages/StudentInfoSheetEmergency';
 import StudentInfoSheetFamily from './components/pages/StudentInfoSheetFamily';
@@ -22,8 +22,8 @@ function App() {
           <Routes>
             <Route exact={true} path="/" element={<LandingPage />} />
             <Route exact={true} path="/dashboard" element={<Dashboard />} />
-            <Route exact={true} path="/login" element={<LoginPage />} />
-            <Route exact={true} path="/signup" element={<SignUp />} />
+            <Route exact={true} path="/completeprofile" element={<CompleteProfile />} />
+            <Route exact={true} path="/editprofile" element={<EditProfile />} />
             <Route exact={true} path="/student-info-sheet-check-in" element={<StudentInfoSheetCheckIn />} />
             <Route exact={true} path="/student-info-sheet-emergency" element={<StudentInfoSheetEmergency />} />
             <Route exact={true} path="/student-info-sheet-family" element={<StudentInfoSheetFamily />} />

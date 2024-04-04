@@ -15,114 +15,115 @@ function StudentInfoSheetPersonal () {
     const [fileId, setFileId] = useState();
     let allEmails = []
 
-    // const fetchData = () => {
-    //     const getResidents = axios.get(apiUrl("/resident"), { withCredentials: true });
-    //     axios.all([getResidents]).then(
-    //         axios.spread((...allData) => {
-    //             for (let i = 0; i < allData[0].data.length; i++) {
-    //                 allEmails.push(allData[0].data[i].email)
-    //             }
-    //         })
-    //     )
-    // }
+    const fetchData = () => {
+        const getResidents = axios.get(apiUrl("/resident"), { withCredentials: true });
+        axios.all([getResidents]).then(
+            axios.spread((...allData) => {
+                for (let i = 0; i < allData[0].data.length; i++) {
+                    allEmails.push(allData[0].data[i].email)
+                }
+            })
+        )
+        console.log(allEmails);
+    }
 
-    // const checkEmailExists = (tempEmail) => {
-    //     if (allEmails.includes(tempEmail)) {
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-    // }
+    const checkEmailExists = (tempEmail) => {
+        if (allEmails.includes(tempEmail)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     const sendData = (e) => {
         e.preventDefault();
-        // var tempEmail = document.getElementById("email").value;
-        // var notuniqueEmail = checkEmailExists(tempEmail);
+        var tempEmail = document.getElementById("email").value;
+        var notuniqueEmail = checkEmailExists(tempEmail);
 
-        // if (notuniqueEmail === false) {
-        //     allEmails.push(tempEmail);
+        if (notuniqueEmail === false) {
+            allEmails.push(tempEmail);
 
-        //     fetch(apiUrl("/resident"),{
-        //         method: "POST",
-        //         credentials:'include',
-        //         headers:{
-        //             'Content-Type':'application/json'
-        //         },
-        //         body: JSON.stringify({
-        //             first_name: document.getElementById("first_name").value,
-        //             last_name: document.getElementById("last_name").value,
-        //             middle_name: document.getElementById("middle_name").value,
-        //             suffix: document.getElementById("suffix").value,
-        //             sex: document.getElementById("sex").value,
-        //             student_no: document.getElementById("student_no").value,
-        //             civil_status: document.getElementById("civil_status").value,
-        //             birthday: document.getElementById("birthday").value,
-        //             contact_number: document.getElementById("contact_number").value,
-        //             email:document.getElementById("email").value,
-        //             address: document.getElementById("address").value,
-        //             region: document.getElementById("region").value,
-        //             college: document.getElementById("college").value,
-        //             degree_program: document.getElementById("degree_program").value,
-        //             last_school_attended: document.getElementById("last_school_attended").value,
-        //             classification: document.getElementById("classification").value,
-        //             honors_received: document.getElementById("honors_received").value,
-        //             talents: document.getElementById("talents").value,
-        //             hobbies: document.getElementById("hobbies").value,
-        //             organizations: document.getElementById("organizations").value,
-        //             ailments: document.getElementById("ailments").value,
-        //             medications: document.getElementById("medications").value,
-        //             scholarships: document.getElementById("scholarships").value,
-        //             monthly_stipend: document.getElementById("monthly_stipend").value,
-        //         })
-        //     })
-        //     .then(response => {return response.json()})
-        // } else {
-        //     alert("Inputted email address already exists!");
-        // }
-
-        fetch(apiUrl("/resident"),{
-            method: "POST",
-            credentials:'include',
-            headers:{
-                'Content-Type':'application/json'
-            },
-            body: JSON.stringify({
-                first_name: document.getElementById("first_name").value,
-                last_name: document.getElementById("last_name").value,
-                middle_name: document.getElementById("middle_name").value,
-                suffix: document.getElementById("suffix").value,
-                sex: document.getElementById("sex").value,
-                student_no: document.getElementById("student_no").value,
-                civil_status: document.getElementById("civil_status").value,
-                birthday: document.getElementById("birthday").value,
-                contact_number: document.getElementById("contact_number").value,
-                email:document.getElementById("email").value,
-                home_address: document.getElementById("home_address").value,
-                region: document.getElementById("region").value,
-                college: document.getElementById("college").value,
-                degree_program: document.getElementById("degree_program").value,
-                last_school_attended: document.getElementById("last_school_attended").value,
-                classification: document.getElementById("classification").value,
-                honors_received: document.getElementById("honors_received").value,
-                talents: document.getElementById("talents").value,
-                hobbies: document.getElementById("hobbies").value,
-                organizations: document.getElementById("organizations").value,
-                ailments: document.getElementById("ailments").value,
-                medications: document.getElementById("medications").value,
-                scholarships: document.getElementById("scholarships").value,
-                monthly_stipend: document.getElementById("monthly_stipend").value
+            fetch(apiUrl("/resident"),{
+                method: "POST",
+                credentials:'include',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify({
+                    first_name: document.getElementById("first_name").value,
+                    last_name: document.getElementById("last_name").value,
+                    middle_name: document.getElementById("middle_name").value,
+                    suffix: document.getElementById("suffix").value,
+                    sex: document.getElementById("sex").value,
+                    student_no: document.getElementById("student_no").value,
+                    civil_status: document.getElementById("civil_status").value,
+                    birthday: document.getElementById("birthday").value,
+                    contact_number: document.getElementById("contact_number").value,
+                    email:document.getElementById("email").value,
+                    home_address: document.getElementById("home_address").value,
+                    region: document.getElementById("region").value,
+                    college: document.getElementById("college").value,
+                    degree_program: document.getElementById("degree_program").value,
+                    last_school_attended: document.getElementById("last_school_attended").value,
+                    classification: document.getElementById("classification").value,
+                    honors_received: document.getElementById("honors_received").value,
+                    talents: document.getElementById("talents").value,
+                    hobbies: document.getElementById("hobbies").value,
+                    organizations: document.getElementById("organizations").value,
+                    ailments: document.getElementById("ailments").value,
+                    medications: document.getElementById("medications").value,
+                    scholarships: document.getElementById("scholarships").value,
+                    monthly_stipend: document.getElementById("monthly_stipend").value
+                })
             })
-        })
-        .then(response => {return response.json()})
+            .then(response => {return response.json()})
+        } else {
+            alert("Inputted email address already exists!");
+        }
+
+        // fetch(apiUrl("/resident"),{
+        //     method: "POST",
+        //     credentials:'include',
+        //     headers:{
+        //         'Content-Type':'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         first_name: document.getElementById("first_name").value,
+        //         last_name: document.getElementById("last_name").value,
+        //         middle_name: document.getElementById("middle_name").value,
+        //         suffix: document.getElementById("suffix").value,
+        //         sex: document.getElementById("sex").value,
+        //         student_no: document.getElementById("student_no").value,
+        //         civil_status: document.getElementById("civil_status").value,
+        //         birthday: document.getElementById("birthday").value,
+        //         contact_number: document.getElementById("contact_number").value,
+        //         email:document.getElementById("email").value,
+        //         home_address: document.getElementById("home_address").value,
+        //         region: document.getElementById("region").value,
+        //         college: document.getElementById("college").value,
+        //         degree_program: document.getElementById("degree_program").value,
+        //         last_school_attended: document.getElementById("last_school_attended").value,
+        //         classification: document.getElementById("classification").value,
+        //         honors_received: document.getElementById("honors_received").value,
+        //         talents: document.getElementById("talents").value,
+        //         hobbies: document.getElementById("hobbies").value,
+        //         organizations: document.getElementById("organizations").value,
+        //         ailments: document.getElementById("ailments").value,
+        //         medications: document.getElementById("medications").value,
+        //         scholarships: document.getElementById("scholarships").value,
+        //         monthly_stipend: document.getElementById("monthly_stipend").value
+        //     })
+        // })
+        // .then(response => {return response.json()})
     }
 
     useEffect(()=>{
         if(isAuthenticated === false){
             navigate("/")
         } 
-        // else {
-        //     fetchData()
-        // }
+        else {
+            fetchData()
+        }
     },[]);
 
     return (

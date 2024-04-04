@@ -53,7 +53,7 @@ const Dashboard = () => {
         setNewDorm(document.getElementById("user_dorm").value);
     }
 
- 
+    // console.log(user._id);
 
    
     return (
@@ -61,6 +61,7 @@ const Dashboard = () => {
             <NavBar></NavBar>
 
             <div className='dashboard-notice'>
+                
                 {user ?
                 <p className='greet'><b>Greetings, {user.first_name}!</b></p>:
                 ""

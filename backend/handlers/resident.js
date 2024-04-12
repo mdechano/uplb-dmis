@@ -50,6 +50,7 @@ exports.edit = (object) =>{
         // findone then edit
         Resident.findOne({ _id: object.id }, (err, resident) => {
             if (err) { reject(err); }
+            resident.user_id = object.user_id,
             resident.first_name = object.first_name,
             resident.last_name = object.last_name,
             resident.middle_name = object.middle_name,
@@ -74,20 +75,21 @@ exports.edit = (object) =>{
             resident.medications = object.medications,
             resident.scholarships = object.scholarships,
             resident.monthly_stipend = object.monthly_stipend
-            // resident.parents_status = object.parents_status,
-            // resident.father_detials = object.father_details,
-            // resident.mother_details = object.mother_details,
-            // resident.number_of_brothers = object.number_of_brothers,
-            // resident.number_of_sisters = object.number_of_sisters,
-            // resident.birth_order = object.birth_order,
-            // resident.check_in_out_details = object.check_in_out_details,
-            // resident.appliances = object.appliances,
-            // resident.appliances_information = object.appliances_information,
-            // resident.emergency_details = object.emergency_details,
+            resident.parents_status = object.parents_status,
+            resident.father_detials = object.father_details,
+            resident.mother_details = object.mother_details,
+            resident.number_of_brothers = object.number_of_brothers,
+            resident.number_of_sisters = object.number_of_sisters,
+            resident.birth_order = object.birth_order,
+            resident.check_in_out_details = object.check_in_out_details,
+            resident.appliances = object.appliances,
+            resident.appliances_information = object.appliances_information,
+            resident.emergency_details = object.emergency_details,  
+            // resident.slas = object.slas,
             // resident.payment_details = object.payment_details,
             // resident.violation_details = object.violation_details,
-            // resident.picture_id = object.picture_id,
-            // resident.dorm_id = object.dorm_id
+            resident.picture_id = object.picture_id,
+            resident.dorm_id = object.dorm_id
             
             resident.save((err, resident) => {
                 if(err) { reject(err); }

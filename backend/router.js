@@ -7,6 +7,6 @@ const router = Router();
 
 router.use('/user', User); //localhost:3001/user
 router.use('/resident', Resident);
-// router.use('/manager', Manager);
+router.use('/manager', Manager);
 
 module.exports = router;

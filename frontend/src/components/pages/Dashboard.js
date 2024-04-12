@@ -1,4 +1,5 @@
 import {React, useState, useEffect} from 'react';
+import {Link} from 'react-router-dom'
 import {useNavigate} from 'react-router-dom';
 import '../css/Dashboard.css'
 import NavBar from '../pages/NavBar';
@@ -105,8 +106,16 @@ const Dashboard = () => {
                     ""
                 }
 
-                {
+                { role === 'resident' ?
+                <p>If you haven't completed your profile, please head to this <a><Link to='/complete-resident-profile'>link</Link></a>.</p>
+                :
+                ""
+                }
 
+                { role === 'dorm manager' ?
+                <p>If you haven't completed your profile, please head to this <a><Link to='/complete-manager-profile'>link</Link></a>.</p>
+                :
+                ""
                 }
                 
             </div>

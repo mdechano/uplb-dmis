@@ -3,6 +3,7 @@ const utils = require('./utils')
 
 const ResidentSchema = new mongoose.Schema(
     {
+        user_id: {type: String, required: true},
 		first_name: {type: String, required: true},
         last_name: {type: String, required: true},
         middle_name: {type: String, required: false},
@@ -37,6 +38,7 @@ const ResidentSchema = new mongoose.Schema(
         appliances: {type: Object},
         appliances_information: {type: Object},
         emergency_details: {type: Object},
+        slas: {type: String},
         payment_details: {type: Object},
         violation_details: {type: Object},
         picture_id: {type: String},

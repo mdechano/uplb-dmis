@@ -166,6 +166,7 @@ function CompleteProfile () {
                     'Content-Type':'application/json'
                 },
                 body: JSON.stringify({
+                    user_id: user._id,
                     first_name: document.getElementById("first_name").value,
                     last_name: document.getElementById("last_name").value,
                     middle_name: document.getElementById("middle_name").value,
@@ -199,7 +200,8 @@ function CompleteProfile () {
                     check_in_out_details: check_in_out_details,
                     appliances: appliances,
                     appliances_information: appliances_information,
-                    emergency_details: emergency_details
+                    emergency_details: emergency_details,
+                    slas: "None",
                     // payment_details: {type: Object},
                     // violation_details: {type: Object},
                     // picture_id: {type: String},

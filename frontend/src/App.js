@@ -2,7 +2,8 @@ import React from 'react';
 import {BrowserRouter , Route , Routes} from 'react-router-dom';
 import LandingPage from './components/pages/LandingPage';
 import Dashboard from './components/pages/Dashboard';
-import CompleteProfile from './components/pages/CompleteProfile';
+import CompleteResidentProfile from './components/pages/CompleteResidentProfile';
+import CompleteManagerProfile from './components/pages/CompleteManagerProfile';
 import EditProfile from './components/pages/EditProfile';
 import StudentInfoSheetCheckIn from './components/pages/StudentInfoSheetCheckIn';
 import StudentInfoSheetEmergency from './components/pages/StudentInfoSheetEmergency';
@@ -22,7 +23,8 @@ function App() {
           <Routes>
             <Route exact={true} path="/" element={<LandingPage />} />
             <Route exact={true} path="/dashboard" element={<Dashboard />} />
-            <Route exact={true} path="/completeprofile" element={<CompleteProfile />} />
+            <Route exact={true} path="/complete-resident-profile" element={<CompleteResidentProfile />} />
+            <Route exact={true} path="complete-manager-profile" element={<CompleteManagerProfile />} />
             <Route exact={true} path="/editprofile" element={<EditProfile />} />
             <Route exact={true} path="/student-info-sheet-check-in" element={<StudentInfoSheetCheckIn />} />
             <Route exact={true} path="/student-info-sheet-emergency" element={<StudentInfoSheetEmergency />} />

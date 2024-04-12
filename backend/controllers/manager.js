@@ -331,4 +331,4 @@ exports.searchManager = async (req, res) => {
         console.log(`Error searching for manager in the DB ${err}` );
         return res.status(500).send({message: 'Error searching for manager'})
     }
-}
+} 

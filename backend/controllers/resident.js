@@ -366,6 +366,7 @@ exports.searchResident = async (req, res) => {
 
     let search = req.query.name
     let result = new Array;
+    
     try{
         if(search == ''){
             return res.status(200).send({result})

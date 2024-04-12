@@ -17,7 +17,7 @@ const ManagerSchema = new mongoose.Schema(
         dorm_id: {type: String}
     }
 )
-
+ 
 ManagerSchema.pre("save", function(next){
     const manager = this;
 

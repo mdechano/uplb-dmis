@@ -14,10 +14,10 @@ function CompleteProfile () {
     const [fileData, setFileData] = useState();
     const [fileId, setFileId] = useState();
     let allEmails = []
-
+ 
     const fetchData = () => {
         const getManagers = axios.get(apiUrl("/manager"), { withCredentials: true });
-        axios.all([getResidents]).then(
+        axios.all([getManagers]).then(
             axios.spread((...allData) => {
                 for (let i = 0; i < allData[0].data.length; i++) {
                     allEmails.push(allData[0].data[i].email)

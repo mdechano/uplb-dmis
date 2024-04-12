@@ -12,4 +12,4 @@ Manager.get('/:id', ManagerController.findManager);
 Manager.get('/', ManagerController.findAll);
 
 
-module.exports = Manager;
+module.exports = Manager; 

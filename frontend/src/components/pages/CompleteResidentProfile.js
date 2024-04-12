@@ -14,7 +14,7 @@ function CompleteProfile () {
     const [fileData, setFileData] = useState();
     const [fileId, setFileId] = useState();
     let allEmails = []
-
+ 
     const fetchData = () => {
         const getResidents = axios.get(apiUrl("/resident"), { withCredentials: true });
         axios.all([getResidents]).then(

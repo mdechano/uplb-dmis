@@ -15,7 +15,7 @@ exports.create = (object) => {
             }
         });
     });
-}
+} 
 
 exports.getOne = (query, next) => {
     return new Promise((resolve, reject) => {

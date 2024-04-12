@@ -19,7 +19,7 @@ const Dashboard = () => {
     useEffect(()=>{
         if(isAuthenticated === false){
             navigate("/")
-        }
+        } 
         else {
             // change in role buggy because of this
             setInitialRole(user.role)

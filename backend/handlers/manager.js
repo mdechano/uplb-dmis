@@ -51,6 +51,8 @@ exports.edit = (object) =>{
         Manager.findOne({ _id: object.id }, (err, manager) => {
             if (err) { reject(err); }
             manager.user_id = object.user_id,
+            manager.role = object.role,
+            manager.dorm = object.dorm,
             manager.first_name = object.first_name,
             manager.last_name = object.last_name,
             manager.middle_name = object.middle_name,

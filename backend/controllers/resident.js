@@ -23,6 +23,8 @@ exports.addResident = async (req,res) => {
 
     const newResident = {
         user_id: body.user_id,
+        role: body.role,
+        dorm: body.dorm,
         first_name: body.first_name,
         last_name: body.last_name,
         middle_name: body.middle_name,
@@ -108,6 +110,8 @@ exports.editResident = async (req,res) => {
     const resident = {
         id: req.params.id,
         user_id: body.user_id,
+        role: body.role,
+        dorm: body.dorm,
         first_name: body.first_name,
         last_name: body.last_name,
         middle_name: body.middle_name,

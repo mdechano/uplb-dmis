@@ -23,6 +23,8 @@ exports.addManager = async (req, res) => {
 
     const newManager = {
         user_id: body.user_id,
+        role: body.role,
+        dorm: body.dorm,
         first_name: body.first_name,
         last_name: body.last_name,
         middle_name: body.middle_name,
@@ -79,6 +81,8 @@ exports.editManager = async (req, res) => {
     const manager = {
         id: req.params.id,
         user_id: body.user_id,
+        role: body.role,
+        dorm: body.dorm,
         first_name: body.first_name,
         last_name: body.last_name,
         middle_name: body.middle_name,

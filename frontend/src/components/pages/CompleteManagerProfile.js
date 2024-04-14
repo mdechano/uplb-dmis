@@ -51,6 +51,8 @@ function CompleteProfile () {
                 },
                 body: JSON.stringify({
                     user_id: user._id,
+                    dorm: user.dorm,
+                    role: user.role,
                     first_name: document.getElementById("first_name").value,
                     last_name: document.getElementById("last_name").value,
                     middle_name: document.getElementById("middle_name").value,

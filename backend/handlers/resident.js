@@ -51,6 +51,8 @@ exports.edit = (object) =>{
         Resident.findOne({ _id: object.id }, (err, resident) => {
             if (err) { reject(err); }
             resident.user_id = object.user_id,
+            resident.role = object.role,
+            resident.dorm = object.dorm,
             resident.first_name = object.first_name,
             resident.last_name = object.last_name,
             resident.middle_name = object.middle_name,

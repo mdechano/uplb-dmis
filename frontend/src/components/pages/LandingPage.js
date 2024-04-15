@@ -50,7 +50,16 @@ function LandingPage () {
     
         google.accounts.id.renderButton(
           document.getElementById("signInDiv"),
-          { theme: "outline", size: "large"}
+        //   { theme: "outline", size: "large"}
+          {
+            'scope': 'profile email',
+            'width': 240,
+            'height': 50,
+            'longtitle': true,
+            'theme': 'dark'
+            // 'onsuccess': onSuccess,
+            // 'onfailure': onFailure
+          }
         )
     }, []);
 
@@ -66,7 +75,6 @@ function LandingPage () {
         .then((data)=> {
             console.log(data.User);
             console.log(data.status);
-            // setAuth in authHook in working properly
             setAuth(data.User, data.status);
             if(data.status === true){
                 navigate("/dashboard")
@@ -76,23 +84,29 @@ function LandingPage () {
 
     return (
         <div>
-            <header className='landing_header'>
-                    <nav>
-                        <ul className="landing-nav_links">
-                            <li><a>Home</a></li>
-                            <li><a>About</a></li>
-                            <li><a>Contact</a></li>
-                        </ul>
-                    </nav>
-            </header>
+            {/* <header className='landing_header'>
+                <div className='uplb-dmis'>
+                    <p>UPLB DMIS</p>
+                </div>
+                <nav className='landing-nav'>
+                    <ul className="landing-nav_links">
+                        <li><a>Home</a></li>
+                        <li><a>About</a></li>
+                        <li><a>Contact</a></li>
+                    </ul>
+                </nav>
+            </header> */}
             <div className="landing_container">
-                <div className="landing_container_title">
+                <div className="landing-left">
                     <p className='p_landing_title'>Welcome to the UPLB<br></br>Dormitory Management<br></br>Information System</p>
                     <br></br>
                     <br></br>
                     <br></br>
                     <br></br>
                     <button className='login-button' id='signInDiv'></button>        
+                </div>
+                <div className='landing-right'>
+                    hello
                 </div>
             </div>
         </div>

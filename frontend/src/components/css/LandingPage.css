@@ -7,88 +7,65 @@
     background-color: #F5F5F5;
   }
   
-  .landing_header {
-    display: flex;
-    align-items:flex-end;
-    justify-content:flex-end;
-    flex-direction: row;
-    
-  }
-  
   .landing_container {
     display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    padding: 2em;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 100%;
+    /* margin: 0 0 0 0; */
+    /* padding: 2em; */
+    /* margin-top: 20px;
     margin-left: 30px;
-    margin-right: 30px;
-    border: 2px #ccc solid;
-    border-radius: 10px;
+    margin-right: 30px; */
+    /* border: 2px #ccc solid;
+    border-radius: 10px; */
 
   }
-  
-  .landing-nav_links {
-    list-style: none;
-    font-size: 20px;
-    font-family: "Montserrat", sans-serif;
-    font-weight: 500;
-    color: #000000;
-    text-decoration: none;
-    padding: 15px;
-  }
 
-  .landing-nav_links li {
-    display: inline-block;
-    padding-right: 50px;
-  }
   
-  .landing-nav_links li a {
-    transition: all 0.3s ease 0s;
-    color: #000000;
-  }
-  
-  .landing-nav_links li a:hover {
-    color: #dca500;
-    cursor: pointer;
-  }
-  
-  .landing_container_title {
+  .landing-left {
     border: 2px #ccc solid;
-    border-radius: 10px;
-    margin-top: 20px;
+    /* border-radius: 10px; */
+    /* margin-top: 20px; */
     padding-top: 50px;
-    padding-bottom: 30px;
-    padding-left: 50px;
+    padding-bottom: 50px;
+    padding-left: 30px;
+    width: 50%;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+    background-color: #f5f5f5;
+    
   }
 
   .p_landing_title {
     font-family: "Montserrat", sans-serif;
     font-weight: bold;
-    font-size: 50px;
-    font-weight:bolder;
-    font-style: italic;
-    color: rgb(143, 0, 0);
-    text-align: start;
+    font-size: 30px;
+    /* font-weight:bolder; */
+    /* font-style: italic; */
+    color: #7b1716;
+    text-align: center;
     
   }
 
   .login-button {
-    background-color: rgba(131, 0, 0, 0.9);
+    background-color: #f5f5f5; /*gawing color ng final bg*/
     /* border: 2px #ccc solid; */
     border-radius: 10px;
     text-align: center;
-    width: 210px;
-    height: 50px;
+    width: 280px;
+    height: 70px;
   }
 
-  .login-button a:link {
-    text-decoration: none;
-  }
-
-  .login-button a {
-    font-size: 20px;
-    font-family: "Montserrat", sans-serif;
-    font-weight: bold;
-    text-shadow: 2px 2px 8px #888888;
-    color: rgb(255, 255, 255);
-  }
+.landing-right {
+  width: 50%;
+  border: 2px #ccc solid;
+    /* border-radius: 10px; */
+    /* margin-top: 20px; */
+    padding-top: 50px;
+    padding-bottom: 50px;
+    padding-left: 30px;
+}

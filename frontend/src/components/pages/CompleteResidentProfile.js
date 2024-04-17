@@ -38,7 +38,7 @@ function CompleteProfile () {
     const sendData = (e) => {
         e.prevenDefault();
         var tempEmail = document.getElementById("email").value;
-        var notuniqueEmail = checkEmailExists(tempEmail);
+        var notuniqueEmail = checkEmailExists(tempEmail); // boolean
 
         const father_details = {
             father_name: document.getElementById("fathername").value,

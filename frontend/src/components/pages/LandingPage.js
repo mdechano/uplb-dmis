@@ -4,6 +4,7 @@ import {useEffect} from 'react';
 import {apiUrl} from '../utilities/apiUrl';
 import useStore from '../utilities/authHook';
 import '../css/LandingPage.css'
+import UPLBDMISlogo from '../images/UPLBDMISlogo.png'
 
 function LandingPage () {
 
@@ -52,9 +53,9 @@ function LandingPage () {
           document.getElementById("signInDiv"),
         //   { theme: "outline", size: "large"}
           {
-            'scope': 'profile email',
+            // 'scope': 'profile email',
             'width': 240,
-            'height': 50,
+            'height': 100,
             'longtitle': true,
             'theme': 'dark'
             // 'onsuccess': onSuccess,
@@ -84,18 +85,7 @@ function LandingPage () {
 
     return (
         <div>
-            {/* <header className='landing_header'>
-                <div className='uplb-dmis'>
-                    <p>UPLB DMIS</p>
-                </div>
-                <nav className='landing-nav'>
-                    <ul className="landing-nav_links">
-                        <li><a>Home</a></li>
-                        <li><a>About</a></li>
-                        <li><a>Contact</a></li>
-                    </ul>
-                </nav>
-            </header> */}
+            
             <div className="landing_container">
                 <div className="landing-left">
                     <p className='p_landing_title'>Welcome to the UPLB<br></br>Dormitory Management<br></br>Information System</p>
@@ -103,7 +93,11 @@ function LandingPage () {
                     <br></br>
                     <br></br>
                     <br></br>
-                    <button className='login-button' id='signInDiv'></button>        
+                    <img className='dmis-logo' src={UPLBDMISlogo} alt='dmis-logo'></img>
+                    <br></br>
+                    <br></br>
+                    <button className='login-button' id='signInDiv'></button>  
+                    {/* <div className='blank-space'></div>       */}
                 </div>
                 <div className='landing-right'>
                     hello

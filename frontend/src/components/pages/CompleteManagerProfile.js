@@ -62,13 +62,51 @@ function CompleteProfile () {
                     contact_number: document.getElementById("contact_number").value,
                     email: document.getElementById("email").value,
                     home_address: document.getElementById("home_address").value,
-                    // picture_id: {type: String},
-                    // dorm_id: {type: String}
+                    // upload_id: 
                 })
             })
             .then(response => {return response.json()})
+            .then(getDorm)
         } else {
             alert("Inputted email address already exists!");
+        }
+    }
+
+    const getDorm = () => {
+        const getDorm = axios.get(apiUrl("/dorm"), { withCredentials: true });
+        axios.all([getDorm]).then(
+            axios.spread((...allData) => {
+                sendDormInfo(allData[0].data)
+            })
+        )
+    }
+
+    const sendDormInfo = (manager) => {
+        if (manager !== undefined) {
+            manager.map((person, i) => {
+                if(i === (manager.length - 1)){
+                    fetch(apiUrl("/dorm/"),{
+                        method: "POST",
+                        credentials:'include',
+                        headers:{
+                            'Content-Type':'application/json'
+                        },
+                        body: JSON.stringify({
+                            dorm_name: document.getElementById("dorm_name").value,
+                            dorm_details: document.getElementById("dorm_details").value,
+                            dorm_manager_id: person._id,
+                            dorm_manager_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value + " " + document.getElementById("suffix"),
+                            dorm_manager_email: document.getElementById("email").value,
+                            dorm_manager_contact_number: document.getElementById("contact_number").value,
+                            dorm_attendant_name: document.getElementById("dorm_attendant_name").value,
+                            dorm_attendant_email: document.getElementById("dorm_attendant_email").value,
+                            dorm_attendant_contact_number: document.getElementById("contact_number").value,
+                        })
+                    })
+                    .then(response => {return response.json()})
+                    // .then(makePDF())
+                }
+            }) 
         }
     }
 
@@ -153,9 +191,34 @@ function CompleteProfile () {
                                         
                                         
                                     </tr>
-
-                                   
+                                
                                 </table>
+
+                                <h2>COMPLETE DORM INFORMATION HERE</h2>
+                                <table>
+                                    <tr className='table-row'>
+                                        <td className='cell-title'>Residence Hall Name</td>
+                                        <td className='cell-title'>Dorm Details</td>
+                                    </tr>
+                                    <tr className='table-row'>
+                                        <td className='cell-input'><input type='text' id='dorm_name' name='dorm_name'></input></td>
+                                        <td className='cell-input'><input type='text' id='dorm_details' name='dorm_details'></input></td>
+                                    </tr>
+
+                                    <p>Please provide information of your dorm attendant.</p>
+                                    
+                                    <tr className='table-row'>
+                                        <td className='cell-title'>Dorm Attendant Name</td>
+                                        <td className='cell-title'>Dorm Attendant Email</td>
+                                        <td className='cell-title'>Dorm Attendant Contact Number</td>
+                                    </tr>
+                                    <tr className='table-row'>
+                                        <td className='cell-input'><input type='text' id='dorm_attendant_name' name='dorm_attendant_name'></input></td>
+                                        <td className='cell-input'><input type='text' id='dorm_attendant_email' name='dorm_attendant_email'></input></td>
+                                        <td className='cell-input'><input type='text' id='dorm_attendant_contact_number' name='dorm_attendant_contact_number'></input></td>
+                                    </tr>
+                                </table>
+
                             </div>
                             
                         </form>

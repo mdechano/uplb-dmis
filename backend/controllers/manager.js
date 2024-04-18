@@ -106,7 +106,7 @@ exports.editManager = async (req, res) => {
 
     var existing = null
     try{
-        existing = await Resident.getOne({_id: manager.id});
+        existing = await Manager.getOne({_id: manager.id});
         if (!existing) {
             console.log("Manager not found")
             return res.status(404).send({ message: 'Manager not found' });

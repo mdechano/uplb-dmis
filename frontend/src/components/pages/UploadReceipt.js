@@ -10,7 +10,7 @@ function UploadReceipt () {
 
             <div className='upload-receipt-div'>
             <   div className='upper-div'>
-                    <button className='back-button'>BACK</button>
+                    <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
                 </div>
                 <div className='title-bg'><p className='page-title'>PAYMENT RECEIPTS</p></div>
                 <form action method="post">

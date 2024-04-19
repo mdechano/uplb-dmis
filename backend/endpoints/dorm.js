@@ -3,13 +3,11 @@ const Router = require('express').Router;
 
 const Dorm = Router();
 
-//Manager.post('/upload', ApplicantController.uploadImage);
-Dorm.post('/', DormController.addManager);
-Dorm.put('/:id', DormController.editManager);
-Dorm.delete('/', DormController.deleteManager);
-Dorm.get('/search', DormController.searchManager);
-Dorm.get('/:id', DormController.findManager);
+Dorm.post('/', DormController.addDorm);
+Dorm.put('/:id', DormController.editDorm);
+Dorm.delete('/', DormController.deleteDorm);
+Dorm.get('/search', DormController.searchDorm);
+Dorm.get('/:id', DormController.findDorm);
 Dorm.get('/', DormController.findAll);
-
 
 module.exports = Dorm; 

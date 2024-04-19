@@ -34,8 +34,7 @@ exports.addManager = async (req, res) => {
         contact_number: body.contact_number,
         email: body.email,
         home_address: body.home_address,
-        picture_id: body.picture_id,
-        dorm_id: body.dorm_id
+        picture_id: body.picture_id
     };
     try{
         const existing = await Manager.getOne({email: newManager.email})
@@ -92,8 +91,7 @@ exports.editManager = async (req, res) => {
         contact_number: body.contact_number,
         email: body.email,
         home_address: body.home_address,
-        picture_id: body.picture_id,
-        dorm_id: body.dorm_id
+        picture_id: body.picture_id
     };
 
     try{
@@ -176,8 +174,8 @@ exports.deleteManager = async (req, res) => {
                 manager = await Manager.getOne({_id: idList[i]});  //call to handler here
                 //console.log(manager);
                 if(manager){
-                    await Delete.create("resident", manager);
-                    await UserLog.create(token.user, 'delete', `resident ${manager._id}`)
+                    await Delete.create("manager", manager);
+                    await UserLog.create(token.user, 'delete', `manager ${manager._id}`)
                     await Manager.delete({_id: idList[i]});
                     console.log('Successfully deleted manager with id:', idList[i]);
                     validId[deleted] = idList[i];
@@ -242,8 +240,8 @@ exports.findManager = async (req, res) => {
 
 
     try{
-        resident = await Resident.getOne({_id: id})
-        if(!resident){
+        manager = await Manager.getOne({_id: id})
+        if(!manager){
             console.log("Manager not found")
             return res.status(404).send({message: `manager not found`})
         }
@@ -309,6 +307,7 @@ exports.searchManager = async (req, res) => {
 
     let search = req.query.name
     let result = new Array;
+
     try{
         if(search == ''){
             return res.status(200).send({result})

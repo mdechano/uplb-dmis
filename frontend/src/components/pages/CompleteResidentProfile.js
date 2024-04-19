@@ -6,7 +6,7 @@ import axios from "axios";
 import '../css/StudentInfoSheetPersonal.css';
 import NavBar from './NavBar';
 
-function CompleteProfile () {
+function CompleteResidentProfile () {
 
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
@@ -230,7 +230,7 @@ function CompleteProfile () {
             <NavBar></NavBar>
             <div classname = 'stud-info-sheet-div'>
                 <div className='upper-div'>
-                    <button className='back-button'>BACK</button>
+                    <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
                     <p className='page-title'>COMPLETE PROFILE</p>
                     <button className='save-button' onClick={sendData}>SAVE</button>
                 </div>
@@ -655,4 +655,4 @@ function CompleteProfile () {
 
 }
 
-export default CompleteProfile;
+export default CompleteResidentProfile;

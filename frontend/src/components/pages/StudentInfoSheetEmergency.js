@@ -10,7 +10,7 @@ function StudentInfoSheetEmergency () {
 
             <div className='stud-info-sheet-div'>
             <div className='upper-div'>
-                    <button className='back-button'>BACK</button>
+                    <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
                     <p className='page-title'>STUDENT INFORMATION SHEET</p>
                     <button className='save-button'>SAVE</button>
                 </div>

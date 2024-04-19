@@ -22,18 +22,21 @@ exports.addDorm = async (req, res) => {
         return;
     }
 
-    const NewDorm = {
+    const newDorm = {
         dorm_name: body.dorm_name,
         dorm_details: body.dorm_details,
         dorm_manager_id: body.dorm_manager_id,
         dorm_manager_name: body.dorm_manager_name,
+        dorm_manager_email: body.dorm_manager_email,
         dorm_manager_contact_number: body.dorm_manager_contact_number,
+        dorm_attendant_id: body.dorm_attendant_id,
         dorm_attendant_name: body.dorm_attendant_name,
         dorm_attendant_email: body.dorm_attendant_email,
         dorm_attendant_contact_number: body.dorm_attendant_contact_number
     };
+
     try {
-        const existing = await Dorm.getOne({dorm_name: Dorm.dorm_name})
+        const existing = await Dorm.getOne({dorm_name: newDorm.dorm_name})
         if(existing){
             return res.status(400).send({ message: "Dorm already exists" })
         }
@@ -80,7 +83,9 @@ exports.editDorm = async (req, res) => {
         dorm_details: body.dorm_details,
         dorm_manager_id: body.dorm_manager_id,
         dorm_manager_name: body.dorm_manager_name,
+        dorm_manager_email: body.dorm_manager_email,
         dorm_manager_contact_number: body.dorm_manager_contact_number,
+        dorm_attendant_id: body.dorm_attendant_id,
         dorm_attendant_name: body.dorm_attendant_name,
         dorm_attendant_email: body.dorm_attendant_email,
         dorm_attendant_contact_number: body.dorm_attendant_contact_number
@@ -164,10 +169,10 @@ exports.deleteDorm = async (req, res) => {
             let dorm = null;
             try{
                 dorm = await Dorm.getOne({_id: idList[i]});  //call to handler here
-                //console.log(manager);
+                //console.log(dorm);
                 if(dorm){
-                    await Delete.create("resident", dorm);
-                    await UserLog.create(token.user, 'delete', `resident ${dorm._id}`)
+                    await Delete.create("dorm", dorm);
+                    await UserLog.create(token.user, 'delete', `dorm ${dorm._id}`)
                     await Dorm.delete({_id: idList[i]});
                     console.log('Successfully deleted dorm with id:', idList[i]);
                     validId[deleted] = idList[i];
@@ -191,7 +196,7 @@ exports.deleteDorm = async (req, res) => {
             res.status(200).send({message: `Successfully deleted ${deleted} dorm`});
             return;
         }else{
-            res.status(201).send({body: invalidId ,message: `Successfully deleted ${deleted} dorm/s but failed to delete ${failed} manager/s`});
+            res.status(201).send({body: invalidId ,message: `Successfully deleted ${deleted} dorm/s but failed to delete ${failed} dorm/s`});
             return;
         }
         
@@ -238,8 +243,8 @@ exports.findDorm = async (req, res) => {
             return res.status(404).send({message: `dorm not found`})
         }
         else{
-            //console.log(manager)
-            return res.status(200).send(manager)
+            //console.log(dorm)
+            return res.status(200).send(dorm)
         }
     }
     catch(err){
@@ -272,7 +277,7 @@ exports.findAll = async (req, res) => {
             return res.status(404).send({message: `No dorm in database`})
         }
         else{
-            //console.log(manager)
+            //console.log(dorm)
             return res.status(200).send(dorm)
         }
     }

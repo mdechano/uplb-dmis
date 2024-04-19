@@ -10,7 +10,7 @@ function GenerateSOA () {
 
             <div className='gen-soa-div'>
                 <div className='upper-div'>
-                    <button className='back-button'>BACK</button>
+                    <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
                 </div>
                 <div className='title-bg'><p className='page-title'>STATEMENTS OF ACCOUNT</p></div>
                 <div className='gen-soa-content'>

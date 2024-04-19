@@ -6,7 +6,7 @@ import axios from "axios";
 import '../css/StudentInfoSheetPersonal.css';
 import NavBar from './NavBar';
 
-function CompleteProfile () {
+function CompleteManagerProfile () {
 
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
@@ -97,14 +97,10 @@ function CompleteProfile () {
                             dorm_manager_id: person._id,
                             dorm_manager_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value + " " + document.getElementById("suffix"),
                             dorm_manager_email: document.getElementById("email").value,
-                            dorm_manager_contact_number: document.getElementById("contact_number").value,
-                            dorm_attendant_name: document.getElementById("dorm_attendant_name").value,
-                            dorm_attendant_email: document.getElementById("dorm_attendant_email").value,
-                            dorm_attendant_contact_number: document.getElementById("contact_number").value,
+                            dorm_manager_contact_number: document.getElementById("contact_number").value
                         })
                     })
                     .then(response => {return response.json()})
-                    // .then(makePDF())
                 }
             }) 
         }
@@ -124,7 +120,7 @@ function CompleteProfile () {
             <NavBar></NavBar>
             <div classname = 'stud-info-sheet-div'>
                 <div className='upper-div'>
-                    <button className='back-button'>BACK</button>
+                    <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
                     <p className='page-title'>COMPLETE PROFILE</p>
                     <button className='save-button' onClick={sendData}>SAVE</button>
                 </div>
@@ -205,7 +201,7 @@ function CompleteProfile () {
                                         <td className='cell-input'><input type='text' id='dorm_details' name='dorm_details'></input></td>
                                     </tr>
 
-                                    <p>Please provide information of your dorm attendant.</p>
+                                    {/* <p>Please provide information of your dorm attendant.</p>
                                     
                                     <tr className='table-row'>
                                         <td className='cell-title'>Dorm Attendant Name</td>
@@ -216,7 +212,7 @@ function CompleteProfile () {
                                         <td className='cell-input'><input type='text' id='dorm_attendant_name' name='dorm_attendant_name'></input></td>
                                         <td className='cell-input'><input type='text' id='dorm_attendant_email' name='dorm_attendant_email'></input></td>
                                         <td className='cell-input'><input type='text' id='dorm_attendant_contact_number' name='dorm_attendant_contact_number'></input></td>
-                                    </tr>
+                                    </tr> */}
                                 </table>
 
                             </div>
@@ -231,4 +227,4 @@ function CompleteProfile () {
 
 }
 
-export default CompleteProfile;
+export default CompleteManagerProfile;

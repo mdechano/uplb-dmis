@@ -87,9 +87,9 @@ exports.edit = (object) =>{
             resident.appliances = object.appliances,
             resident.appliances_information = object.appliances_information,
             resident.emergency_details = object.emergency_details,  
-            // resident.slas = object.slas,
-            // resident.payment_details = object.payment_details,
-            // resident.violation_details = object.violation_details,
+            resident.slas = object.slas,
+            resident.payment_details = object.payment_details,
+            resident.violation_details = object.violation_details,
             resident.picture_id = object.picture_id,
             resident.dorm_id = object.dorm_id
             

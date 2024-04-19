@@ -4,12 +4,12 @@ const { Dorm } = require('../models/index').models;
 exports.create = (object) => {
     // asynchronous
     return new Promise((resolve,reject) => {
-        // create and save new Manager
+        // create and save new Dorm
         const newDorm = new Dorm(object);
         newDorm.save((err, dorm) => {
             // failed: return error
             if(err) { reject(err); }
-            // success: return newly created manager
+            // success: return newly created dorm
             else {
                 resolve(dorm); 
             }
@@ -53,8 +53,10 @@ exports.edit = (object) =>{
             dorm.dorm_name = object.dorm_name,
             dorm.dorm_details = object.dorm_details,
             dorm.dorm_manager_id = object.dorm_manager_id,
+            dorm.dorm_manager_name = object.dorm_manager_name,
             dorm.dorm_manager_email = object.dorm_manager_email,
             dorm.dorm_manager_contact_number = object.dorm_manager_contact_number,
+            dorm.dorm_attendant_id = object.dorm_attendant_id,
             dorm.dorm_attendant_name = object.dorm_attendant_name,
             dorm.dorm_attendant_email = object.dorm_attendant_email,
             dorm.dorm_attendant_contact_number = object.dorm_attendant_contact_number

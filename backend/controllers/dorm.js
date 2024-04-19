@@ -119,3 +119,209 @@ exports.editDorm = async (req, res) => {
     }
 
 }
+
+exports.deleteDorm = async (req, res) => {
+    if (!req.cookies || !req.cookies.authToken) {
+        res.status(401).send({message: "Unauthorized access"});
+        return;
+      }
+      
+      // validate token
+    const token = await utils.verifyToken(req);
+    
+      // error validating token
+    if(!token.status){
+        res.status(token.code).send({ message: token.message });
+        return;
+    }
+
+    const idList = req.body.ids;
+    let deleted = 0, failed = 0;
+    let invalidId = new Array;
+    let validId = new Array;
+
+    try{
+        var reqLength = idList.length;
+    }
+    catch{
+    console.log('Invalid property');
+    res.status(501).send({ message: 'Invalid property'});
+    }
+
+    try{
+        for(let i = 0; i < reqLength; i++){
+            try{
+                mongoose.Types.ObjectId(idList[i]);
+            }
+            catch(err){
+                console.log('Wrong format:', idList[i]);
+                invalidId[failed] = idList[i];
+                failed++;
+                continue;
+            }
+        
+    
+            let dorm = null;
+            try{
+                dorm = await Dorm.getOne({_id: idList[i]});  //call to handler here
+                //console.log(manager);
+                if(dorm){
+                    await Delete.create("resident", dorm);
+                    await UserLog.create(token.user, 'delete', `resident ${dorm._id}`)
+                    await Dorm.delete({_id: idList[i]});
+                    console.log('Successfully deleted dorm with id:', idList[i]);
+                    validId[deleted] = idList[i];
+                    deleted++;
+                }
+                else{
+                    console.log('Invalid dorm id:', idList[i]);
+                    invalidId[failed] = idList[i];
+                    failed++;
+                }
+            }catch(err){
+                console.log(`Error searching for dorm in the DB ${err}` );
+                return res.status(500).send({message: 'Error searching for dorm'});
+            }
+        }
+
+        if(reqLength == failed){
+            res.status(404).send({body: invalidId, message: "ids not found" })
+            return;
+        }else if(failed == 0){
+            res.status(200).send({message: `Successfully deleted ${deleted} dorm`});
+            return;
+        }else{
+            res.status(201).send({body: invalidId ,message: `Successfully deleted ${deleted} dorm/s but failed to delete ${failed} manager/s`});
+            return;
+        }
+        
+    }catch(err){
+        console.log(`Error deleting dorms ${err}`);
+        res.status(500).send({ message: 'Error deleting dorms'});
+        return;
+    }
+
+}
+
+exports.findDorm = async (req, res) => {
+    if (!req.cookies || !req.cookies.authToken) {
+        res.status(401).send({message: "Unauthorized access"});
+        return;
+      }
+      
+      // validate token
+    const token = await utils.verifyToken(req);
+    
+      // error validating token
+    if(!token.status){
+        res.status(token.code).send({ message: token.message });
+        return;
+    }
+
+
+    console.log(`dorm id: ${req.params.id}`)
+    const id = req.params.id;
+    let dorm;
+
+    try{
+        mongoose.Types.ObjectId(id)
+    }
+    catch(err){
+        console.log('Invalid id')
+        return res.status(400).send({message: 'Invalid id'})
+    }
+
+    try{
+        dorm = await Dorm.getOne({_id: id})
+        if(!dorm){
+            console.log("Dorm not found")
+            return res.status(404).send({message: `dorm not found`})
+        }
+        else{
+            //console.log(manager)
+            return res.status(200).send(manager)
+        }
+    }
+    catch(err){
+        console.log(`Error searching for dorm in the DB ${err}` );
+        return res.status(500).send({message: 'Error searching for dorm'})
+    }
+
+}
+
+exports.findAll = async (req, res) => {
+    if (!req.cookies || !req.cookies.authToken) {
+        res.status(401).send({message: "Unauthorized access"});
+        return;
+      }
+      
+      // validate token
+    const token = await utils.verifyToken(req);
+    
+      // error validating token
+    if(!token.status){
+        res.status(token.code).send({ message: token.message });
+        return;
+    }
+
+    let dorm;
+    try{
+        dorm = await Dorm.getAll()
+        if(!dorm){
+            console.log("Dorm database is empty")
+            return res.status(404).send({message: `No dorm in database`})
+        }
+        else{
+            //console.log(manager)
+            return res.status(200).send(dorm)
+        }
+    }
+    catch(err){
+        console.log(`Error searching for dorm in the DB ${err}` );
+        return res.status(500).send({message: 'Error searching for dorm'})
+    }
+}
+
+exports.searchDorm = async (req, res) => {
+    if (!req.cookies || !req.cookies.authToken) {
+        res.status(401).send({message: "Unauthorized access"});
+        return;
+      }
+      
+      // validate token
+    const token = await utils.verifyToken(req);
+    
+      // error validating token
+    if(!token.status){
+        res.status(token.code).send({ message: token.message });
+        return;
+    }
+
+    let search = req.query.name
+    let result = new Array;
+
+    try{
+        if(search == ''){
+            return res.status(200).send({result})
+        }
+        let dorm = await Dorm.getAll()
+        if(!dorm){
+            console.log("Dorm database is empty")
+            return res.status(400).send({message: `No dorm in database`})
+        }
+        else{
+            search = search.toLowerCase()
+            for(let i = 0; i < dorm.length; i++){
+                const dorm_name = dorm[i].dorm_name.toLowerCase()
+                if(dorm_name.match(search)){
+                    result.push(dorm[i])
+                }
+            }
+            return res.status(200).send({result})
+        }
+    }
+    catch(err){
+        console.log(`Error searching for dorm in the DB ${err}` );
+        return res.status(500).send({message: 'Error searching for dorm'})
+    }
+}

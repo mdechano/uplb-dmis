@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
-const Manager = require('../handlers/manager');
+const Attendant = require('../handlers/attendant');
 const UserLog = require('../handlers/userlog');
 const utils = require('./utils');
 const Delete = require('../handlers/deleted');
 
-exports.addManager = async (req, res) => {
+exports.addAttendant = async (req, res) => {
     const body = req.body;
 
     if (!req.cookies || !req.cookies.authToken) {
@@ -21,7 +21,7 @@ exports.addManager = async (req, res) => {
         return;
     }
 
-    const newManager = {
+    const newAttendant = {
         user_id: body.user_id,
         role: body.role,
         dorm: body.dorm,
@@ -36,31 +36,33 @@ exports.addManager = async (req, res) => {
         home_address: body.home_address,
         picture_id: body.picture_id
     };
-    
+
     try{
-        const existing = await Manager.getOne({email: newManager.email})
+        const existing = await Attendant.getOne({email: newAttendant.email})
         if(existing){
-            return res.status(400).send({ message: "Manager already exists" })
+            return res.status(400).send({ message: "Attendant already exists" })
         }
     }
     catch(err){
-        console.log(`Unable to find manager. Error: ${err}`);
-        return res.status(500).send({ message: "Error creating new manager" })
+        console.log(`Unable to find attendant. Error: ${err}`);
+        return res.status(500).send({ message: "Error creating new attendant" })
     }
 
     try {
-        const manager = await Manager.create(newManager);
-        await UserLog.create(token.user, 'create', `manager ${manager._id}`)
-        console.log(`New manager: \n ${manager}`);
-        return res.status(201).send({ message: 'New manager successfully added' });
+        const attendant = await Attendant.create(newAttendant);
+        await UserLog.create(token.user, 'create', `attendant ${attendant._id}`)
+        console.log(`New attendant: \n ${attendant}`);
+        return res.status(201).send({ message: 'New attendant successfully added' });
     }
     catch(err) {
-        console.log(`Unable to create new manager. Error: ${err}`);
-        return res.status(500).send({ message: "Error creating new manager" })
+        console.log(`Unable to create new attendant. Error: ${err}`);
+        return res.status(500).send({ message: "Error creating new attendant" })
     }
+
 }
 
-exports.editManager = async (req, res) => {
+exports.editAttendant = async (req, res) => {
+
     if (!req.cookies || !req.cookies.authToken) {
         res.status(401).send({message: "Unauthorized access"});
         return;
@@ -76,9 +78,9 @@ exports.editManager = async (req, res) => {
     }
 
     const body = req.body;
-    console.log(`manager id: ${req.params.id}`)
+    console.log(`attendant id: ${req.params.id}`)
 
-    const manager = {
+    const attendant = {
         id: req.params.id,
         user_id: body.user_id,
         role: body.role,
@@ -96,7 +98,7 @@ exports.editManager = async (req, res) => {
     };
 
     try{
-        mongoose.Types.ObjectId(manager.id)
+        mongoose.Types.ObjectId(attendant.id)
     }
     catch (err) {
         console.log('Invalid id')
@@ -105,30 +107,31 @@ exports.editManager = async (req, res) => {
 
     var existing = null
     try{
-        existing = await Manager.getOne({_id: manager.id});
+        existing = await Attendant.getOne({_id: attendant.id});
         if (!existing) {
-            console.log("Manager not found")
-            return res.status(404).send({ message: 'Manager not found' });
+            console.log("Attendant not found")
+            return res.status(404).send({ message: 'Attendant not found' });
         }
     }
     catch(err){
-        console.log(`Error looking for manager in DB. Error: ${err}`);
-        return res.status(500).send({ message: 'Error searching for manager in database' })
+        console.log(`Error looking for attendant in DB. Error: ${err}`);
+        return res.status(500).send({ message: 'Error searching for attendant in database' })
     }
 
     try{
-        const edit = await Manager.edit(manager)
-        await UserLog.create(token.user, 'edit', `manager ${edit._id}`)
-        console.log(`Edited manager ${edit}`)
-        return res.status(200).send({ message: 'Manager successfully edited' })
+        const edit = await Attendant.edit(attendant)
+        await UserLog.create(token.user, 'edit', `attendant ${edit._id}`)
+        console.log(`Edited attendant ${edit}`)
+        return res.status(200).send({ message: 'Attendant successfully edited' })
     }
     catch{
-        console.log(`Unable to edit manager. Error: ${err}`);
-        return res.status(500).send({ message: 'Error editing manager' })
+        console.log(`Unable to edit attendant. Error: ${err}`);
+        return res.status(500).send({ message: 'Error editing attendant' })
     }
+
 }
 
-exports.deleteManager = async (req, res) => {
+exports.deleteAttendant = async (req, res) => {
     if (!req.cookies || !req.cookies.authToken) {
         res.status(401).send({message: "Unauthorized access"});
         return;
@@ -170,26 +173,26 @@ exports.deleteManager = async (req, res) => {
             }
         
     
-            let manager = null;
+            let attendant = null;
             try{
-                manager = await Manager.getOne({_id: idList[i]});  //call to handler here
-                //console.log(manager);
-                if(manager){
-                    await Delete.create("manager", manager);
-                    await UserLog.create(token.user, 'delete', `manager ${manager._id}`)
-                    await Manager.delete({_id: idList[i]});
-                    console.log('Successfully deleted manager with id:', idList[i]);
+                attendant = await Attendant.getOne({_id: idList[i]});  //call to handler here
+                //console.log(attendant);
+                if(attendant){
+                    await Delete.create("attendant", attendant);
+                    await UserLog.create(token.user, 'delete', `attendant ${attendant._id}`)
+                    await Attendant.delete({_id: idList[i]});
+                    console.log('Successfully deleted attendant with id:', idList[i]);
                     validId[deleted] = idList[i];
                     deleted++;
                 }
                 else{
-                    console.log('Invalid manager id:', idList[i]);
+                    console.log('Invalid attendant id:', idList[i]);
                     invalidId[failed] = idList[i];
                     failed++;
                 }
             }catch(err){
-                console.log(`Error searching for manager in the DB ${err}` );
-                return res.status(500).send({message: 'Error searching for manager'});
+                console.log(`Error searching for attendant in the DB ${err}` );
+                return res.status(500).send({message: 'Error searching for attendant'});
             }
         }
 
@@ -197,21 +200,21 @@ exports.deleteManager = async (req, res) => {
             res.status(404).send({body: invalidId, message: "ids not found" })
             return;
         }else if(failed == 0){
-            res.status(200).send({message: `Successfully deleted ${deleted} manager`});
+            res.status(200).send({message: `Successfully deleted ${deleted} attendant`});
             return;
         }else{
-            res.status(201).send({body: invalidId ,message: `Successfully deleted ${deleted} manager/s but failed to delete ${failed} manager/s`});
+            res.status(201).send({body: invalidId , message: `Successfully deleted ${deleted} attendant/s but failed to delete ${failed} attendant/s`});
             return;
         }
         
     }catch(err){
-        console.log(`Error deleting managers ${err}`);
-        res.status(500).send({ message: 'Error deleting managers'});
+        console.log(`Error deleting attendants ${err}`);
+        res.status(500).send({ message: 'Error deleting attendants'});
         return;
     }
 }
 
-exports.findManager = async (req, res) => {
+exports.findAttendant = async (req, res) => {
     if (!req.cookies || !req.cookies.authToken) {
         res.status(401).send({message: "Unauthorized access"});
         return;
@@ -227,9 +230,9 @@ exports.findManager = async (req, res) => {
     }
 
 
-    console.log(`manager id: ${req.params.id}`)
+    console.log(`attendant id: ${req.params.id}`)
     const id = req.params.id;
-    let manager;
+    let attendant;
 
     try{
         mongoose.Types.ObjectId(id)
@@ -241,19 +244,19 @@ exports.findManager = async (req, res) => {
 
 
     try{
-        manager = await Manager.getOne({_id: id})
-        if(!manager){
-            console.log("Manager not found")
-            return res.status(404).send({message: `manager not found`})
+        attendant = await Attendant.getOne({_id: id})
+        if(!attendant){
+            console.log("Attendant not found")
+            return res.status(404).send({message: `attendant not found`})
         }
         else{
-            //console.log(manager)
-            return res.status(200).send(manager)
+            //console.log(attendant)
+            return res.status(200).send(attendant)
         }
     }
     catch(err){
-        console.log(`Error searching for manager in the DB ${err}` );
-        return res.status(500).send({message: 'Error searching for manager'})
+        console.log(`Error searching for attendant in the DB ${err}` );
+        return res.status(500).send({message: 'Error searching for attendant'})
     }
 }
 
@@ -272,25 +275,25 @@ exports.findAll = async (req, res) => {
         return;
     }
 
-    let manager;
+    let attendant;
     try{
-        manager = await Manager.getAll()
-        if(!manager){
-            console.log("Manager database is empty")
-            return res.status(404).send({message: `No manager in database`})
+        attendant = await Attendant.getAll()
+        if(!attendant){
+            console.log("Attendant database is empty")
+            return res.status(404).send({message: `No attendant in database`})
         }
         else{
-            //console.log(manager)
-            return res.status(200).send(manager)
+            //console.log(attendant)
+            return res.status(200).send(attendant)
         }
     }
     catch(err){
-        console.log(`Error searching for manager in the DB ${err}` );
-        return res.status(500).send({message: 'Error searching for manager'})
+        console.log(`Error searching for attendant in the DB ${err}` );
+        return res.status(500).send({message: 'Error searching for attendant'})
     }
-} 
+}
 
-exports.searchManager = async (req, res) => {
+exports.searchAttendant = async (req, res) => {
 
     if (!req.cookies || !req.cookies.authToken) {
         res.status(401).send({message: "Unauthorized access"});
@@ -313,26 +316,27 @@ exports.searchManager = async (req, res) => {
         if(search == ''){
             return res.status(200).send({result})
         }
-        let manager = await Manager.getAll()
-        if(!manager){
-            console.log("Manager database is empty")
-            return res.status(400).send({message: `No manager in database`})
+        let attendant = await Attendant.getAll()
+        if(!attendant){
+            console.log("Attendant database is empty")
+            return res.status(400).send({message: `No attendant in database`})
         }
         else{
             search = search.toLowerCase()
-            for(let i = 0; i < manager.length; i++){
-                const fname = manager[i].first_name.toLowerCase()
-                const mname = manager[i].middle_name.toLowerCase()
-                const lname = manager[i].last_name.toLowerCase()
+            for(let i = 0; i < attendant.length; i++){
+                const fname = attendant[i].first_name.toLowerCase()
+                const mname = attendant[i].middle_name.toLowerCase()
+                const lname = attendant[i].last_name.toLowerCase()
                 if(fname.match(search) || lname.match(search) || mname.match(search)){
-                    result.push(manager[i])
+                    result.push(attendant[i])
                 }
             }
             return res.status(200).send({result})
         }
     }
     catch(err){
-        console.log(`Error searching for manager in the DB ${err}` );
-        return res.status(500).send({message: 'Error searching for manager'})
+        console.log(`Error searching for attendant in the DB ${err}` );
+        return res.status(500).send({message: 'Error searching for attendant'})
     }
-} 
+
+}

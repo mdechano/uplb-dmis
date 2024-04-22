@@ -5,7 +5,6 @@ import '../css/Dashboard.css'
 import NavBar from '../pages/NavBar';
 import useStore from '../utilities/authHook';
 import {apiUrl} from '../utilities/apiUrl';
-// import { changeRoleandDorm } from '../../../../backend/controllers/user';
 
 const Dashboard = () => {
 
@@ -14,7 +13,6 @@ const Dashboard = () => {
     const [role, setInitialRole] = useState("");
     const [userRole, setNewRole] = useState("");
     const [userDorm, setNewDorm] = useState("");
-    // const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
 
     useEffect(()=>{
         if(isAuthenticated === false){
@@ -42,9 +40,10 @@ const Dashboard = () => {
         })
         .then(response => {return response.json()})
         .then(
-
-            setTimeout(() => window.location.reload(), 450)
-            )
+            setTimeout(function(){
+                window.location.reload();
+             }, 1000)
+        )
     }
 
     const handleChange=()=>{
@@ -54,7 +53,6 @@ const Dashboard = () => {
         setNewDorm(document.getElementById("user_dorm").value);
     }
 
-    // console.log(user._id);
 
    
     return (
@@ -64,27 +62,36 @@ const Dashboard = () => {
             <div className='dashboard-notice'>
                 
                 {user ?
-                <p className='greet'><b>Greetings, {user.first_name}!</b></p>:
+                <div>
+                    <p className='greet'>Greetings, {user.first_name}!</p>
+                    <br>
+                    </br>
+                    <p className='paragraph'>Welcome to the UPLB Dormitory Management Information System.</p>  
+                </div>
+                :
                 ""
                 }
                 
-                <br></br>
-                <br></br>
 
                 { role === 'user' ?
                     <form className='complete-sign-up'>
-                        <h3>Let's get you set up</h3>
+                        <p>First, let's get you set up.</p>
+                        <br></br>
+                        <br></br>
                         <p>Please choose a role.</p>
+                        <br></br>
                         <div className='custom-select'>
                         <select className='user-role' id='user_role' value={userRole} onChange={handleChange}>
                             <option value=""disabled defaultValue hidden>Choose Role</option>
                             <option value='dorm manager'>Dorm Manager</option>
+                            <option value='dorm attendant'>Dorm Attendant</option>
                             <option value='resident'>Resident</option>
                         </select>   
                         </div>
                         
                         <br></br>
                         <p>Choose your assigned dormitory.</p>
+                        <br></br>
                         <div class="custom-select">
                         <select className='user-dorm' id="user_dorm" value={userDorm} onChange={handleChange}>
                             <option value="Women's Residence Hall">Women's Residence Hall</option>
@@ -100,27 +107,35 @@ const Dashboard = () => {
                         </div>
 
                         <br></br>
-                        <button className='complete-sign-up' onClick={()=> changeRoleandDorm(user)}>Complete Sign Up</button>
+                        <button className='complete-sign-up' onClick={()=> changeRoleandDorm(user)}>Confirm Information</button>
                     </form>
                     :
                     ""
                 }
 
+                <br></br>
+
                 { role === 'resident' ?
-                <p>If you haven't completed your profile, please head to this <a><Link to='/complete-resident-profile'>link</Link></a>.</p>
+                <p className='paragraph'>To complete your profile, please navigate to the Student Information Sheet on your menu.</p>
                 :
                 ""
                 }
 
                 { role === 'dorm manager' ?
-                <p>If you haven't completed your profile, please head to this <a><Link to='/complete-manager-profile'>link</Link></a>.</p>
+                <p className='paragraph'>To complete your profile, please navigate to Dorm Manager Profile on your menu.</p>
+                :
+                ""
+                }
+
+                { role === 'dorm attendant' ?
+                <p className='paragraph'>To complete your profile, please navigate to the Dorm Attendant Profile on your menu.</p>
                 :
                 ""
                 }
                 
             </div>
 
-            {/* <p>Welcome to  UPLB DMIS.  We are pleased to welcome you to ___ Resident Hall. You are required to fill up or update the student  information sheet as mandated on or before your check in date. You may also generate your statements of account in the SOA section. Payment receipts must be uploaded in the Receipt section. Please see said sections under your profile icon.<br></br><br></br>All information are subject to viewing and checking of the dorm manager and dorm assistants.</p> */}
+            
 
         </div>
     )

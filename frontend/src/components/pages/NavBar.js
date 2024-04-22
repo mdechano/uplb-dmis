@@ -28,6 +28,11 @@ function NavBar () {
             
         })
         .then(navigate("/"))
+        .then(
+            setTimeout(function(){
+                window.location.reload();
+             }, 1000)
+        )
     }
 
     useEffect(()=> {

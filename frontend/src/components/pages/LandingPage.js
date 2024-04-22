@@ -100,7 +100,7 @@ function LandingPage () {
                     {/* <div className='blank-space'></div>       */}
                 </div>
                 <div className='landing-right'>
-                    hello
+                    hello dito ko lalagay yung slides ng pics of dorms hahaha
                 </div>
             </div>
         </div>

@@ -110,7 +110,7 @@ function StudentInfoSheetFamily () {
             <div className='upper-div'>
                     <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
                     <p className='page-title'>STUDENT INFORMATION SHEET</p>
-                    
+                    <button >EDIT PROFILE</button>
                 </div>
                 <div className='body-div'>
                     <div className='left-div'>
@@ -136,36 +136,10 @@ function StudentInfoSheetFamily () {
                     </div>
                     <div className='right-div'>
                         <form className='form-div'>
-                            <button className='save-button' onClick={sendData}>SAVE</button>
                             <table>
                                 <h3 className='cell-title-family'>Parents' Status</h3>
                                 <br></br>
-                                <tr>
-                                        <label class="container"> 
-                                        <input type="radio" id="still_married" name="radio" />
-                                        <span class="checkmark"></span>
-                                        Still Married
-                                        </label>
-                                    <br></br>
-                                        <label class="container"> 
-                                        <input type="radio" id="separated" name="radio" />
-                                        <span class="checkmark"></span>
-                                        Separated
-                                        </label>
-                                    <br></br>
-                                        <label class="container"> 
-                                        <input type="radio" id="remarried" name="radio" />
-                                        <span class="checkmark"></span>
-                                        Remarried
-                                        </label>
-                                    <br></br>
-                                        <label class="container"> 
-                                        <input type="radio" id="single_parent" name="radio" />
-                                        <span class="checkmark"></span>
-                                        Single Parent
-                                        </label>
-                                    
-                                </tr>
+                                <td></td>
                                 <br></br>
                                 <br></br>
                                 <h3 className='cell-title-family'>Father's Information</h3>
@@ -175,9 +149,9 @@ function StudentInfoSheetFamily () {
                                     <td className='cell-title'>Monthly Income</td>
                                 </tr>
                                 <tr>
-                                    <td className='cell-input'><input type="text" id="fathername" name="fathername"></input></td>
-                                    <td className='cell-input'><input type="text" id="fatheroccupation" name="fatheroccupation"></input></td>
-                                    <td className='cell-input'><input type="text" id="fatherincome" name="fatherincome"></input></td>
+                                    <td className='cell-input'></td>
+                                    <td className='cell-input'></td>
+                                    <td className='cell-input'></td>
                                 </tr>
 
                                 <tr>
@@ -186,9 +160,9 @@ function StudentInfoSheetFamily () {
                                     <td className='cell-title'>Cellphone/Telephone no.</td>
                                 </tr>
                                 <tr>
-                                    <td className='cell-input'><input type="text" id="fatheremployer" name="fatheremployer"></input></td>
-                                    <td className='cell-input'><input type="text" id="fatheroffice" name="fatheroffice"></input></td>
-                                    <td className='cell-input'><input type="text" id="fatherphone" name="fatherphone"></input></td>
+                                    <td className='cell-input'></td>
+                                    <td className='cell-input'></td>
+                                    <td className='cell-input'></td>
                                 </tr>
                                 <br></br>
                                 <br></br>
@@ -199,9 +173,9 @@ function StudentInfoSheetFamily () {
                                     <td className='cell-title'>Monthly Income</td>
                                 </tr>
                                 <tr>
-                                    <td className='cell-input'><input type="text" id="mothername" name="mothername"></input></td>
-                                    <td className='cell-input'><input type="text" id="motheroccupation" name="motheroccupation"></input></td>
-                                    <td className='cell-input'><input type="text" id="motherincome" name="motherincome"></input></td>
+                                    <td className='cell-input'></td>
+                                    <td className='cell-input'></td>
+                                    <td className='cell-input'></td>
                                 </tr>
 
                                 <tr>
@@ -210,9 +184,9 @@ function StudentInfoSheetFamily () {
                                     <td className='cell-title'>Cellphone/Telephone no.</td>
                                 </tr>
                                 <tr>
-                                    <td className='cell-input'><input type="text" id="motheremployer" name="motheremployer"></input></td>
-                                    <td className='cell-input'><input type="text" id="motheroffice" name="motheroffice"></input></td>
-                                    <td className='cell-input'><input type="text" id="motherphone" name="motherphone"></input></td>
+                                    <td className='cell-input'></td>
+                                    <td className='cell-input'></td>
+                                    <td className='cell-input'></td>
                                 </tr>
                                 <br></br>
                                 <br></br>
@@ -223,9 +197,9 @@ function StudentInfoSheetFamily () {
                                     <td className='cell-title'>Birth Order</td>
                                 </tr>
                                 <tr>
-                                    <td className='cell-input'><input type="text" id="numberbrothers" name="numberbrothers"></input></td>
-                                    <td className='cell-input'><input type="text" id="numbersisters" name="numbersisters"></input></td>
-                                    <td className='cell-input'><input type="text" id="birthorder" name="birthorder"></input></td>
+                                    <td className='cell-input'></td>
+                                    <td className='cell-input'></td>
+                                    <td className='cell-input'></td>
                                 </tr>
 
                             </table>

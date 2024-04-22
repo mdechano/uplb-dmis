@@ -1,8 +1,12 @@
-import {Link} from 'react-router-dom';
+import {React, useState, useEffect} from 'react';
+import {Link} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom';
 import '../css/GenerateSOA.css'
 import NavBar from '../pages/NavBar';
 
 function GenerateSOA () {
+
+    const navigate = useNavigate();
 
     return (
         <div>

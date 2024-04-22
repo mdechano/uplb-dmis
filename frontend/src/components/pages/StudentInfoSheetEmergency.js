@@ -1,8 +1,12 @@
+import {React, useState, useEffect} from 'react';
 import {Link} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom';
 import '../css/StudentInfoSheetEmergency.css'
 import NavBar from './NavBar';
 
 function StudentInfoSheetEmergency () {
+
+    const navigate = useNavigate();
 
     return (
         <div>
@@ -47,14 +51,14 @@ function StudentInfoSheetEmergency () {
                                     <th className='cell-title'>Cellphone/Telephone No.</th>
                                 </tr>
                                 <tr className='table-form-tr'>
-                                    <td className='cell-input'><input type = "text" id = "emergency-contact-name-1" ></input></td>
-                                    <td className='cell-input'><input type = "text" id = "emergency-contact-address-1" ></input></td>
-                                    <td className='cell-input'><input type = "text" id = "emergency-contact-phone-1" ></input></td>
+                                    <td className='cell-input'></td>
+                                    <td className='cell-input'></td>
+                                    <td className='cell-input'></td>
                                 </tr>
                                 <tr className='table-form-tr'>
-                                    <td className='cell-input'><input type = "text" id = "emergency-contact-name-2" ></input></td>
-                                    <td className='cell-input'><input type = "text" id = "emergency-contact-address-2" ></input></td>
-                                    <td className='cell-input'><input type = "text" id = "emergency-contact-phone-2" ></input></td>
+                                    <td className='cell-input'></td>
+                                    <td className='cell-input'></td>
+                                    <td className='cell-input'></td>
                                 </tr>
                             </table>
                         </form>

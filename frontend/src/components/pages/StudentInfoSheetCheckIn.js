@@ -1,8 +1,12 @@
+import {React, useState, useEffect} from 'react';
 import {Link} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom';
 import '../css/StudentInfoSheetCheckIn.css'
 import NavBar from './NavBar';
 
 function StudentInfoSheetCheckIn () {
+
+    const navigate = useNavigate();
 
     return (
         <div>
@@ -44,33 +48,33 @@ function StudentInfoSheetCheckIn () {
                                     <tr>
                                         <td className='cell-title'><th>DATE CHECK IN &nbsp;&nbsp;</th></td>
                                         <td>1st Sem &nbsp;&nbsp;</td>
-                                        <td><input type="text" id="first-sem-checkin" name="first-sem-checkin"></input></td>
+                                        <td></td>
                                         <td>&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;</td>
-                                        <td><input type="text" id="second-sem-checkin" name="second-sem-checkin"></input></td>
+                                        <td></td>
                                     </tr>
                                     
                                     <tr>
                                         <td className='cell-title'><th>DATE CHECK OUT &nbsp;&nbsp;</th></td>
                                         <td>1st Sem &nbsp;&nbsp;</td>
-                                        <td><input type="text" id="first-sem-checkout" name="first-sem-checkout"></input></td>
+                                        <td></td>
                                         <td>&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;</td>
-                                        <td><input type="text" id="second-sem-checkout" name="second-sem-checkout"></input></td>
+                                        <td></td>
                                     </tr>
 
                                     <tr>
                                         <td className='cell-title'><th>FORM 5</th></td>
                                         <td>1st Sem &nbsp;&nbsp;</td>
-                                        <td><input type="text" id="first-sem-form5" name="first-sem-form5"></input></td>
+                                        <td></td>
                                         <td>&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;</td>
-                                        <td><input type="text" id="second-sem-form5" name="second-sem-form5"></input></td>
+                                        <td></td>
                                     </tr>
 
                                     <tr>
                                         <td className='cell-title'><th>ROOM NUMBER</th></td>
                                         <td>1st Sem &nbsp;&nbsp;</td>
-                                        <td><input type="text" id="first-sem-room-number" name="room-number-1"></input></td>
+                                        <td></td>
                                         <td>&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;</td>
-                                        <td><input type="text" id="second-sem-room-number" name="room-number-2"></input></td>
+                                        <td></td>
                                     </tr>
 
                                 </div>
@@ -80,104 +84,30 @@ function StudentInfoSheetCheckIn () {
                                         <h3>APPLIANCES</h3>
                                         Indicate number of devices<br></br>
                                         <tr>
-                                            <td><input type='number' id='laptop' name='laptop'></input><br></br></td>
+                                            <td><br></br></td>
                                             <td>Laptop</td>
                                         </tr>
                                         <tr>
-                                            <td><input type='number' id='gadgets' name='gadgets'></input><br></br></td>
+                                            <td><br></br></td>
                                             <td>Gadgets (cellphone, iPad, tablet)</td>
                                         </tr>
                                         <tr>
-                                            <td><input type='number' id='printer' name='printer'></input><br></br></td>
+                                            <td><br></br></td>
                                             <td>Printer</td>
                                         </tr>
                                         <tr>
-                                            <td><input type='number' id='rice-cooker' name='rice-cooker'></input><br></br></td>
+                                            <td><br></br></td>
                                             <td>Rice Cooker</td>
                                         </tr>
                                     </div>
                                     <div className='appliances-middle'>
                                         <h3>Electric Fan</h3>
-                                        <tr>
-                                            <label class="container"> 
-                                            <input type="radio" name="radio" />
-                                            <span class="checkmark"></span>
-                                            8 inches <br></br>
-                                            </label>
-                                        </tr>
-                                        <tr>
-                                            <label class="container"> 
-                                            <input type="radio" name="radio" />
-                                            <span class="checkmark"></span>
-                                            10 inches <br></br>
-                                            </label>
-                                        </tr>
-                                        <tr>
-                                            <label class="container"> 
-                                            <input type="radio" name="radio" />
-                                            <span class="checkmark"></span>
-                                            12 inches <br></br>
-                                            </label>
-                                        </tr>
-                                        <tr>
-                                            <label class="container"> 
-                                            <input type="radio" name="radio" />
-                                            <span class="checkmark"></span>
-                                            14 inches <br></br>
-                                            </label>
-                                        </tr>
-                                        <tr>
-                                            <label class="container"> 
-                                            <input type="radio" name="radio" />
-                                            <span class="checkmark"></span>
-                                            16 inches <br></br>
-                                            </label>
-                                        </tr>
-                                        <tr>
-                                            <label class="container"> 
-                                            <input type="radio" name="radio" />
-                                            <span class="checkmark"></span>
-                                            18 inches <br></br>
-                                            </label>
-                                        </tr>
-                                        <tr>
-                                            <label class="container"> 
-                                            <input type="radio" name="radio" />
-                                            <span class="checkmark"></span>
-                                            20 inches <br></br>
-                                            </label>
-                                        </tr>
-                                        <tr>
-                                            <label class="container"> 
-                                            <input type="radio" name="radio" />
-                                            <span class="checkmark"></span>
-                                            I do not own an electric fan. <br></br>
-                                            </label>
-                                        </tr>
+                                        <td></td>
+                                        
                                     </div>
                                     <div className='appliances-right'>
                                         <h3>Refrigerator</h3>
-                                        <tr>
-                                            <label class="container"> 
-                                            <input type="radio" name="radio" />
-                                            <span class="checkmark"></span>
-                                            4 cu.ft. <br></br>
-                                            </label>
-                                        </tr>
-                                        <tr>
-                                            <label class="container"> 
-                                            <input type="radio" name="radio" />
-                                            <span class="checkmark"></span>
-                                            5 cu.ft. <br></br>
-                                            </label>
-                                        </tr>
-                                        <tr>
-                                            <label class="container"> 
-                                            <input type="radio" name="radio" />
-                                            <span class="checkmark"></span>
-                                            I do not own a fridge. <br></br>
-                                            </label>
-                                        </tr>
+                                        <td></td>
                                     </div>
                                     
                                 </div>
@@ -196,25 +126,25 @@ function StudentInfoSheetCheckIn () {
                                         <th className='cell-title'>Date Returned in 2nd Sem</th>
                                     </tr>
                                     <tr className='table-form-tr'>
-                                        <td className='cell-input'><input type = "text" id = "appliance-1"></input></td>
-                                        <td className='cell-input'><input type = "text" id = "date-installed-1st-sem-1" ></input></td>
-                                        <td className='cell-input'><input type = "text" id = "date-installed-2nd-sem-1" ></input></td>
-                                        <td className='cell-input'><input type = "text" id = "date-returned-1st-sem-1" ></input></td>
-                                        <td className='cell-input'><input type = "text" id = "date-returned-2nd-sem-1" ></input></td>
+                                        <td className='cell-input'></td>
+                                        <td className='cell-input'></td>
+                                        <td className='cell-input'></td>
+                                        <td className='cell-input'></td>
+                                        <td className='cell-input'></td>
                                     </tr>
                                     <tr className='table-form-tr'>
-                                        <td className='cell-input'><input type = "text" id = "appliance-2" ></input></td>
-                                        <td className='cell-input'><input type = "text" id = "date-installed-1st-sem-2" ></input></td>
-                                        <td className='cell-input'><input type = "text" id = "date-installed-2nd-sem-2" ></input></td>
-                                        <td className='cell-input'><input type = "text" id = "date-returned-1st-sem-2" ></input></td>
-                                        <td className='cell-input'><input type = "text" id = "date-returned-2nd-sem-2" ></input></td>
+                                        <td className='cell-input'></td>
+                                        <td className='cell-input'></td>
+                                        <td className='cell-input'></td>
+                                        <td className='cell-input'></td>
+                                        <td className='cell-input'></td>
                                     </tr>
                                     <tr className='table-form-tr'>
-                                        <td className='cell-input'><input type = "text" id = "appliance-3" ></input></td>
-                                        <td className='cell-input'><input type = "text" id = "date-installed-1st-sem-3" ></input></td>
-                                        <td className='cell-input'><input type = "text" id = "date-installed-2nd-sem-3" ></input></td>
-                                        <td className='cell-input'><input type = "text" id = "date-returned-1st-sem-3" ></input></td>
-                                        <td className='cell-input'><input type = "text" id = "date-returned-2nd-sem-3" ></input></td>
+                                        <td className='cell-input'></td>
+                                        <td className='cell-input'></td>
+                                        <td className='cell-input'></td>
+                                        <td className='cell-input'></td>
+                                        <td className='cell-input'></td>
                                     </tr>
                                 </table>
                            </div>

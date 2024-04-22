@@ -1,8 +1,12 @@
+import {React, useState, useEffect} from 'react';
 import {Link} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom';
 import '../css/UploadReceipt.css'
 import NavBar from '../pages/NavBar';
 
 function UploadReceipt () {
+
+    const navigate = useNavigate();
 
     return (
         <div>

@@ -7,11 +7,34 @@
     margin-left: 15%;
     margin-right: 15%;
     padding: 50px;
-    padding-left: 10%;
-    padding-right: 10%;
+    padding-left: 5%;
+    padding-right: 5%;
     font-size: 20px;
+    font-family: "Montserrat", sans-serif;
 }
 
 .greet {
-    font-size: 25px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.paragraph {
+    font-size: 15px;
+}
+
+.complete-sign-up {
+    border: none;
+}
+
+select {
+    width: 100%;
+  padding: 16px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #f5f5f5
+}
+
+.complete-profile-link {
+    color: blue;
+    font-weight: bold;
 }

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const utils = require('./utils');
+const util = require('./utils');
 
-const ManagerSchema = new mongoose.Schema(
+const AttendantSchema = new mongoose.Schema(
     {
         user_id: {type: String, required: true},
         role: {type: String, required: true},
@@ -18,8 +18,8 @@ const ManagerSchema = new mongoose.Schema(
         picture_id: {type: String}
     }
 )
- 
-ManagerSchema.pre("save", function(next){
+
+AttendantSchema.pre("save", function(next){
     const manager = this;
 
     manager.first_name = utils.toTitleCase(manager.first_name);
@@ -28,4 +28,4 @@ ManagerSchema.pre("save", function(next){
     return next();
 });
 
-module.exports = mongoose.model("Manager", ManagerSchema);
+module.exports = mongoose.model("Attendant", AttendantSchema);

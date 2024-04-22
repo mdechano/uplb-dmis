@@ -32,8 +32,8 @@ function StudentInfoSheetPersonal () {
                 <div className='upper-div'>
                     <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
                     <p className='page-title'>STUDENT INFORMATION SHEET</p>
-                    <button onClick={() => navigate("/complete-resident-profile")}>COMPLETE PROFILE</button>
-                    <button>EDIT PROFILE</button>
+                    <button className='complete-profile-button' onClick={() => navigate("/complete-resident-profile")}>COMPLETE PROFILE</button>
+                    <button className='edit-profile-button'>EDIT PROFILE</button>
                     {/* <button className='save-button' onClick = {sendData}>SAVE</button> */}
                 </div>
                 <div className='body-div'>

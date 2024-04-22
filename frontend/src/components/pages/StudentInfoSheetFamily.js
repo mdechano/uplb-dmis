@@ -97,9 +97,6 @@ function StudentInfoSheetFamily () {
         if(isAuthenticated === false){
             navigate("/")
         } 
-        // else {
-        //     fetchData()
-        // }
     },[]);
 
     return (

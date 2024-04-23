@@ -31,7 +31,7 @@ const ResidentSchema = new mongoose.Schema(
         scholarships: {type: String},
         monthly_stipend: {type: String},
         parents_status: {type: String},
-        father_detials: {type: Object},
+        father_details: {type: Object},
         mother_details: {type: Object},
         number_of_brothers: {type: String},
         number_of_sisters: {type: String},

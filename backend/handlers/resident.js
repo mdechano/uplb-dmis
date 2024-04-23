@@ -78,7 +78,7 @@ exports.edit = (object) =>{
             resident.scholarships = object.scholarships,
             resident.monthly_stipend = object.monthly_stipend
             resident.parents_status = object.parents_status,
-            resident.father_detials = object.father_details,
+            resident.father_details = object.father_details,
             resident.mother_details = object.mother_details,
             resident.number_of_brothers = object.number_of_brothers,
             resident.number_of_sisters = object.number_of_sisters,

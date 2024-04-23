@@ -95,9 +95,9 @@ exports.checkifloggedin = async (req, res) => {
     //if success, send first name, last name, and email
     const user = tokenDetails.user
     // console.log(user);
-    let {_id, email, first_name, last_name, picture, role} = user
+    let {_id, email, first_name, last_name, picture, role, dorm} = user
 
-    return res.status(tokenDetails.code).send({User: {_id, email, first_name, last_name, picture, role}, status: true})
+    return res.status(tokenDetails.code).send({User: {_id, email, first_name, last_name, picture, role, dorm}, status: true})
     
 }
 

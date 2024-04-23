@@ -73,9 +73,26 @@ function NavBar () {
                         { role === 'dorm manager' ?
                         <div className='dropdown-content'>
                             <a><Link>Resident List</Link></a>
-                            <a><Link>Manager Profile</Link></a>
+                            <a><Link>Dorm Manager Profile</Link></a>
                             <a><Link>Dorm Assistants</Link></a>
                             <a><Link to='/dorm-information'>Dorm Information</Link></a>
+                        </div>
+                        : "" }
+                        { role === 'dorm attendant' ?
+                        <div className='dropdown-content'>
+                        <a><Link>Resident List</Link></a>
+                        <a><Link>Dorm Attendant Profile</Link></a>
+                        <a><Link>Dorm Assistants</Link></a>
+                        <a><Link to='/dorm-information'>Dorm Information</Link></a>
+                        </div>
+                        : "" }
+                        { role === 'dorm assistant' ?
+                        <div className='dropdown-content'>
+                        <a><Link>Resident List</Link></a>
+                        <a><Link to='/student-info-sheet-personal'>Student Information Sheet</Link></a>
+                        <a><Link to='/generate-soa'>Generate SOA</Link></a>
+                        <a><Link to='/upload-receipt'>Upload Receipt</Link></a>
+                        <a><Link to='/dorm-information'>Dorm Information</Link></a>
                         </div>
                         : "" }
                     </div>

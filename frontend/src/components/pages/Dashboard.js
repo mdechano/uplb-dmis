@@ -72,10 +72,13 @@ const Dashboard = () => {
                 ""
                 }
                 
+            </div>
 
-                { role === 'user' ?
+            <div className='sign-up-board'>
+
+            { role === 'user' ?
                     <form className='complete-sign-up'>
-                        <p>First, let's get you set up.</p>
+                        <p className='set-up'><b>First, let's get you set up.</b></p>
                         <br></br>
                         <br></br>
                         <p>Please choose a role.</p>
@@ -107,7 +110,7 @@ const Dashboard = () => {
                         </div>
 
                         <br></br>
-                        <button className='complete-sign-up' onClick={()=> changeRoleandDorm(user)}>Confirm Information</button>
+                        <button className='confirm-information' onClick={()=> changeRoleandDorm(user)}>Confirm Information</button>
                     </form>
                     :
                     ""
@@ -132,7 +135,7 @@ const Dashboard = () => {
                 :
                 ""
                 }
-                
+
             </div>
 
             

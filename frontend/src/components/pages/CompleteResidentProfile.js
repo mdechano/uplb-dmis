@@ -3,7 +3,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import {apiUrl} from '../utilities/apiUrl';
 import useStore from '../utilities/authHook';
 import axios from "axios";
-import '../css/StudentInfoSheetPersonal.css';
+import '../css/CompleteResidentProfile.css'
 import NavBar from './NavBar';
 
 function CompleteResidentProfile () {
@@ -36,9 +36,13 @@ function CompleteResidentProfile () {
     }
 
     const sendData = (e) => {
-        e.prevenDefault();
+        e.preventDefault();
         var tempEmail = document.getElementById("email").value;
         var notuniqueEmail = checkEmailExists(tempEmail); // boolean
+
+        const user_id = user._id;
+        const dorm = user.dorm;
+        const role = user.role;
 
         const father_details = {
             father_name: document.getElementById("fathername").value,
@@ -145,7 +149,7 @@ function CompleteResidentProfile () {
         const emergency_details = {
             emergency_contact_1 : {
                 name: document.getElementById("emergency-contact-name-1").value,
-                address: document.getElementById("emergency-address-name-1").value,
+                address: document.getElementById("emergency-contact-address-1").value,
                 phone: document.getElementById("emergency-contact-phone-1").value,
             },
             emergency_contact_2 : {
@@ -166,9 +170,9 @@ function CompleteResidentProfile () {
                     'Content-Type':'application/json'
                 },
                 body: JSON.stringify({
-                    user_id: user._id, 
-                    dorm: user.dorm,
-                    role: user.role,
+                    user_id: user_id, 
+                    dorm: dorm,
+                    role: role,
                     first_name: document.getElementById("first_name").value,
                     last_name: document.getElementById("last_name").value,
                     middle_name: document.getElementById("middle_name").value,
@@ -211,9 +215,17 @@ function CompleteResidentProfile () {
                 })
             })
             .then(response => {return response.json()})
+            .then(
+                alert("Successfully completed profile."),
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000)
+            )
         } else {
             alert("Inputted email address already exists!");
         }
+
+        
     }
 
     useEffect(()=>{
@@ -247,19 +259,12 @@ function CompleteResidentProfile () {
                                 <p>ROLE</p>
                             </div>
                         </div>
-                        {/* <div className='nav-div'>
-                            <button className='stud-info-sheet-nav-personal'><Link to='/student-info-sheet-personal'><a className='info-sheet-btn'>PERSONAL</a></Link></button>
-                            <button className='stud-info-sheet-nav'><Link to='/student-info-sheet-family'><a className='info-sheet-btn'>FAMILY</a></Link></button>
-                            <button className='stud-info-sheet-nav'><Link to='/student-info-sheet-check-in'><a className='info-sheet-btn'>CHECK IN</a></Link></button>
-                            <button className='stud-info-sheet-nav'><Link to='/student-info-sheet-emergency'><a className='info-sheet-btn'>EMERGENCY</a></Link></button>
-                            <button className='stud-info-sheet-nav'><Link to='/student-info-sheet-payment'><a className='info-sheet-btn'>PAYMENT</a></Link></button>
-                            <button className='stud-info-sheet-nav'><Link to='/student-info-sheet-violation'><a className='info-sheet-btn'>VIOLATION</a></Link></button>
-                        </div> */}
                     </div>
                     <div className="right-div">
                         <form className="form-div">
                             <div className="form-div-personal">
-                                <h2>PERSONAL STUFF</h2>
+                                <h3>PERSONAL INFORMATION</h3>
+                                <br></br>
                                 <table>
                                     <tr className='table-row'>
                                         <td className='cell-title'>First Name</td>
@@ -268,9 +273,9 @@ function CompleteResidentProfile () {
                                         <td className='cell-title'>Suffix</td>
                                     </tr>
                                     <tr className='table-row'>
-                                        <td className='cell-input'><input type="text" id="first_name" name="firstname"></input></td>
-                                        <td className='cell-input'><input type="text" id="middle_name" name="middlename"></input></td>
-                                        <td className='cell-input'><input type="text" id="last_name" name="lastname"></input></td>
+                                        <td className='cell-input'><input type="text" id="first_name" name="firstname" required></input></td>
+                                        <td className='cell-input'><input type="text" id="middle_name" name="middlename" required></input></td>
+                                        <td className='cell-input'><input type="text" id="last_name" name="lastname" required></input></td>
                                         <td className='cell-input'><input type="text" id="suffix" name="suffix"></input></td>
                                         
                                     </tr>
@@ -290,9 +295,9 @@ function CompleteResidentProfile () {
                                                 <option value="intersex">Intersex</option>
                                             </select>
                                         </td>
-                                        <td className='cell-input'><input type="text" id="student_no" name="studentnum"></input></td>
-                                        <td className='cell-input'><input type="text" id="civil_status" name="civilstatus"></input></td>
-                                        <td className='cell-input'><input type='date' id='birthday' name='birthday'></input></td>
+                                        <td className='cell-input'><input type="text" id="student_no" name="studentnum" required></input></td>
+                                        <td className='cell-input'><input type="text" id="civil_status" name="civilstatus" required></input></td>
+                                        <td className='cell-input'><input type='date' id='birthday' name='birthday' required></input></td>
                                         
                                     </tr>
                                     <tr className='table-row'>
@@ -302,9 +307,9 @@ function CompleteResidentProfile () {
                                         <td className='cell-title'>Region</td>
                                     </tr>
                                     <tr className='table-row'>
-                                        <td className='cell-input'><input type='text' id='contact_number' name='contactnumber'></input></td>
-                                        <td className='cell-input'><input type='text' id='email' name='email'></input></td>
-                                        <td className='cell-input'><input type='text' id='home_address' name='address'></input></td>
+                                        <td className='cell-input'><input type='text' id='contact_number' name='contactnumber' required></input></td>
+                                        <td className='cell-input'><input type='text' id='email' name='email' required></input></td>
+                                        <td className='cell-input'><input type='text' id='home_address' name='address' required></input></td>
                                         <td className='cell-input'>
                                             <select id='region' name='region'>
                                                 <option>Select Region</option>
@@ -339,7 +344,7 @@ function CompleteResidentProfile () {
                                     </tr>
                                     <tr className='table-row'>
                                         <td className='cell-input'>
-                                            <select id='college' name='college'>
+                                            <select id='college' name='college' required>
                                                 <option>Select College</option>
                                                 <option value="CAS">CAS</option>
                                                 <option value="CAFS">CAFS</option>
@@ -349,11 +354,12 @@ function CompleteResidentProfile () {
                                                 <option value="CHE">CHE</option>
                                                 <option value="CFNR">CFNR</option>
                                                 <option value="CEM">CEM</option>
+                                                <option value="GS">Graduate School</option>
                                             </select>
                                         </td>
-                                        <td className='cell-input'><input type='text' id='degree_program' name='degprog'></input></td>
-                                        <td className='cell-input'><input type='text' id='last_school_attended' name='last-school'></input></td>
-                                        <td className='cell-input'><input type='text' id='classification' name='classification'></input></td>
+                                        <td className='cell-input'><input type='text' id='degree_program' name='degprog' required></input></td>
+                                        <td className='cell-input'><input type='text' id='last_school_attended' name='last-school' required></input></td>
+                                        <td className='cell-input'><input type='text' id='classification' name='classification' required></input></td>
                                         
                                     </tr>
 
@@ -384,10 +390,13 @@ function CompleteResidentProfile () {
                                     </tr>
                                 </table>
                             </div>
+                            <hr className='horizontal-line'></hr>
+                            <br></br>
                             <div className="form-div-family">
-                                <h2>FAMILY STUFF</h2>
+                                <h3>FAMILY INFORMATION</h3>
+                                <br></br>
                                 <table>
-                                    <h3 className='cell-title-family'>Parents' Status</h3>
+                                    <h3 className='cell-title'>Parents' Status</h3>
                                     <br></br>
                                     <div className='custom-select'>
                                         <select className='parents-status' id='parents-status'>
@@ -398,14 +407,11 @@ function CompleteResidentProfile () {
                                             <option value='Single Parent'>Single Parent</option>
                                         </select>   
                                     </div>
-                                    
                                     <br></br>
-                                    <br></br>
-                                    <h3 className='cell-title-family'>Father's Information</h3>
                                     <tr>
-                                        <td className='cell-title'>Name</td>
-                                        <td className='cell-title'>Occupation</td>
-                                        <td className='cell-title'>Monthly Income</td>
+                                        <td className='cell-title'>Father's Name</td>
+                                        <td className='cell-title'>Father's Occupation</td>
+                                        <td className='cell-title'>Father's Monthly Income</td>
                                     </tr>
                                     <tr>
                                         <td className='cell-input'><input type="text" id="fathername" name="fathername"></input></td>
@@ -414,9 +420,9 @@ function CompleteResidentProfile () {
                                     </tr>
 
                                     <tr>
-                                        <td className='cell-title'>Name of Firm/Employer</td>
-                                        <td className='cell-title'>Office Address</td>
-                                        <td className='cell-title'>Cellphone/Telephone no.</td>
+                                        <td className='cell-title'>Name of Firm/Employer of Father</td>
+                                        <td className='cell-title'>Office Address of Father</td>
+                                        <td className='cell-title'>Father's Cellphone/Telephone no.</td>
                                     </tr>
                                     <tr>
                                         <td className='cell-input'><input type="text" id="fatheremployer" name="fatheremployer"></input></td>
@@ -424,12 +430,10 @@ function CompleteResidentProfile () {
                                         <td className='cell-input'><input type="text" id="fatherphone" name="fatherphone"></input></td>
                                     </tr>
                                     <br></br>
-                                    <br></br>
-                                    <h3 className='cell-title-family'>Mother's Information</h3>
                                     <tr>
-                                        <td className='cell-title'>Name</td>
-                                        <td className='cell-title'>Occupation</td>
-                                        <td className='cell-title'>Monthly Income</td>
+                                        <td className='cell-title'>Mother's Name</td>
+                                        <td className='cell-title'>Mother's Occupation</td>
+                                        <td className='cell-title'>Mother's Monthly Income</td>
                                     </tr>
                                     <tr>
                                         <td className='cell-input'><input type="text" id="mothername" name="mothername"></input></td>
@@ -438,9 +442,9 @@ function CompleteResidentProfile () {
                                     </tr>
 
                                     <tr>
-                                        <td className='cell-title'>Name of Firm/Employer</td>
-                                        <td className='cell-title'>Office Address</td>
-                                        <td className='cell-title'>Cellphone/Telephone no.</td>
+                                        <td className='cell-title'>Name of Firm/Employer of Mother</td>
+                                        <td className='cell-title'>Office Address of Mother</td>
+                                        <td className='cell-title'>Mother's Cellphone/Telephone no.</td>
                                     </tr>
                                     <tr>
                                         <td className='cell-input'><input type="text" id="motheremployer" name="motheremployer"></input></td>
@@ -448,8 +452,6 @@ function CompleteResidentProfile () {
                                         <td className='cell-input'><input type="text" id="motherphone" name="motherphone"></input></td>
                                     </tr>
                                     <br></br>
-                                    <br></br>
-                                    <h3 className='cell-title-family'>Sibling Information</h3>
                                     <tr>
                                         <td className='cell-title'>Number of brother/s</td>
                                         <td className='cell-title'>Number of sister/s</td>
@@ -463,182 +465,206 @@ function CompleteResidentProfile () {
 
                                 </table>
                             </div>
+                            <hr className='horizontal-line'></hr>
+                            <br></br>
                             <div className="form-div-emergency">
-                                <h2>EMERGENCY STUFF</h2>
+                                <h3>EMERGENCY CONTACT INFORMATION</h3>
+                                <br></br>
                                 <table>
                                     <tr>
-                                        <th className='cell-title'>Name</th>
-                                        <th className='cell-title'>Address</th>
-                                        <th className='cell-title'>Cellphone/Telephone No.</th>
+                                        <td className='cell-title'>Name</td>
+                                        <td className='cell-title'>Address</td>
+                                        <td className='cell-title'>Cellphone/Telephone No.</td>
                                     </tr>
-                                    <tr className='table-form-tr'>
-                                        <td className='cell-input'><input type = "text" id = "emergency-contact-name-1" ></input></td>
-                                        <td className='cell-input'><input type = "text" id = "emergency-contact-address-1" ></input></td>
-                                        <td className='cell-input'><input type = "text" id = "emergency-contact-phone-1" ></input></td>
+                                    <tr>
+                                        <td className='cell-input'><input type = "text" id = "emergency-contact-name-1" required></input></td>
+                                        <td className='cell-input'><input type = "text" id = "emergency-contact-address-1" required></input></td>
+                                        <td className='cell-input'><input type = "text" id = "emergency-contact-phone-1" required></input></td>
                                     </tr>
-                                    <tr className='table-form-tr'>
+                                    <tr>
                                         <td className='cell-input'><input type = "text" id = "emergency-contact-name-2" ></input></td>
                                         <td className='cell-input'><input type = "text" id = "emergency-contact-address-2" ></input></td>
                                         <td className='cell-input'><input type = "text" id = "emergency-contact-phone-2" ></input></td>
                                     </tr>
                                 </table>
                             </div>
+
+                            <hr className='horizontal-line'></hr>
+                            <br></br>
                             <div className="form-div-checkin">
-                                <h2>CHECKIN STUFF</h2>
+                                <h2>CHECK IN DETAILS</h2>
                                 <table>
                                     <div className='check-in-upper-form'>
                                         <tr>
                                             <td className='cell-title'><th>DATE CHECK IN &nbsp;&nbsp;</th></td>
-                                            <td>1st Sem &nbsp;&nbsp;</td>
-                                            <td><input type="text" id="first-sem-checkin" name="first-sem-checkin"></input></td>
-                                            <td>&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;</td>
-                                            <td><input type="text" id="second-sem-checkin" name="second-sem-checkin"></input></td>
+                                            <td>1st Sem &nbsp;&nbsp;&nbsp;</td>
+                                            <td><input type="date" id="first-sem-checkin" name="first-sem-checkin"></input></td>
+                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;&nbsp;</td>
+                                            <td><input type="date" id="second-sem-checkin" name="second-sem-checkin"></input></td>
                                         </tr>
                                         
                                         <tr>
                                             <td className='cell-title'><th>DATE CHECK OUT &nbsp;&nbsp;</th></td>
-                                            <td>1st Sem &nbsp;&nbsp;</td>
-                                            <td><input type="text" id="first-sem-checkout" name="first-sem-checkout"></input></td>
-                                            <td>&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;</td>
-                                            <td><input type="text" id="second-sem-checkout" name="second-sem-checkout"></input></td>
+                                            <td>1st Sem &nbsp;&nbsp;&nbsp;</td>
+                                            <td><input type="date" id="first-sem-checkout" name="first-sem-checkout"></input></td>
+                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;&nbsp;</td>
+                                            <td><input type="date" id="second-sem-checkout" name="second-sem-checkout"></input></td>
                                         </tr>
 
                                         <tr>
                                             <td className='cell-title'><th>FORM 5</th></td>
-                                            <td>1st Sem &nbsp;&nbsp;</td>
+                                            <td>1st Sem &nbsp;&nbsp;&nbsp;</td>
                                             <td><input type="text" id="first-sem-form5" name="first-sem-form5"></input></td>
-                                            <td>&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;</td>
+                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;&nbsp;</td>
                                             <td><input type="text" id="second-sem-form5" name="second-sem-form5"></input></td>
                                         </tr>
 
                                         <tr>
                                             <td className='cell-title'><th>ROOM NUMBER</th></td>
-                                            <td>1st Sem &nbsp;&nbsp;</td>
+                                            <td>1st Sem &nbsp;&nbsp;&nbsp;</td>
                                             <td><input type="text" id="first-sem-room-number" name="room-number-1"></input></td>
-                                            <td>&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;</td>
+                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;&nbsp;</td>
                                             <td><input type="text" id="second-sem-room-number" name="room-number-2"></input></td>
                                         </tr>
 
                                     </div>
+
+                                    <br></br>
+
                                     
                                     <div className='check-in-middle-form'>
+                                        
                                         <div className='appliances-left'>
                                             <h3>APPLIANCES</h3>
-                                            Indicate number of devices<br></br>
+                                            <br></br>
+                                            Indicate number of devices
+                                            <br></br>
+                                            <br></br>
                                             <tr>
-                                                <td><input type='number' id='laptop' name='laptop'></input><br></br></td>
-                                                <td>Laptop</td>
+                                                <td><input type='number' id='gadgets' name='gadgets' className='appliances-number'></input></td>
+                                                <td>&nbsp;&nbsp;&nbsp;&nbsp;Gadgets (cellphone, iPad, tablet)</td>
                                             </tr>
                                             <tr>
-                                                <td><input type='number' id='gadgets' name='gadgets'></input><br></br></td>
-                                                <td>Gadgets (cellphone, iPad, tablet)</td>
+                                                
+                                                <td><input type='number' id='laptop' name='laptop' className='appliances-number'></input></td>
+                                                <td>&nbsp;&nbsp;&nbsp;&nbsp;Laptop</td>
                                             </tr>
                                             <tr>
-                                                <td><input type='number' id='printer' name='printer'></input><br></br></td>
-                                                <td>Printer</td>
+                                                <td><input type='number' id='printer' name='printer' className='appliances-number'></input></td>
+                                                <td>&nbsp;&nbsp;&nbsp;&nbsp;Printer</td>
                                             </tr>
                                             <tr>
-                                                <td><input type='number' id='rice-cooker' name='rice-cooker'></input><br></br></td>
-                                                <td>Rice Cooker</td>
+                                                <td><input type='number' id='rice-cooker' name='rice-cooker' className='appliances-number'></input></td>
+                                                <td>&nbsp;&nbsp;&nbsp;&nbsp;Rice Cooker</td>
                                             </tr>
-                                        </div>
-                                        <div className='appliances-middle'>
-                                            <h3>Electric Fan</h3>
-                                            <div className='custom-select'>
-                                                <select className='electric-fan' id='electric-fan'>
-                                                    <option value=""disabled defaultValue hidden>Choose Electric Fan size</option>
-                                                    <option value='8 inches'>8 inches</option>
-                                                    <option value='10 inches'>10 inches</option>
-                                                    <option value='12 inches'>12 inches</option>
-                                                    <option value='14 inches'>14 inches</option>
-                                                    <option value='16 inches'>16 inches</option>
-                                                    <option value='18 inches'>18 inches</option>
-                                                    <option value='20 inches'>20 inches</option>
-                                                    <option value='I do not own an electric fan.'>I do not own an electric fan.</option>
-                                                </select>   
-                                            </div>
-
                                         </div>
                                         <div className='appliances-right'>
-                                            <h3>Refrigerator</h3>
-                                            <div className='custom-select'>
-                                                <select className='refrigerator' id='refrigerator'>
-                                                    <option value=""disabled defaultValue hidden>Choose Refrigerator size</option>
-                                                    <option value='4 cu. ft.'>4 cu. ft.</option>
-                                                    <option value='5 cu. ft.'>5 cu. ft.</option>
-                                                    <option value='I do not own a refrigerator.'>I do not own a refrigerator.</option>
-                                                </select>
+                                            <h4>Electric Fan</h4>
+                                            <div>
+                                                
+                                                <div className='custom-select'>
+                                                    <select className='electric-fan' id='electric-fan'>
+                                                        <option value=""disabled defaultValue hidden>Choose Electric Fan size</option>
+                                                        <option value='8 inches'>8 inches</option>
+                                                        <option value='10 inches'>10 inches</option>
+                                                        <option value='12 inches'>12 inches</option>
+                                                        <option value='14 inches'>14 inches</option>
+                                                        <option value='16 inches'>16 inches</option>
+                                                        <option value='18 inches'>18 inches</option>
+                                                        <option value='20 inches'>20 inches</option>
+                                                        <option value='I do not own an electric fan.'>I do not own an electric fan.</option>
+                                                    </select>   
+                                                </div>
+
                                             </div>
-                                            
+                                            <br></br>
+                                            <h4>Refrigerator</h4>
+                                            <div>
+                                                
+                                                <div className='custom-select'>
+                                                    <select className='refrigerator' id='refrigerator'>
+                                                        <option value=""disabled defaultValue hidden>Choose Refrigerator size</option>
+                                                        <option value='4 cu. ft.'>4 cu. ft.</option>
+                                                        <option value='5 cu. ft.'>5 cu. ft.</option>
+                                                        <option value='I do not own a refrigerator.'>I do not own a refrigerator.</option>
+                                                    </select>
+                                                </div>
+                                                
+                                            </div>
                                         </div>
+                                        
                                         
                                     </div>
 
+                                    <br></br>
+                                    <br></br>
+
                                     <div className='check-in-lower-form'>
                                         <h3>APPLIANCES INFORMATION</h3>
+                                        <br></br>
                                         <table>
                                             <tr>
-                                                <th className='cell-title'>Appliance</th>
-                                                <th className='cell-title'>Date Installed in 1st Sem</th>
-                                                <th className='cell-title'>Date Installed in 2nd Sem</th>
-                                                <th className='cell-title'>Date Returned in 1st Sem</th>
-                                                <th className='cell-title'>Date Returned in 2nd Sem</th>
+                                                <td className='cell-title'>Appliance</td>
+                                                <td className='cell-title'>Date Installed in 1st Sem</td>
+                                                <td className='cell-title'>Date Installed in 2nd Sem</td>
+                                                <td className='cell-title'>Date Returned in 1st Sem</td>
+                                                <td className='cell-title'>Date Returned in 2nd Sem</td>
                                             </tr>
                                             <tr className='table-form-tr'>
                                                 <td className='cell-input'><input type = "text" id = "appliance-1"></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-1-date-installed-1st-sem" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-1-date-installed-2nd-sem" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-1-date-returned-1st-sem" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-1-date-returned-2nd-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-1-date-installed-1st-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-1-date-installed-2nd-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-1-date-returned-1st-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-1-date-returned-2nd-sem" ></input></td>
                                             </tr>
                                             <tr className='table-form-tr'>
                                                 <td className='cell-input'><input type = "text" id = "appliance-2" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-2-date-installed-1st-sem" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-2-date-installed-2nd-sem" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-2-date-returned-1st-sem" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-2-date-returned-2nd-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-2-date-installed-1st-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-2-date-installed-2nd-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-2-date-returned-1st-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-2-date-returned-2nd-sem" ></input></td>
                                             </tr>
                                             <tr className='table-form-tr'>
                                                 <td className='cell-input'><input type = "text" id = "appliance-3" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-3-date-installed-1st-sem" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-3-date-installed-2nd-sem" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-3-date-returned-1st-sem" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-3-date-returned-2nd-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-3-date-installed-1st-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-3-date-installed-2nd-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-3-date-returned-1st-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-3-date-returned-2nd-sem" ></input></td>
                                             </tr>
                                             <tr className='table-form-tr'>
                                                 <td className='cell-input'><input type = "text" id = "appliance-4" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-4-date-installed-1st-sem" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-4-date-installed-2nd-sem" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-4-date-returned-1st-sem" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-4-date-returned-2nd-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-4-date-installed-1st-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-4-date-installed-2nd-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-4-date-returned-1st-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-4-date-returned-2nd-sem" ></input></td>
                                             </tr>
                                             <tr className='table-form-tr'>
                                                 <td className='cell-input'><input type = "text" id = "appliance-5" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-5-date-installed-1st-sem" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-5-date-installed-2nd-sem" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-5-date-returned-1st-sem" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-5-date-returned-2nd-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-5-date-installed-1st-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-5-date-installed-2nd-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-5-date-returned-1st-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-5-date-returned-2nd-sem" ></input></td>
                                             </tr>
                                             <tr className='table-form-tr'>
                                                 <td className='cell-input'><input type = "text" id = "appliance-6" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-6-date-installed-1st-sem" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-6-date-installed-2nd-sem" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-6-date-returned-1st-sem" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-6-date-returned-2nd-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-6-date-installed-1st-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-6-date-installed-2nd-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-6-date-returned-1st-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-6-date-returned-2nd-sem" ></input></td>
                                             </tr>
                                             <tr className='table-form-tr'>
                                                 <td className='cell-input'><input type = "text" id = "appliance-7" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-7-date-installed-1st-sem" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-7-date-installed-2nd-sem" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-7-date-returned-1st-sem" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-7-date-returned-2nd-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-7-date-installed-1st-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-7-date-installed-2nd-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-7-date-returned-1st-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-7-date-returned-2nd-sem" ></input></td>
                                             </tr>
                                             <tr className='table-form-tr'>
                                                 <td className='cell-input'><input type = "text" id = "appliance-8" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-8-date-installed-1st-sem" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-8-date-installed-2nd-sem" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-8-date-returned-1st-sem" ></input></td>
-                                                <td className='cell-input'><input type = "text" id = "appliance-8-date-returned-2nd-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-8-date-installed-1st-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-8-date-installed-2nd-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-8-date-returned-1st-sem" ></input></td>
+                                                <td className='cell-input'><input type = "date" id = "appliance-8-date-returned-2nd-sem" ></input></td>
                                             </tr>
                                         </table>
                                     </div>

@@ -1,4 +1,4 @@
-.stud-info-sheet-div {
+.complete-manager-profile-div {
     /* border: 2x solid rgb(104, 104, 104); */
     flex-direction: row;
     /* border-radius: 5px; */
@@ -21,8 +21,6 @@
     height: 40px;
     border-radius: 35px;
     background-color: #0A4424;
-    color: white;
-
     font-weight: bold;
     font-family: "Montserrat", sans-serif;
 }

@@ -36,7 +36,7 @@ function CompleteManagerProfile () {
     }
 
     const sendData = (e) => {
-        e.prevenDefault();
+        e.preventDefault();
         var tempEmail = document.getElementById("email").value;
         var notuniqueEmail = checkEmailExists(tempEmail);
 
@@ -66,15 +66,15 @@ function CompleteManagerProfile () {
                 })
             })
             .then(response => {return response.json()})
-            .then(getDorm)
+            .then(getManagers)
         } else {
             alert("Inputted email address already exists!");
         }
     }
 
-    const getDorm = () => {
-        const getDorm = axios.get(apiUrl("/dorm"), { withCredentials: true });
-        axios.all([getDorm]).then(
+    const getManagers = () => {
+        const getManager = axios.get(apiUrl("/manager"), { withCredentials: true });
+        axios.all([getManager]).then(
             axios.spread((...allData) => {
                 sendDormInfo(allData[0].data)
             })
@@ -82,6 +82,8 @@ function CompleteManagerProfile () {
     }
 
     const sendDormInfo = (manager) => {
+        
+
         if (manager !== undefined) {
             manager.map((person, i) => {
                 if(i === (manager.length - 1)){
@@ -95,12 +97,15 @@ function CompleteManagerProfile () {
                             dorm_name: document.getElementById("dorm_name").value,
                             dorm_details: document.getElementById("dorm_details").value,
                             dorm_manager_id: person._id,
-                            dorm_manager_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value + " " + document.getElementById("suffix"),
+                            dorm_manager_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value,
                             dorm_manager_email: document.getElementById("email").value,
                             dorm_manager_contact_number: document.getElementById("contact_number").value
                         })
                     })
                     .then(response => {return response.json()})
+                    .then(
+                        alert("Successfully completed manager profile and submitted dorm information.")
+                    )
                 }
             }) 
         }
@@ -118,7 +123,7 @@ function CompleteManagerProfile () {
     return (
         <div>
             <NavBar></NavBar>
-            <div classname = 'stud-info-sheet-div'>
+            <div classname = 'complete-manager-profile-div'>
                 <div className='upper-div'>
                     <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
                     <p className='page-title'>COMPLETE PROFILE</p>
@@ -201,18 +206,7 @@ function CompleteManagerProfile () {
                                         <td className='cell-input'><input type='text' id='dorm_details' name='dorm_details'></input></td>
                                     </tr>
 
-                                    {/* <p>Please provide information of your dorm attendant.</p>
                                     
-                                    <tr className='table-row'>
-                                        <td className='cell-title'>Dorm Attendant Name</td>
-                                        <td className='cell-title'>Dorm Attendant Email</td>
-                                        <td className='cell-title'>Dorm Attendant Contact Number</td>
-                                    </tr>
-                                    <tr className='table-row'>
-                                        <td className='cell-input'><input type='text' id='dorm_attendant_name' name='dorm_attendant_name'></input></td>
-                                        <td className='cell-input'><input type='text' id='dorm_attendant_email' name='dorm_attendant_email'></input></td>
-                                        <td className='cell-input'><input type='text' id='dorm_attendant_contact_number' name='dorm_attendant_contact_number'></input></td>
-                                    </tr> */}
                                 </table>
 
                             </div>

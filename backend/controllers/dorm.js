@@ -6,8 +6,6 @@ const Delete = require('../handlers/deleted');
 
 exports.addDorm = async (req, res) => {
 
-    const body = req.body;
-
     if (!req.cookies || !req.cookies.authToken) {
         res.status(401).send({message: "Unauthorized access"});
         return;
@@ -22,7 +20,10 @@ exports.addDorm = async (req, res) => {
         return;
     }
 
-    const newDorm = {
+    if (token.user.role == 'dorm manager') {
+        const body = req.body;
+
+        const newDorm = {
         dorm_name: body.dorm_name,
         dorm_details: body.dorm_details,
         dorm_manager_id: body.dorm_manager_id,
@@ -33,29 +34,24 @@ exports.addDorm = async (req, res) => {
         dorm_attendant_name: body.dorm_attendant_name,
         dorm_attendant_email: body.dorm_attendant_email,
         dorm_attendant_contact_number: body.dorm_attendant_contact_number
-    };
+        };
 
-    try {
-        const existing = await Dorm.getOne({dorm_name: newDorm.dorm_name})
-        if(existing){
-            return res.status(400).send({ message: "Dorm already exists" })
+        try {
+            const dorm = await Dorm.create(newDorm);
+            await UserLog.create(token.user, 'create', `dorm ${dorm._id}`)
+            console.log(`New Dorm: \n ${dorm}`);
+            return res.status(201).send({ message: 'New dorm successfully added' });
         }
-    }
-    catch(err) {
-        console.log(`Unable to find dorm. Error: ${err}`);
-        return res.status(500).send({ message: "Error creating new dorm" })
+        catch(err) {
+            console.log(`Unable to create new dorm. Error: ${err}`);
+            return res.status(500).send({ message: "Error creating new dorm" })
+        }
+
+    } else {
+        console.log("Unauthorized access")
+        return res.status(401).send({message: "Unauthorized access"});
     }
 
-    try {
-        const dorm = await Dorm.create(newDorm);
-        await UserLog.create(token.user, 'create', `dorm ${dorm._id}`)
-        console.log(`New dorm: \n ${dorm}`);
-        return res.status(201).send({ message: 'New dorm successfully added' });
-    }
-    catch(err) {
-        console.log(`Unable to create new dorm. Error: ${err}`);
-        return res.status(500).send({ message: "Error creating new dorm" })
-    }
 
 }
 

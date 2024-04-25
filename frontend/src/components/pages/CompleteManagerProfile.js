@@ -3,7 +3,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import {apiUrl} from '../utilities/apiUrl';
 import useStore from '../utilities/authHook';
 import axios from "axios";
-import '../css/StudentInfoSheetPersonal.css';
+import '../css/CompleteManagerProfile.css';
 import NavBar from './NavBar';
 
 function CompleteManagerProfile () {

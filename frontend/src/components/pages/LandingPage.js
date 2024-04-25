@@ -5,7 +5,7 @@ import {apiUrl} from '../utilities/apiUrl';
 import useStore from '../utilities/authHook';
 import '../css/LandingPage.css'
 import UPLBDMISlogo from '../images/UPLBDMISlogo.png'
-
+ 
 function LandingPage () {
 
     const navigate = useNavigate();

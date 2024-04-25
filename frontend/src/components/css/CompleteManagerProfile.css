@@ -21,6 +21,7 @@
     height: 40px;
     border-radius: 35px;
     background-color: #0A4424;
+    color: white;
     font-weight: bold;
     font-family: "Montserrat", sans-serif;
 }
@@ -103,7 +104,7 @@
 
 .cell-title {
     color: #76090C;
-    font-size: 18px;
+    font-size: 15px;
     font-family: "Montserrat", sans-serif;
     font-weight: bold;
     /* justify-content: end; */
@@ -119,10 +120,11 @@
 
 input[type=text] {
     width: 100%;
-    /* padding: 12px 20px; */
+    padding: 10px 20px;
     margin: 8px 0;
     box-sizing: border-box;
     border: 1px solid #555;
+    border-radius: 5px;
     outline: none;
 }
 
@@ -137,21 +139,26 @@ input[type=date] {
 }
 
 .complete-profile-button {
-    width: fit-content;
+    /* width: fit-content; */
     margin: 10px;
     border-radius: 35px;
     background-color: #0A4424;
     font-weight: bold;
     font-family: "Montserrat", sans-serif;
+    padding: 5px 5px 5px 5px;
+    color: white;
+    height: 100%;
 }
 
 .edit-profile-button {
-    width: fit-content;
+    /* width: fit-content; */
     margin: 10px;
     border-radius: 35px;
     background-color: #0A4424;
     font-weight: bold;
     font-family: "Montserrat", sans-serif;
+    padding: 5px 5px 5px 5px;
+    color: white;
 }
 
 hr.horizontal-line {

@@ -84,7 +84,8 @@ exports.addResident = async (req,res) => {
     }
     catch(err) {
         console.log(`Unable to create new resident. Error: ${err}`);
-        return res.status(500).send({ message: "Error creating new resident" })
+        return res.status(500).send({ message: "Error creating new resident", success: false})
+        // return res.send({message: "Got this?"});
     }
 }
 

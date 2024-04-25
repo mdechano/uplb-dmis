@@ -216,13 +216,27 @@ function CompleteResidentProfile () {
             })
             .then(response => {return response.json()})
             .then(
-                alert("Successfully completed profile."),
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000)
+                json => {
+                // console.log(json.message)
+                // console.log(json.success)
+                if (json.success == false) {
+                    alert("Error completing resident profile.")
+                    setTimeout(() => {
+                        window.location.reload()
+                    })
+                } else {
+                    alert("Successfully completed resident profile.")
+                    setTimeout(() => {
+                        window.location.reload()
+                    })
+                }
+                }
             )
         } else {
-            alert("Inputted email address already exists!");
+            alert("Inputted email address already exists!")
+            setTimeout(() => {
+                window.location.reload()
+            })
         }
 
         

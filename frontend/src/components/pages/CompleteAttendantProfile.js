@@ -95,12 +95,13 @@ function CompleteAttendantProfile () {
         if (attendant !== undefined) {
             attendant.map((person, i) => {
                 if(i === (attendant.length - 1)) {
+                    console.log(i)
                     console.log("Attendant Name: " + person.first_name)
                     console.log("Attendant dorm: " + person.dorm)
 
                     if (dorm !== undefined) {
                         dorm.map((dorm, i) => {
-                            console.log(dorm.dorm_name)
+                            // console.log(dorm.dorm_name)
 
                             if (person.dorm === dorm.dorm_name) {
                                 const currentPerson = person
@@ -134,6 +135,7 @@ function CompleteAttendantProfile () {
                                 )
 
                             } else {
+                                // will def trigger since nag-iiterate siya thru dorm list
                                 console.log("better luck next time!")
                             }
                         })

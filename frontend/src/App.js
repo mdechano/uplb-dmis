@@ -5,6 +5,7 @@ import Dashboard from './components/pages/Dashboard';
 import CompleteResidentProfile from './components/pages/CompleteResidentProfile';
 import CompleteManagerProfile from './components/pages/CompleteManagerProfile';
 import CompleteAttendantProfile from './components/pages/CompleteAttendantProfile';
+import AttendantProfile from './components/pages/AttendantProfile';
 import ManagerProfile from './components/pages/ManagerProfile';
 import StudentInfoSheetCheckIn from './components/pages/StudentInfoSheetCheckIn';
 import StudentInfoSheetEmergency from './components/pages/StudentInfoSheetEmergency';
@@ -28,6 +29,7 @@ function App() {
             <Route exact={true} path="complete-manager-profile" element={<CompleteManagerProfile />} />
             <Route exact={true} path="complete-attendant-profile" element={<CompleteAttendantProfile />} />
             <Route exact={true} path="manager-profile" element={<ManagerProfile />} />
+            <Route exact={true} path="attendant-profile" element={<AttendantProfile />} />
             <Route exact={true} path="/student-info-sheet-check-in" element={<StudentInfoSheetCheckIn />} />
             <Route exact={true} path="/student-info-sheet-emergency" element={<StudentInfoSheetEmergency />} />
             <Route exact={true} path="/student-info-sheet-family" element={<StudentInfoSheetFamily />} />

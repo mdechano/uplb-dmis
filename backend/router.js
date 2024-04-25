@@ -10,7 +10,7 @@ const router = Router();
 router.use('/user', User); //localhost:3001/user
 router.use('/resident', Resident);
 router.use('/manager', Manager);
-router.use('./attendant', Attendant);
+router.use('/attendant', Attendant);
 router.use('/dorm', Dorm);
 
 module.exports = router;

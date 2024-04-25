@@ -1,8 +1,8 @@
 import {React, useEffect, useState} from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import {Link, UNSAFE_DataRouterContext, useNavigate} from 'react-router-dom';
 import {apiUrl} from '../utilities/apiUrl';
 import useStore from '../utilities/authHook';
-import axios from "axios";
+import axios, { all } from "axios";
 import '../css/StudentInfoSheetPersonal.css';
 import NavBar from './NavBar';
 
@@ -11,13 +11,16 @@ function CompleteAttendantProfile () {
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
 
-    const [fileData, setFileData] = useState();
-    const [fileId, setFileId] = useState();
+    // const [fileData, setFileData] = useState();
+    // const [fileId, setFileId] = useState();
+    const [dorm, setDorm] = useState();
+    const [attendant, setAttendant] = useState();
+
     let allEmails = []
  
     const fetchData = () => {
-        const getManagers = axios.get(apiUrl("/manager"), { withCredentials: true });
-        axios.all([getManagers]).then(
+        const getAttendants = axios.get(apiUrl("/attendant"), { withCredentials: true });
+        axios.all([getAttendants]).then(
             axios.spread((...allData) => {
                 for (let i = 0; i < allData[0].data.length; i++) {
                     allEmails.push(allData[0].data[i].email)
@@ -38,14 +41,14 @@ function CompleteAttendantProfile () {
     // sendData here
 
     const sendData = (e) => {
-        e.prevenDefault();
+        e.preventDefault();
         var tempEmail = document.getElementById("email").value;
         var notuniqueEmail = checkEmailExists(tempEmail);
 
         if (notuniqueEmail === false) {
             allEmails.push(tempEmail);
 
-            fetch(apiUrl("/attedant"),{
+            fetch(apiUrl("/attendant"),{
                 method: "POST",
                 credentials:'include',
                 headers:{
@@ -68,41 +71,103 @@ function CompleteAttendantProfile () {
                 })
             })
             .then(response => {return response.json()})
-            .then(getDorm)
+            .then(editDorm)
         } else {
             alert("Inputted email address already exists!");
         }
     }
 
-    const getDorm = () => {
+    const editDorm = () => {
         const getDorm = axios.get(apiUrl("/dorm"), { withCredentials: true });
-        axios.all([getDorm]).then(
+        const getAttendant = axios.get(apiUrl("/attendant"), { withCredentials: true });
+        axios.all([getDorm, getAttendant]).then(
             axios.spread((...allData) => {
-                sendDormInfo(allData[0].data)
+                const allDormData = allData[0].data
+                const allAttendantData = allData[1].data
+                setDorm(allDormData)
+                editDormInfo(allAttendantData)
             })
         )
     }
 
-    const sendDormInfo = (attendant) => {
+    const editDormInfo = (attendant) => {
+
         if (attendant !== undefined) {
             attendant.map((person, i) => {
-                if(i === (attendant.length - 1)){
-                    fetch(apiUrl("/dorm/"),{
-                        method: "PUT",
-                        credentials:'include',
-                        headers:{
-                            'Content-Type':'application/json'
-                        },
-                        body: JSON.stringify({
-                            dorm_attendant_id: person._id,
-                            dorm_attendant_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value + " " + document.getElementById("suffix"),
-                            dorm_attendant_email: document.getElementById("email").value,
-                            dorm_attendant_contact_number: document.getElementById("contact_number").value
+                if(i === (attendant.length - 1)) {
+                    console.log("Attendant Name: " + person.first_name)
+                    console.log("Attendant dorm: " + person.dorm)
+
+                    if (dorm !== undefined) {
+                        dorm.map((dorm, i) => {
+                            console.log(dorm.dorm_name)
+
+                            if (person.dorm === dorm.dorm_name) {
+                                const currentPerson = person
+                                const currentDorm = dorm
+                                // working well
+                                // console.log(currentPerson._id)
+                                // console.log(currentDorm._id)
+
+                                fetch(apiUrl("/dorm/"+currentDorm._id),{
+                                    method: "PUT",
+                                    credentials:'include',
+                                    headers:{
+                                        'Content-Type':'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        dorm_name: currentDorm.dorm_name,
+                                        dorm_details: currentDorm.dorm_details,
+                                        dorm_manager_id: currentDorm.dorm_manager_id,
+                                        dorm_manager_name: currentDorm.dorm_manager_name,
+                                        dorm_manager_email: currentDorm.dorm_manager_email,
+                                        dorm_manager_contact_number: currentDorm.dorm_manager_contact_number,
+                                        dorm_attendant_id: currentPerson._id,
+                                        dorm_attendant_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value,
+                                        dorm_attendant_email: document.getElementById("email").value,
+                                        dorm_attendant_contact_number: document.getElementById("contact_number").value
+                                    })
+                                })
+                                .then(response => {return response.json()})
+                                .then(
+                                    alert("Successfully completed attendant profile and updated dorm information.")
+                                )
+
+                            } else {
+                                console.log("better luck next time!")
+                            }
                         })
-                    })
-                    .then(response => {return response.json()})
+                    } else {
+                        console.log("not working")
+                    }
+
                 }
+                
+                // dorm.map((dorm) => {
+                //     if(person.dorm === dorm.name){
+                //         console.log("Attendant dorm: " + person.dorm)
+                //         console.log("Dorm name: " + dorm.name)
+
+                //     // fetch(apiUrl("/dorm/"),{
+                //     //     method: "PUT",
+                //     //     credentials:'include',
+                //     //     headers:{
+                //     //         'Content-Type':'application/json'
+                //     //     },
+                //     //     body: JSON.stringify({
+                //     //         dorm_attendant_id: person._id,
+                //     //         dorm_attendant_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value + " " + document.getElementById("suffix"),
+                //     //         dorm_attendant_email: document.getElementById("email").value,
+                //     //         dorm_attendant_contact_number: document.getElementById("contact_number").value
+                //     //     })
+                //     // })
+                //     // .then(response => {return response.json()})
+                //     }
+                // })
+                
             }) 
+        } else {
+            console.log("lmao not working")
         }
     }
 

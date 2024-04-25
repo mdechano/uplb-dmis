@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const util = require('./utils');
+const utils = require('./utils');
 
 const AttendantSchema = new mongoose.Schema(
     {
@@ -20,11 +20,11 @@ const AttendantSchema = new mongoose.Schema(
 )
 
 AttendantSchema.pre("save", function(next){
-    const manager = this;
+    const attendant = this;
 
-    manager.first_name = utils.toTitleCase(manager.first_name);
-    manager.last_name = utils.toTitleCase(manager.last_name);
-    manager.middle_name = utils.toTitleCase(manager.middle_name);
+    attendant.first_name = utils.toTitleCase(attendant.first_name);
+    attendant.last_name = utils.toTitleCase(attendant.last_name);
+    attendant.middle_name = utils.toTitleCase(attendant.middle_name);
     return next();
 });
 

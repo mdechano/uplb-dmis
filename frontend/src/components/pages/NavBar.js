@@ -81,7 +81,7 @@ function NavBar () {
                         { role === 'dorm attendant' ?
                         <div className='dropdown-content'>
                         <a><Link>Resident List</Link></a>
-                        <a><Link>Dorm Attendant Profile</Link></a>
+                        <a><Link to='/attendant-profile'>Dorm Attendant Profile</Link></a>
                         <a><Link>Dorm Assistants</Link></a>
                         <a><Link to='/dorm-information'>Dorm Information</Link></a>
                         </div>

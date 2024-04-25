@@ -207,7 +207,7 @@ function CompleteResidentProfile () {
                     appliances: appliances,
                     appliances_information: appliances_information,
                     emergency_details: emergency_details,
-                    slas: "None",
+                    slas: "None"
                     // payment_details: {type: Object},
                     // violation_details: {type: Object},
                     // picture_id: {type: String},
@@ -216,10 +216,10 @@ function CompleteResidentProfile () {
             })
             .then(response => {return response.json()})
             .then(
-                json => {
-                // console.log(json.message)
-                // console.log(json.success)
-                if (json.success == false) {
+                data => {
+                console.log(data.message)
+                console.log(data.success)
+                if (data.success == false) {
                     alert("Error completing resident profile.")
                     setTimeout(() => {
                         window.location.reload()

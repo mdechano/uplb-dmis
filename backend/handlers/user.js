@@ -25,13 +25,27 @@ exports.getOne = (query, next) => {
     });
 }
 
-exports.edit = (object) =>{
+exports.editRoleandDorm = (object) => {
     return new Promise((resolve, reject) => {
         // findone then edit
         User.findOne({ email: object.email }, (err, user) => {
             if (err) { reject(err); }
             user.role = object.role
             user.dorm = object.dorm
+            user.save((err, user) => {
+                if(err) { reject(err); }
+                resolve(user);
+            });
+        });
+    });
+}
+
+exports.editCompletedProfile = (object) => {
+    return new Promise((resolve, reject) => {
+        // findone then edit
+        User.findOne({ email: object.email }, (err, user) => {
+            if (err) { reject(err); }
+            user.completed_profile = object.completed_profile
             user.save((err, user) => {
                 if(err) { reject(err); }
                 resolve(user);

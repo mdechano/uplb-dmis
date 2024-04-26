@@ -19,7 +19,6 @@ const Dashboard = () => {
             navigate("/")
         } 
         else {
-            // change in role buggy because of this
             setInitialRole(user.role)
         }
     },[]);
@@ -74,40 +73,42 @@ const Dashboard = () => {
             <div className='sign-up-board'>
 
             { role === 'user' ?
+                
                     <form className='complete-sign-up'>
-                        <p className='set-up'><b>First, let's get you set up.</b></p>
-                        <br></br>
-                        <br></br>
-                        <p>Please choose a role.</p>
-                        <br></br>
-                        <div>
-                            <select className='dashboard-custom-select' id='user_role' value={userRole} onChange={handleChange}>
-                                <option value=""disabled defaultValue hidden>Choose Role</option>
-                                <option value='dorm manager'>Dorm Manager</option>
-                                <option value='dorm attendant'>Dorm Attendant</option>
-                                <option value='resident'>Resident</option>
-                            </select>   
+                        <p><b>First, let's get you set up.</b></p>
+                        <div className='set-up'>
+                            <p>Please choose a role.</p>
+                            <br></br>
+                            <div>
+                                <select className='dashboard-custom-select' id='user_role' value={userRole} onChange={handleChange}>
+                                    <option value=""disabled defaultValue hidden>Choose Role</option>
+                                    <option value='dorm manager'>Dorm Manager</option>
+                                    <option value='dorm attendant'>Dorm Attendant</option>
+                                    <option value='resident'>Resident</option>
+                                </select>   
+                            </div>
+                            
+                            <br></br>
+                            <p>Choose your assigned dormitory.</p>
+                            <br></br>
+                            <div>
+                            <select className='dashboard-custom-select' id="user_dorm" value={userDorm} onChange={handleChange}>
+                                <option value="Women's Residence Hall">Women's Residence Hall</option>
+                                <option value="Men's Residence Hall">Men's Residence Hall</option>
+                                <option value="International House Residence Hall">International House Residence Hall</option>
+                                <option value="VetMed Residence Hall">VetMed Residence Hall</option>
+                                <option value="Makiling Residence Hall">Makiling Residence Hall</option>
+                                <option value="ATI-NTC Residence Hall">ATI-NTC Residence Hall</option>
+                                <option value="Forestry Residence Hall">Forestry Residence Hall</option>
+                                <option value="New Forestry Residence Hall">New Forestry Residence Hall</option>
+                                <option value="New Dormitory Residence Hall">New Dormitory Residence Hall</option>
+                            </select>
+                            </div>
+
+                            <br></br>
+                            <button className='confirm-information' onClick={()=> changeRoleandDorm(user)}>CONFIRM INFORMATION</button>
                         </div>
                         
-                        <br></br>
-                        <p>Choose your assigned dormitory.</p>
-                        <br></br>
-                        <div>
-                        <select className='dashboard-custom-select' id="user_dorm" value={userDorm} onChange={handleChange}>
-                            <option value="Women's Residence Hall">Women's Residence Hall</option>
-                            <option value="Men's Residence Hall">Men's Residence Hall</option>
-                            <option value="International House Residence Hall">International House Residence Hall</option>
-                            <option value="VetMed Residence Hall">VetMed Residence Hall</option>
-                            <option value="Makiling Residence Hall">Makiling Residence Hall</option>
-                            <option value="ATI-NTC Residence Hall">ATI-NTC Residence Hall</option>
-                            <option value="Forestry Residence Hall">Forestry Residence Hall</option>
-                            <option value="New Forestry Residence Hall">New Forestry Residence Hall</option>
-                            <option value="New Dormitory Residence Hall">New Dormitory Residence Hall</option>
-                        </select>
-                        </div>
-
-                        <br></br>
-                        <button className='confirm-information' onClick={()=> changeRoleandDorm(user)}>Confirm Information</button>
                     </form>
                     :
                     ""

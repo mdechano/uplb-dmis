@@ -22,10 +22,11 @@
     margin-left: 15%;
     margin-right: 15%;
     padding-top: 20px;
-    padding-bottom: 20px;
+    padding-bottom: 30px;
     padding-left: 5%;
     padding-right: 5%;
     font-family: "Montserrat", sans-serif;
+    
 }
 
 .greet {
@@ -34,22 +35,34 @@
 }
 
 .complete-sign-up {
-    border: 1px solid;
     padding: 10px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .set-up {
-    font-size: 18px;
+    width: 40%;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .dashboard-custom-select {
     width: 100%;
-    padding: 16px 20px;
+    padding: 10px 20px;
     border: 1px solid ;
     border-radius: 4px;
-    background-color: #f5f5f5
+    background-color: #f5f5f5;
+    font-size: 15px;
 }
 
 .confirm-information {
     border-radius: 5px;
+    border: none;
+    background-color: #0A4424;
+    color: white;
+    font-weight: bold;
+    padding: 10px 10px;
 }

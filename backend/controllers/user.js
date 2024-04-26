@@ -22,7 +22,8 @@ exports.login = async (req, res) => {
         last_name: userobject.family_name,
         picture: userobject.picture,
         role: 'user',
-        dorm: 'UP Dorm'
+        dorm: 'UP Dorm',
+        completed_profile: false
     }
 
     // checking if user already in database and has correct role
@@ -33,6 +34,7 @@ exports.login = async (req, res) => {
             if(userobject.hd && userobject.hd == 'up.edu.ph'){
                 newUser.role = 'user'
                 newUser.dorm ='UP Dorm'
+                newUser.completed_profile = false
             }      
         }
         else{
@@ -95,9 +97,9 @@ exports.checkifloggedin = async (req, res) => {
     //if success, send first name, last name, and email
     const user = tokenDetails.user
     // console.log(user);
-    let {_id, email, first_name, last_name, picture, role, dorm} = user
+    let {_id, email, first_name, last_name, picture, role, dorm, completed_profile} = user
 
-    return res.status(tokenDetails.code).send({User: {_id, email, first_name, last_name, picture, role, dorm}, status: true})
+    return res.status(tokenDetails.code).send({User: {_id, email, first_name, last_name, picture, role, dorm, completed_profile}, status: true})
     
 }
 
@@ -124,20 +126,17 @@ exports.changeRoleandDorm = async(req,res) => {
         try{
             const existing = await User.getOne({email: email});
             if(existing){
-                // if(existing.role == 'user'){
-                //     console.log("Unauthorized Access")
-                //     return res.status(401).send({message: "Unauthorized access"});
-                // }
                 const user = {
                     email: existing.email,
                     first_name: existing.first_name,
                     last_name: existing.last_name,
                     picture: existing.picture,
                     role: newRole,
-                    dorm: newDorm
+                    dorm: newDorm,
+                    completed_profile: existing.completed_profile
                 }
-                const edit = await User.edit(user)
-                console.log(`User role changed: ${edit}`)
+                const edit = await User.editRoleandDorm(user)
+                console.log(`User role and dorm changed: ${edit}`)
                 return res.status(200).send({ message: 'User role and dorm updated' })
             }
         }
@@ -150,6 +149,54 @@ exports.changeRoleandDorm = async(req,res) => {
         console.log("Unauthorized Access")
         return res.status(401).send({message: "Unauthorized access"});
     }
+}
+
+exports.changeCompletedProfile = async(req,res) => {
+    if (!req.cookies || !req.cookies.authToken) {
+        res.status(401).send({message: "Unauthorized access"});
+        return;
+      }
+      
+      // validate token
+    const token = await utils.verifyToken(req);
+    
+      // error validating token
+    if(!token.status){
+        res.status(token.code).send({ message: token.message });
+        return;
+    }
+
+    console.log(token.user.role);
+
+    // if(token.user.role == 'dorm manager'){
+        const email = req.body.email
+        const newCompletedProfile = req.body.completed_profile
+        try{
+            const existing = await User.getOne({email: email});
+            if(existing){
+                const user = {
+                    email: existing.email,
+                    first_name: existing.first_name,
+                    last_name: existing.last_name,
+                    picture: existing.picture,
+                    role: existing.role,
+                    dorm: existing.dorm,
+                    completed_profile: newCompletedProfile
+                }
+                const edit = await User.editCompletedProfile(user)
+                console.log(`User completed_profile changed: ${edit}`)
+                return res.status(200).send({ message: 'User completed_profile updated' })
+            }
+        }
+        catch(err){
+            console.log(err)
+            return res.status(500).send({ message: `Error changing user's completed_profile` })
+        }
+    // }
+    // else{
+    //     console.log("Unauthorized Access")
+    //     return res.status(401).send({message: "Unauthorized access"});
+    // }
 }
 
 exports.findAll = async (req, res) => {

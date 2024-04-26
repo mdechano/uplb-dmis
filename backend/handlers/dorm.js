@@ -51,7 +51,6 @@ exports.edit = (object) =>{
         Dorm.findOne({ _id: object.id }, (err, dorm) => {
             if (err) { reject(err); }
             dorm.dorm_name = object.dorm_name,
-            dorm.dorm_details = object.dorm_details,
             dorm.dorm_manager_id = object.dorm_manager_id,
             dorm.dorm_manager_name = object.dorm_manager_name,
             dorm.dorm_manager_email = object.dorm_manager_email,

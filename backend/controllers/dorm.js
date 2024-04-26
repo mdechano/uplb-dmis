@@ -84,7 +84,6 @@ exports.editDorm = async (req, res) => {
     const dorm = {
         id: req.params.id,
         dorm_name: body.dorm_name,
-        dorm_details: body.dorm_details,
         dorm_manager_id: body.dorm_manager_id,
         dorm_manager_name: body.dorm_manager_name,
         dorm_manager_email: body.dorm_manager_email,

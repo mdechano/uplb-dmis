@@ -13,6 +13,7 @@ function CompleteManagerProfile () {
 
     const [fileData, setFileData] = useState();
     const [fileId, setFileId] = useState();
+    // const [new_completed_profile, setCompletedProfile] = useState();
     let allEmails = []
  
     const fetchData = () => {
@@ -93,8 +94,7 @@ function CompleteManagerProfile () {
                             'Content-Type':'application/json'
                         },
                         body: JSON.stringify({
-                            dorm_name: document.getElementById("dorm_name").value,
-                            dorm_details: document.getElementById("dorm_details").value,
+                            dorm_name: user.dorm,
                             dorm_manager_id: person._id,
                             dorm_manager_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value,
                             dorm_manager_email: document.getElementById("email").value,
@@ -111,11 +111,36 @@ function CompleteManagerProfile () {
                     })
                     .then(response => {return response.json()})
                     .then(
-                        alert("Successfully completed manager profile and submitted dorm information.")
+                        changeCompletedProfile(user)
                     )
                 }
             }) 
         }
+    }
+
+    // const handleChange = () => {
+    //     setCompletedProfile(true)
+    // }
+
+    const changeCompletedProfile = (person) => {
+        fetch(apiUrl("/user/change-completed-profile"), {
+            method: "PUT",
+            credentials:'include',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                email: person.email,
+                completed_profile: true
+            })
+        })
+        .then(response => {return response.json()})
+        .then(
+            alert("Successfully completed manager profile and submitted dorm information."),
+            setTimeout(function(){
+                window.location.reload();
+             }, 1000)
+        )
     }
 
     useEffect(()=>{
@@ -211,9 +236,12 @@ function CompleteManagerProfile () {
                                         <tr className='table-row'>
                                         <td className='cell-title'>Residence Hall Name</td>
                                         </tr>
+                                        { user ?
                                         <tr className='table-row'>
-                                            <td className='cell-input'><input type='text' id='dorm_name' value={user.dorm}></input></td>
+                                            <td className='cell-input'>{user.dorm}</td>
                                         </tr>
+                                        : ""}
+                                        
                                         <tr className='table-row'>
                                         <td className='cell-title'>Office Hours</td>
                                         </tr>

@@ -11,7 +11,6 @@ function LandingPage () {
     const navigate = useNavigate();
     const { setAuth } = useStore();
 
-    // functions here
     function sendToken(token){
         fetch((apiUrl("/user/")), {
             method: "POST",
@@ -36,11 +35,9 @@ function LandingPage () {
         });
     }
 
-
     function handleCallbackResponse(response){
         sendToken(response.credential)
     }
-    
     
     useEffect(() => {
         /* global google */
@@ -51,15 +48,11 @@ function LandingPage () {
     
         google.accounts.id.renderButton(
           document.getElementById("signInDiv"),
-        //   { theme: "outline", size: "large"}
           {
-            // 'scope': 'profile email',
             'width': 240,
             'height': 100,
             'longtitle': true,
             'theme': 'dark'
-            // 'onsuccess': onSuccess,
-            // 'onfailure': onFailure
           }
         )
     }, []);
@@ -89,15 +82,12 @@ function LandingPage () {
             <div className="landing_container">
                 <div className="landing-left">
                     <p className='p_landing_title'>Welcome to the UPLB<br></br>Dormitory Management<br></br>Information System</p>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <br></br>
+                    <div className='blank-space'></div> 
                     <img className='dmis-logo' src={UPLBDMISlogo} alt='dmis-logo'></img>
                     <br></br>
                     <br></br>
                     <button className='login-button' id='signInDiv'></button>  
-                    {/* <div className='blank-space'></div>       */}
+                    <div className='blank-space'></div>      
                 </div>
                 <div className='landing-right'>
                     hello dito ko lalagay yung slides ng pics of dorms hahaha

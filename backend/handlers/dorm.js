@@ -59,7 +59,15 @@ exports.edit = (object) =>{
             dorm.dorm_attendant_id = object.dorm_attendant_id,
             dorm.dorm_attendant_name = object.dorm_attendant_name,
             dorm.dorm_attendant_email = object.dorm_attendant_email,
-            dorm.dorm_attendant_contact_number = object.dorm_attendant_contact_number
+            dorm.dorm_attendant_contact_number = object.dorm_attendant_contact_number,
+            dorm.office_hours_start = object.office_hours_start,
+            dorm.office_hours_end = object.office_hours_end,
+            dorm.late_permit_start = object.late_permit_start,
+            dorm.late_permit_end = object.late_permit_end,
+            dorm.overnight_permit_start = object.overnight_permit_start,
+            dorm.overnight_permit_end = object.overnight_permit_end,
+            dorm.stayover_permit_start = object.stayover_permit_start,
+            dorm.stayover_permit_end = object.stayover_permit_end
             
             dorm.save((err, dorm) => {
                 if(err) { reject(err); }

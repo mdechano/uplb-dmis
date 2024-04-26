@@ -21,11 +21,10 @@
     margin-top: 15px;
     margin-left: 15%;
     margin-right: 15%;
-    padding-top: 10px;
-    padding-bottom: 30px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     padding-left: 5%;
     padding-right: 5%;
-    font-size: 15px;
     font-family: "Montserrat", sans-serif;
 }
 
@@ -34,25 +33,21 @@
     font-weight: bold;
 }
 
-.paragraph {
-    font-size: 15px;
-}
-
 .complete-sign-up {
-    border: none;
-
+    border: 1px solid;
+    padding: 10px 10px;
 }
 
 .set-up {
     font-size: 18px;
 }
 
-select {
-width: 100%;
-  padding: 16px 20px;
-  border: none;
-  border-radius: 4px;
-  background-color: #f5f5f5
+.dashboard-custom-select {
+    width: 100%;
+    padding: 16px 20px;
+    border: 1px solid ;
+    border-radius: 4px;
+    background-color: #f5f5f5
 }
 
 .confirm-information {

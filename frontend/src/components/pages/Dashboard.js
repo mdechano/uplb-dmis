@@ -52,8 +52,6 @@ const Dashboard = () => {
         console.log(document.getElementById("user_dorm").value);
         setNewDorm(document.getElementById("user_dorm").value);
     }
-
-
    
     return (
         <div>
@@ -64,8 +62,7 @@ const Dashboard = () => {
                 {user ?
                 <div>
                     <p className='greet'>Greetings, {user.first_name}!</p>
-                    <br>
-                    </br>
+                    <br></br>
                     <p className='paragraph'>Welcome to the UPLB Dormitory Management Information System.</p>  
                 </div>
                 :
@@ -83,20 +80,20 @@ const Dashboard = () => {
                         <br></br>
                         <p>Please choose a role.</p>
                         <br></br>
-                        <div className='custom-select'>
-                        <select className='user-role' id='user_role' value={userRole} onChange={handleChange}>
-                            <option value=""disabled defaultValue hidden>Choose Role</option>
-                            <option value='dorm manager'>Dorm Manager</option>
-                            <option value='dorm attendant'>Dorm Attendant</option>
-                            <option value='resident'>Resident</option>
-                        </select>   
+                        <div>
+                            <select className='dashboard-custom-select' id='user_role' value={userRole} onChange={handleChange}>
+                                <option value=""disabled defaultValue hidden>Choose Role</option>
+                                <option value='dorm manager'>Dorm Manager</option>
+                                <option value='dorm attendant'>Dorm Attendant</option>
+                                <option value='resident'>Resident</option>
+                            </select>   
                         </div>
                         
                         <br></br>
                         <p>Choose your assigned dormitory.</p>
                         <br></br>
-                        <div class="custom-select">
-                        <select className='user-dorm' id="user_dorm" value={userDorm} onChange={handleChange}>
+                        <div>
+                        <select className='dashboard-custom-select' id="user_dorm" value={userDorm} onChange={handleChange}>
                             <option value="Women's Residence Hall">Women's Residence Hall</option>
                             <option value="Men's Residence Hall">Men's Residence Hall</option>
                             <option value="International House Residence Hall">International House Residence Hall</option>

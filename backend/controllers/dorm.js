@@ -33,7 +33,15 @@ exports.addDorm = async (req, res) => {
         dorm_attendant_id: body.dorm_attendant_id,
         dorm_attendant_name: body.dorm_attendant_name,
         dorm_attendant_email: body.dorm_attendant_email,
-        dorm_attendant_contact_number: body.dorm_attendant_contact_number
+        dorm_attendant_contact_number: body.dorm_attendant_contact_number,
+        office_hours_start: body.office_hours_start,
+        office_hours_end: body.office_hours_end,
+        late_permit_start: body.late_permit_start,
+        late_permit_end: body.late_permit_end,
+        overnight_permit_start: body.overnight_permit_start,
+        overnight_permit_end: body.overnight_permit_end,
+        stayover_permit_start: body.stayover_permit_start,
+        stayover_permit_end: body.stayover_permit_end
         };
 
         try {
@@ -84,7 +92,15 @@ exports.editDorm = async (req, res) => {
         dorm_attendant_id: body.dorm_attendant_id,
         dorm_attendant_name: body.dorm_attendant_name,
         dorm_attendant_email: body.dorm_attendant_email,
-        dorm_attendant_contact_number: body.dorm_attendant_contact_number
+        dorm_attendant_contact_number: body.dorm_attendant_contact_number,
+        office_hours_start: body.office_hours_start,
+        office_hours_end: body.office_hours_end,
+        late_permit_start: body.late_permit_start,
+        late_permit_end: body.late_permit_end,
+        overnight_permit_start: body.overnight_permit_start,
+        overnight_permit_end: body.overnight_permit_end,
+        stayover_permit_start: body.stayover_permit_start,
+        stayover_permit_end: body.stayover_permit_end
     };
 
     try{

@@ -83,7 +83,6 @@ function CompleteManagerProfile () {
 
     const sendDormInfo = (manager) => {
         
-
         if (manager !== undefined) {
             manager.map((person, i) => {
                 if(i === (manager.length - 1)){
@@ -99,7 +98,15 @@ function CompleteManagerProfile () {
                             dorm_manager_id: person._id,
                             dorm_manager_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value,
                             dorm_manager_email: document.getElementById("email").value,
-                            dorm_manager_contact_number: document.getElementById("contact_number").value
+                            dorm_manager_contact_number: document.getElementById("contact_number").value,
+                            office_hours_start: document.getElementById("office_hours_start").value,
+                            office_hours_end: document.getElementById("office_hours_end").value,
+                            late_permit_start: document.getElementById("late_permit_start").value,
+                            late_permit_end: document.getElementById("late_permit_end").value,
+                            overnight_permit_start: document.getElementById("overnight_permit_start").value,
+                            overnight_permit_end: document.getElementById("overnight_permit_end").value,
+                            stayover_permit_start: document.getElementById("stayover_permit_start").value,
+                            stayover_permit_end: document.getElementById("stayover_permit_end").value,
                         })
                     })
                     .then(response => {return response.json()})
@@ -125,30 +132,32 @@ function CompleteManagerProfile () {
             <NavBar></NavBar>
             <div classname = 'complete-manager-profile-div'>
                 <div className='upper-div'>
-                    <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
-                    <p className='page-title'>COMPLETE PROFILE</p>
+                    <button className='back-button' onClick = {()=> navigate("/manager-profile")}>BACK</button>
+                    <p className='page-title'>COMPLETE MANAGER PROFILE</p>
                     <button className='save-button' onClick={sendData}>SAVE</button>
                 </div>
+                <hr className='divider'></hr>
                 <div className="body-div">
                     <div className='left-div'>
-                        <div className='student-div'>
-                            <div className='image-div'>
-                                image here
+                        <form className='upload-div'>
+                            <div className='upload-body'>
+                                <input className='upload-img-file' type="file"></input>
+                                <br></br>
+                                <br></br>
+                                <br></br>
+                                <button className='upload-img-submit' type="submit">SUBMIT</button>
                             </div>
-                            <div className='profile-info'>
-                                <p>ANNA DELA CRUZ</p>
-                                <p>2019-08206</p>
-                                <p>ROOM NO. 1209</p>
-                                <p>ROLE</p>
+                            <div className='upload-note'>
+                                Upload Picture Here<br></br>(1x1 or 2x2)
                             </div>
-                        </div>
-                       
+                        </form>
                     </div>
+
                     <div className="right-div">
                         <form className="form-div">
                             <div className="form-div-personal">
-                                <h2>PERSONAL STUFF</h2>
-                                <table>
+                                <h2 className='section-label'>PERSONAL INFORMATION</h2>
+                                <table className='info-table'>
                                     <tr className='table-row'>
                                         <td className='cell-title'>First Name</td>
                                         <td className='cell-title'>Middle Name</td>
@@ -169,7 +178,7 @@ function CompleteManagerProfile () {
                                     </tr>
                                     <tr className='table-row'>
                                         <td className='cell-input'>
-                                            <select id="sex" name="sex">
+                                            <select className='custom-select-sex' id="sex" name="sex">
                                                 <option>Select Sex</option>
                                                 <option value="female">Female</option>
                                                 <option value="male">Male</option>
@@ -195,23 +204,55 @@ function CompleteManagerProfile () {
                                 
                                 </table>
 
-                                <h2>COMPLETE DORM INFORMATION HERE</h2>
-                                <table>
-                                    <tr className='table-row'>
+                                <h2 className='section-label'>DORM INFORMATION</h2>
+                                <p className='paragraph'>Complete dorm information here.</p>
+                                <table className='dorm-info-table'>
+                                    <div className='dorm-info-table-left'>
+                                        <tr className='table-row'>
                                         <td className='cell-title'>Residence Hall Name</td>
-                                        <td className='cell-title'>Dorm Details</td>
-                                    </tr>
-                                    <tr className='table-row'>
-                                        <td className='cell-input'><input type='text' id='dorm_name' name='dorm_name'></input></td>
-                                        <td className='cell-input'><input type='text' id='dorm_details' name='dorm_details'></input></td>
-                                    </tr>
-
+                                        </tr>
+                                        <tr className='table-row'>
+                                            <td className='cell-input'><input type='text' id='dorm_name' value={user.dorm}></input></td>
+                                        </tr>
+                                        <tr className='table-row'>
+                                        <td className='cell-title'>Office Hours</td>
+                                        </tr>
+                                        <tr className='table-row'>
+                                            <td className='cell-input'>FROM <input type='time' id='office_hours_start'></input></td>
+                                            <td className='cell-input'>TO <input type='time' id='office_hours_end'></input></td>
+                                        </tr>
+                                    </div>
+                                    
+                                    <div className='dorm-info-table-right'>
+                                        <tr className='table-row'>
+                                            <td className='cell-title'>Late Permit Hours</td>
+                                        </tr>
+                                        <tr className='table-row'>
+                                        <td className='cell-input'>FROM <input type='time' id='late_permit_start'></input></td>
+                                            <td className='cell-input'>TO <input type='time' id='late_permit_end'></input></td>
+                                        </tr>
+                                        <tr className='table-row'>
+                                            <td className='cell-title'>Overnight Permit Hours</td>
+                                        </tr>
+                                        <tr className='table-row'>
+                                        <td className='cell-input'>FROM <input type='time' id='overnight_permit_start'></input></td>
+                                            <td className='cell-input'>TO <input type='time' id='overnight_permit_end'></input></td>
+                                        </tr>
+                                        <tr className='table-row'>
+                                            <td className='cell-title'>Stayover/Homebound Permit Hours</td>
+                                        </tr>
+                                        <tr className='table-row'>
+                                        <td className='cell-input'>FROM <input type='time' id='stayover_permit_start'></input></td>
+                                            <td className='cell-input'>TO <input type='time' id='stayover_permit_end'></input></td>
+                                        </tr>
+                                    </div>
                                     
                                 </table>
 
                             </div>
                             
                         </form>
+                        
                     </div>
                 </div>
             </div>

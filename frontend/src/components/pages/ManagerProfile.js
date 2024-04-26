@@ -14,7 +14,7 @@ function ManagerProfile () {
 
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
-    const [role, setRole] = useState();
+    // const [role, setRole] = useState();
 
     useEffect(()=>{
         if(isAuthenticated === false){

@@ -11,10 +11,9 @@ function CompleteAttendantProfile () {
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
 
-    // const [fileData, setFileData] = useState();
-    // const [fileId, setFileId] = useState();
+    const [fileData, setFileData] = useState();
+    const [fileId, setFileId] = useState();
     const [dorm, setDorm] = useState();
-    const [attendant, setAttendant] = useState();
 
     let allEmails = []
  

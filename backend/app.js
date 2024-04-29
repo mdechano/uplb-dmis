@@ -2,14 +2,14 @@
 const express = require('express')
 const cookieParser = require("cookie-parser");
 const Router = require('./router');
-// const formData = require('express-form-data');
+const formData = require('express-form-data');
 const path = require('path')
 require("dotenv").config();
 
 // initialize express app
 exports.start = () => {
     const App = express();
-    // App.use(formData.parse());
+    App.use(formData.parse());
     App.use(express.urlencoded({ extended: true }));
     App.use(express.json());
     App.use(cookieParser());

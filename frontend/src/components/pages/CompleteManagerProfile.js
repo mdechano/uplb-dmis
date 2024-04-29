@@ -13,7 +13,6 @@ function CompleteManagerProfile () {
 
     const [fileData, setFileData] = useState();
     const [fileId, setFileId] = useState();
-    // const [new_completed_profile, setCompletedProfile] = useState();
     let allEmails = []
  
     const fetchData = () => {
@@ -63,7 +62,7 @@ function CompleteManagerProfile () {
                     contact_number: document.getElementById("contact_number").value,
                     email: document.getElementById("email").value,
                     home_address: document.getElementById("home_address").value,
-                    // upload_id: 
+                    picture_id: fileId
                 })
             })
             .then(response => {return response.json()})
@@ -139,6 +138,30 @@ function CompleteManagerProfile () {
         )
     }
 
+    const fileChangeHandler = (e) => {
+        console.log(e.target.files[0]);
+        setFileData(e.target.files[0]);
+    };
+
+    const onSubmitHandler = (e) => {
+        e.preventDefault();
+    
+        // Handle File Data from the state Before Sending
+        const data = new FormData();
+        data.append("image", fileData);
+
+        console.log(data);
+    
+        fetch(apiUrl("/picture"), {
+          method: "POST",
+          body: data,
+        }).then((response) => response.json())
+        .then((result) => {
+            setFileId(result.id);
+            console.log(result.id);
+        });
+    };
+
     useEffect(()=>{
         if(isAuthenticated === false){
             navigate("/")
@@ -162,11 +185,11 @@ function CompleteManagerProfile () {
                     <div className='left-div'>
                         <form className='upload-div'>
                             <div className='upload-body'>
-                                <input className='upload-img-file' type="file"></input>
+                                <input className='upload-img-file' type="file" onChange={fileChangeHandler} ></input>
                                 <br></br>
                                 <br></br>
                                 <br></br>
-                                <button className='upload-img-submit' type="submit">SUBMIT</button>
+                                <button className='upload-img-submit' type="submit" onClick={onSubmitHandler} >SUBMIT</button>
                             </div>
                             <div className='upload-note'>
                                 Upload Picture Here<br></br>(1x1 or 2x2)

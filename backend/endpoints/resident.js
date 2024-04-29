@@ -3,7 +3,6 @@ const Router = require('express').Router;
 
 const Resident = Router();
 
-//Resident.post('/upload', ApplicantController.uploadImage);
 Resident.post('/', ResidentController.addResident);
 Resident.put('/:id', ResidentController.editResident);
 Resident.delete('/', ResidentController.deleteResident);

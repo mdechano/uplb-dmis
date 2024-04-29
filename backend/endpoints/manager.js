@@ -3,7 +3,6 @@ const Router = require('express').Router;
 
 const Manager = Router();
 
-//Manager.post('/upload', ManagerController.uploadImage);
 Manager.post('/', ManagerController.addManager);
 Manager.put('/:id', ManagerController.editManager);
 Manager.delete('/', ManagerController.deleteManager);

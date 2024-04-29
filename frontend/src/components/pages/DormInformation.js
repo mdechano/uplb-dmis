@@ -40,7 +40,7 @@ function DormInformation () {
                     {dorm.map((dorm, i) => {
                         return (
                             user.dorm === dorm.dorm_name ?
-
+                            
                             <div>
                                 <div className='upper-div'>
                                     <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
@@ -104,7 +104,7 @@ function DormInformation () {
                                             </table>
                                     </div>
                             </div>
-                            : " " )
+                        : " " )
                         }
                     )}
 

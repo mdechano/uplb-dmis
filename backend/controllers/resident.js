@@ -59,10 +59,10 @@ exports.addResident = async (req,res) => {
         appliances: body.appliances,
         appliances_information: body.appliances_information,
         emergency_details: body.emergency_details,
-        slas: body.slas
+        slas: body.slas,
+        picture_id: body.picture_id
         // payment_details: body.payment_details,
         // violation_details: body.violation_details,
-        // picture_id: body.picture_id,
         // dorm_id: body.dorm_id
     };
     try{
@@ -85,7 +85,7 @@ exports.addResident = async (req,res) => {
     catch(err) {
         console.log(`Unable to create new resident. Error: ${err}`);
         return res.status(500).send({ message: "Error creating new resident", success: false})
-        // return res.send({message: "Got this?"});
+        
     }
 }
 
@@ -148,10 +148,10 @@ exports.editResident = async (req,res) => {
         appliances_information: body.appliances_information,
         emergency_details: body.emergency_details,
         slas: body.slas,
-        payment_details: body.payment_details,
-        violation_details: body.violation_details,
         picture_id: body.picture_id,
-        dorm_id: body.dorm_id
+        payment_details: body.payment_details,
+        violation_details: body.violation_details
+        
     };
 
     try{

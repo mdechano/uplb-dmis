@@ -5,6 +5,7 @@ exports.models = {
     Manager: require('./manager'),
     Attendant: require('./attendant'),
     Resident: require('./resident'),
-    Deleted: require('./deleted')
+    Deleted: require('./deleted'),
+    Picture: require('./picture')
 
 }

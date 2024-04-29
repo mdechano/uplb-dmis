@@ -18,8 +18,7 @@ const DormSchema = new mongoose.Schema(
         late_permit_end: {type: String},
         overnight_permit_start: {type: String},
         overnight_permit_end: {type: String},
-        stayover_permit_start: {type: String},
-        stayover_permit_end: {type: String}
+        stayover_permit_start: {type: String}
     }
 )
 

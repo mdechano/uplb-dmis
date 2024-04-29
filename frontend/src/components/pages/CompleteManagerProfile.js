@@ -105,8 +105,7 @@ function CompleteManagerProfile () {
                             late_permit_end: document.getElementById("late_permit_end").value,
                             overnight_permit_start: document.getElementById("overnight_permit_start").value,
                             overnight_permit_end: document.getElementById("overnight_permit_end").value,
-                            stayover_permit_start: document.getElementById("stayover_permit_start").value,
-                            stayover_permit_end: document.getElementById("stayover_permit_end").value,
+                            stayover_permit_start: document.getElementById("stayover_permit_start").value
                         })
                     })
                     .then(response => {return response.json()})
@@ -118,9 +117,6 @@ function CompleteManagerProfile () {
         }
     }
 
-    // const handleChange = () => {
-    //     setCompletedProfile(true)
-    // }
 
     const changeCompletedProfile = (person) => {
         fetch(apiUrl("/user/change-completed-profile"), {
@@ -270,8 +266,7 @@ function CompleteManagerProfile () {
                                             <td className='cell-title'>Stayover/Homebound Permit Hours</td>
                                         </tr>
                                         <tr className='table-row'>
-                                        <td className='cell-input'>FROM <input type='time' id='stayover_permit_start'></input></td>
-                                            <td className='cell-input'>TO <input type='time' id='stayover_permit_end'></input></td>
+                                            <td className='cell-input'>FROM <input type='time' id='stayover_permit_start'></input></td>
                                         </tr>
                                     </div>
                                     

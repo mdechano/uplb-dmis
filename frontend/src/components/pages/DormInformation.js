@@ -41,6 +41,10 @@ function DormInformation () {
             
                     <div className='upper-div'>
                         <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
+                        { user.role === 'dorm manager' || user.role === 'dorm attendant' ? 
+                            <button className='back-button'>EDIT</button>
+                            : ""
+                        }
                     </div>
 
                     <div className='title-bg'><p className='page-title'>DORM INFORMATION</p></div>
@@ -52,27 +56,54 @@ function DormInformation () {
                                 <div className='dorm-info-content'>
                                     <h3>{dorm.dorm_name}</h3>
                                     <br></br>
-                                    <table>
+                                    <table className='personel-table'>
                                         <tr>
-                                            <td><th>Dorm Manager</th></td>
+                                            <td><b>Dorm Manager</b></td>
                                             <td>{dorm.dorm_manager_name}</td>
-                                            <td><th>Dorm Attendant</th></td>
+                                            <td><b>Dorm Attendant</b></td>
                                             <td>{dorm.dorm_attendant_name}</td>
                                         </tr>
                                         <tr>
-                                            <td><th>Email</th></td>
+                                            <td><b>Email</b></td>
                                             <td>{dorm.dorm_manager_email}</td>
-                                            <td><th>Email</th></td>
+                                            <td><b>Email</b></td>
                                             <td>{dorm.dorm_attendant_email}</td>
                                         </tr>
                                         <tr>
-                                            <td><th>Contact Number</th></td>
+                                            <td><b>Contact Number</b></td>
                                             <td>{dorm.dorm_manager_contact_number}</td>
-                                            <td><th>Contact Number</th></td>
+                                            <td><b>Contact Number</b></td>
                                             <td>{dorm.dorm_attendant_contact_number}</td>
                                         </tr>
-
-                                        <br></br>
+                                    </table>
+                                    <br></br>
+                                    <hr></hr>
+                                    <br></br>
+                                    <table className="hours">
+                                        <tr>
+                                            <th></th>
+                                            <th>FROM</th>
+                                            <th>TO</th>
+                                        </tr>
+                                        <tr>
+                                           <td>Office Hours</td> 
+                                           <td>{dorm.office_hours_start}</td>
+                                           <td>{dorm.office_hours_end}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Late Permit Hours</td> 
+                                           <td>{dorm.late_permit_start}</td>
+                                           <td>{dorm.late_permit_end}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Overnight Permit Hours</td> 
+                                           <td>{dorm.overnight_permit_start}</td>
+                                           <td>{dorm.overnight_permit_end}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Stayover Permit Hours</td> 
+                                           <td>{dorm.stayover_permit_start}</td>
+                                        </tr>
                                     </table>
                                 </div>
                             : " " )

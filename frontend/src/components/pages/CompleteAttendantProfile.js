@@ -139,46 +139,35 @@ function CompleteAttendantProfile () {
                                 })
                                 .then(response => {return response.json()})
                                 .then(
-                                    alert("Successfully completed attendant profile and updated dorm information.")
+                                    changeCompletedProfile(user)
                                 )
-
-                            } else {
-                                // will def trigger since nag-iiterate siya thru dorm list
-                                console.log("better luck next time!")
                             }
                         })
-                    } else {
-                        console.log("not working")
                     }
-
                 }
-                
-                // dorm.map((dorm) => {
-                //     if(person.dorm === dorm.name){
-                //         console.log("Attendant dorm: " + person.dorm)
-                //         console.log("Dorm name: " + dorm.name)
-
-                //     // fetch(apiUrl("/dorm/"),{
-                //     //     method: "PUT",
-                //     //     credentials:'include',
-                //     //     headers:{
-                //     //         'Content-Type':'application/json'
-                //     //     },
-                //     //     body: JSON.stringify({
-                //     //         dorm_attendant_id: person._id,
-                //     //         dorm_attendant_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value + " " + document.getElementById("suffix"),
-                //     //         dorm_attendant_email: document.getElementById("email").value,
-                //     //         dorm_attendant_contact_number: document.getElementById("contact_number").value
-                //     //     })
-                //     // })
-                //     // .then(response => {return response.json()})
-                //     }
-                // })
-                
             }) 
-        } else {
-            console.log("lmao not working")
         }
+    }
+
+    const changeCompletedProfile = (person) => {
+        fetch(apiUrl("/user/change-completed-profile"), {
+            method: "PUT",
+            credentials:'include',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                email: person.email,
+                completed_profile: true
+            })
+        })
+        .then(response => {return response.json()})
+        .then(
+            alert("Successfully completed attendant profile."),
+            setTimeout(function(){
+                window.location.reload();
+             }, 1000)
+        )
     }
 
     useEffect(()=>{
@@ -201,17 +190,18 @@ function CompleteAttendantProfile () {
                 </div>
                 <div className="body-div">
                     <div className='left-div'>
-                        <div className='student-div'>
-                            <div className='image-div'>
-                                image here
+                    <form className='upload-div'>
+                            <div className='upload-body'>
+                                <input className='upload-img-file' type="file"></input>
+                                <br></br>
+                                <br></br>
+                                <br></br>
+                                <button className='upload-img-submit' type="submit">SUBMIT</button>
                             </div>
-                            <div className='profile-info'>
-                                <p>ANNA DELA CRUZ</p>
-                                <p>2019-08206</p>
-                                <p>ROOM NO. 1209</p>
-                                <p>ROLE</p>
+                            <div className='upload-note'>
+                                Upload Picture Here<br></br>(1x1 or 2x2)
                             </div>
-                        </div>
+                        </form>
                        
                     </div>
                     <div className="right-div">

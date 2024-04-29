@@ -40,8 +40,7 @@ exports.addDorm = async (req, res) => {
         late_permit_end: body.late_permit_end,
         overnight_permit_start: body.overnight_permit_start,
         overnight_permit_end: body.overnight_permit_end,
-        stayover_permit_start: body.stayover_permit_start,
-        stayover_permit_end: body.stayover_permit_end
+        stayover_permit_start: body.stayover_permit_start
         };
 
         try {
@@ -98,8 +97,7 @@ exports.editDorm = async (req, res) => {
         late_permit_end: body.late_permit_end,
         overnight_permit_start: body.overnight_permit_start,
         overnight_permit_end: body.overnight_permit_end,
-        stayover_permit_start: body.stayover_permit_start,
-        stayover_permit_end: body.stayover_permit_end
+        stayover_permit_start: body.stayover_permit_start
     };
 
     try{

@@ -65,8 +65,7 @@ exports.edit = (object) =>{
             dorm.late_permit_end = object.late_permit_end,
             dorm.overnight_permit_start = object.overnight_permit_start,
             dorm.overnight_permit_end = object.overnight_permit_end,
-            dorm.stayover_permit_start = object.stayover_permit_start,
-            dorm.stayover_permit_end = object.stayover_permit_end
+            dorm.stayover_permit_start = object.stayover_permit_start
             
             dorm.save((err, dorm) => {
                 if(err) { reject(err); }

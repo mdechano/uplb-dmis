@@ -34,7 +34,9 @@ function AttendantProfile () {
                 <div className='upper-div'>
                     <div>
                         <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
+                        { user.completed_profile === false ?
                         <button className='complete-profile-button' onClick={() => navigate("/complete-attendant-profile")}>COMPLETE PROFILE</button>
+                        : ""}
                     </div>
                     
                     <p className='page-title'>ATTENDANT PROFILE</p>

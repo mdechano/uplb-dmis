@@ -1,0 +1,55 @@
+.dorm-info-content {
+    border: 0px solid grey;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px 2px #8888888f;
+    margin-top: 20px;
+    margin-left: 15%;
+    margin-right: 15%;
+    padding: 50px;
+    /* padding-left: 10%;
+    padding-right: 10%; */
+    font-size: 18px;
+}
+
+.title-bg {
+    background-color: #0A4424;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin: 0px;
+}
+
+.personel-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.personel-table td, .personel-table th {
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+
+.personel-table tr:nth-child(even){background-color: #f2f2f2;}
+
+.hours {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+.hours td, .hours th {
+    border: 1px solid #ddd;
+    padding: 5px;
+  }
+  
+.hours tr:nth-child(even){background-color: #f2f2f2;}
+  
+.hours tr:hover {background-color: #ddd;}
+  
+.hours th {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+    background-color: #0A4424;
+    color: white;
+  }

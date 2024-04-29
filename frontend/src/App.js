@@ -16,6 +16,7 @@ import StudentInfoSheetViolation from './components/pages/StudentInfoSheetViolat
 import GenerateSOA from './components/pages/GenerateSOA';
 import UploadReceipt from './components/pages/UploadReceipt';
 import DormInformation from './components/pages/DormInformation';
+import EditDormInformation from './components/pages/EditDormInformation';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
             <Route exact={true} path="/generate-soa" element={<GenerateSOA />} />
             <Route exact={true} path="/upload-receipt" element={<UploadReceipt />} />
             <Route exact={true} path="/dorm-information" element={<DormInformation />} />
+            <Route exact={true} path="/edit-dorm-information" element={<EditDormInformation />} />
           </Routes>
         </div>
       </BrowserRouter>

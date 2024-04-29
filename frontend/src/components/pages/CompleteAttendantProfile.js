@@ -130,7 +130,6 @@ function CompleteAttendantProfile () {
                                         overnight_permit_start: currentDorm.overnight_permit_start,
                                         overnight_permit_end: currentDorm.overnight_permit_end,
                                         stayover_permit_start: currentDorm.stayover_permit_start,
-                                        stayover_permit_end: currentDorm.stayover_permit_end,
                                         dorm_attendant_id: currentPerson._id,
                                         dorm_attendant_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value,
                                         dorm_attendant_email: document.getElementById("email").value,

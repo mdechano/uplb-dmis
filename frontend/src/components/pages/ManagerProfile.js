@@ -16,6 +16,7 @@ function ManagerProfile () {
     const [manager, setManager] = useState();
 
     const fetchData = () => {
+        
         const getTempManagers = axios.get(apiUrl("/manager"), { withCredentials: true });
         axios.all([getTempManagers]).then(
             axios.spread((...allData) => {
@@ -27,14 +28,15 @@ function ManagerProfile () {
 
     const matchUser = (tempManager) => {
         if (tempManager !== undefined) {
+            // console.log(tempManager)
             tempManager.map((tempManager, i) => {
                 if (user._id === tempManager.user_id) {
 
                     const currentManager = tempManager;
 
-                    console.log("current manager: " + currentManager.first_name)
-                    console.log("current manager user_id: " + currentManager.user_id)
-                    console.log("current user._id: " + user._id)
+                    // console.log("current manager: " + currentManager.first_name)
+                    // console.log("current manager user_id: " + currentManager.user_id)
+                    // console.log("current user._id: " + user._id)
 
                     const getManager = axios.get(apiUrl("/manager/") + currentManager._id, { withCredentials: true });
                     axios.all([getManager]).then(
@@ -51,6 +53,7 @@ function ManagerProfile () {
             })
         }
     }
+
 
     useEffect(()=>{
         if(isAuthenticated === false){
@@ -94,7 +97,7 @@ function ManagerProfile () {
                             <br></br>
                             <p>{user._id}</p>
                             <br></br>
-                            <img className="donorpic" src={require(`../pictures/${manager.picture_id}`)} />
+                            <img className="manager-pic" src={require(`../pictures/${manager.picture_id}`)}  fetchPriority='high' />
                             </div>
 
                         <div className='manager-profile-div-right'>
@@ -102,7 +105,10 @@ function ManagerProfile () {
                         </div>
                     </div>
 
-                : " "}
+                :
+                <div>
+                    <button onClick={fetchData}>RELOAD</button>
+                </div>}
                 
                                     
                 

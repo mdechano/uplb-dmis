@@ -3,6 +3,7 @@ import {React, useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import useStore from '../utilities/authHook';
 import {apiUrl} from '../utilities/apiUrl';
+import axios, { all } from "axios";
 import UPLBLogoText from '../images/UPLBLogoText.png'
 import DDMenu from '../images/DDMenu.png'
 import profilepic from '../images/userprofile.png'
@@ -13,8 +14,11 @@ function NavBar () {
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
     const [role, setRole] = useState();
-
-
+    const [tempManager, setTempManager] = useState();
+    const [tempAttendant, setTempAttendant] = useState();
+    const [tempResident, setTempResident] = useState();
+    const [managerID, setManagerID] = useState();
+ 
     const logout = () => {
         fetch(apiUrl("/user/"), {
             method: "DELETE",
@@ -35,11 +39,37 @@ function NavBar () {
         )
     }
 
+    // const fetchData = () => {
+    //     const getTempManagers = axios.get(apiUrl("/manager"), { withCredentials: true });
+    //     // const getTempAttendants = axios.get(apiUrl("/attendant"), { withCredentials: true });
+    //     // const getTempResidents = axios.get(apiUrl("/resident"), { withCredentials: true });
+    //     axios.all([getTempManagers]).then(
+    //         axios.spread((...allData) => {
+    //             setTempManager(allData[0].data)
+    //             // setTempAttendant(allData[1].data)
+    //             // setTempResident(allData[2].data)
+    //             matchUserManager(tempManager)
+    //         })
+    //     )
+    // }
+
+    // const matchUserManager = (manager) => {
+    //     if (manager !== undefined) {
+    //         manager.map((manager, i) => {
+    //             if (user._id === manager.user_id) {
+    //                 setManagerID(manager._id);
+    //                 console.log(managerID)
+    //             }
+    //         })
+    //     } 
+    // }
+
     useEffect(()=> {
         if(isAuthenticated === false){
             navigate("/")
         } else {
             setRole(user.role);
+            // fetchData();
         }
     });
 
@@ -74,8 +104,13 @@ function NavBar () {
                         <div className='dropdown-content'>
                             <a><Link>Resident List</Link></a>
                             <a><Link to='/manager-profile'>Dorm Manager Profile</Link></a>
+                            {/* <a onClick={() => navigate('/'+ 'manager-profile/' + managerID)}>Dorm Manager Profile</a> */}
                             <a><Link>Dorm Assistants</Link></a>
                             <a><Link to='/dorm-information'>Dorm Information</Link></a>
+                            {/* <li>Resident List</li>
+                            <li onClick={navigate('/manager-profile')}>Dorm Manager Profile</li>
+                            <li>Dorm Assistants</li>
+                            <li>Dorm Information</li> */}
                         </div>
                         : "" }
                         { role === 'dorm attendant' ?

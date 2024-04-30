@@ -29,7 +29,7 @@ function App() {
             <Route exact={true} path="/complete-resident-profile" element={<CompleteResidentProfile />} />
             <Route exact={true} path="complete-manager-profile" element={<CompleteManagerProfile />} />
             <Route exact={true} path="complete-attendant-profile" element={<CompleteAttendantProfile />} />
-            <Route exact={true} path="manager-profile" element={<ManagerProfile />} />
+            <Route exact={true} path="manager-profile/:id" element={<ManagerProfile />} />
             <Route exact={true} path="attendant-profile" element={<AttendantProfile />} />
             <Route exact={true} path="/student-info-sheet-check-in" element={<StudentInfoSheetCheckIn />} />
             <Route exact={true} path="/student-info-sheet-emergency" element={<StudentInfoSheetEmergency />} />

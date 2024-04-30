@@ -12,46 +12,63 @@ function ManagerProfile () {
 
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
+    const [ currentUser, setUser] = useState();
     const [tempManager, setTempManager] = useState();
-    const [manager, setManager] = useState();
+    const [ currentManager, setManager] = useState();
+
+    // const fetchData = () => {
+        
+    //     const getTempManagers = axios.get(apiUrl("/manager"), { withCredentials: true });
+    //     axios.all([getTempManagers]).then(
+    //         axios.spread((...allData) => {
+    //             setTempManager(allData[0].data)
+    //             matchUser(tempManager)
+    //         })
+    //     )
+    // }
+
+    // const matchUser = (tempManager) => {
+    //     if (tempManager !== undefined) {
+
+    //         tempManager.map((tempManager, i) => {
+    //             if (user._id === tempManager.user_id) {
+
+    //                 const currentManager = tempManager;
+
+    //                 const getManager = axios.get(apiUrl("/manager/") + currentManager._id, { withCredentials: true });
+    //                 axios.all([getManager]).then(
+    //                     axios.spread((...allData) => {
+    //                         const allManagerData = allData[0].data
+    //                         setManager(allManagerData)
+    //                         // var picture_id = allData[0].data.picture_id.split(".")[0]
+    //                         // fetch(apiUrl("/picture/" + picture_id), {
+    //                         //     method: "GET",
+    //                         // }).then((response) => response.json())
+    //                     })
+    //                 )
+    //             }
+    //         })
+    //     }
+    // }
 
     const fetchData = () => {
-        
-        const getTempManagers = axios.get(apiUrl("/manager"), { withCredentials: true });
-        axios.all([getTempManagers]).then(
+        const link = window.location.href;
+        const id = link.slice(link.lastIndexOf('/')+1,link.length);
+        const getManager = axios.get(apiUrl("/manager/") + id, { withCredentials: true });
+        // const getScholarships = axios.get(apiUrl("/scholarship"), { withCredentials: true });
+        axios.all([getManager]).then(
             axios.spread((...allData) => {
-                setTempManager(allData[0].data)
-                matchUser(tempManager)
+                const allManagerData = allData[0].data
+                // const allScholarshipData = allData[1].data
+                setManager(allManagerData)
+                console.log(currentManager)
+                // setScholarship(allScholarshipData)
+                // var uploadID = allData[0].data.upload_id.split(".")[0]
+                // fetch(apiUrl("/upload/" + uploadID), {
+                //     method: "GET",
+                // }).then((response) => response.json())
             })
         )
-    }
-
-    const matchUser = (tempManager) => {
-        if (tempManager !== undefined) {
-            // console.log(tempManager)
-            tempManager.map((tempManager, i) => {
-                if (user._id === tempManager.user_id) {
-
-                    const currentManager = tempManager;
-
-                    // console.log("current manager: " + currentManager.first_name)
-                    // console.log("current manager user_id: " + currentManager.user_id)
-                    // console.log("current user._id: " + user._id)
-
-                    const getManager = axios.get(apiUrl("/manager/") + currentManager._id, { withCredentials: true });
-                    axios.all([getManager]).then(
-                        axios.spread((...allData) => {
-                            const allManagerData = allData[0].data
-                            setManager(allManagerData)
-                            var picture_id = allData[0].data.picture_id.split(".")[0]
-                            fetch(apiUrl("/picture/" + picture_id), {
-                                method: "GET",
-                            }).then((response) => response.json())
-                        })
-                    )
-                }
-            })
-        }
     }
 
 
@@ -86,29 +103,18 @@ function ManagerProfile () {
                 </div>
 
                 
-                { manager !== undefined ?
+                { currentManager !== undefined ?
                     <div className='body-div'>
                         <div className='manager-profile-div-left'>
-                            <p>{manager.first_name}</p>
-                            <br></br>
-                            <p>{manager.last_name}</p>
-                            <br></br>
-                            <p>{manager.user_id}</p>
-                            <br></br>
-                            <p>{user._id}</p>
-                            <br></br>
-                            <img className="manager-pic" src={require(`../pictures/${manager.picture_id}`)}  fetchPriority='high' />
-                            </div>
-
-                        <div className='manager-profile-div-right'>
-                            hello right
+                            {currentManager.first_name}
                         </div>
+                        
                     </div>
 
-                :
-                <div>
-                    <button onClick={fetchData}>RELOAD</button>
-                </div>}
+                : 
+                // fetchData()
+                "hello"
+                }
                 
                                     
                 

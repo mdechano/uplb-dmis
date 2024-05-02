@@ -46,6 +46,7 @@ exports.editCompletedProfile = (object) => {
         User.findOne({ email: object.email }, (err, user) => {
             if (err) { reject(err); }
             user.completed_profile = object.completed_profile
+            user.profile_id = object.profile_id
             user.save((err, user) => {
                 if(err) { reject(err); }
                 resolve(user);

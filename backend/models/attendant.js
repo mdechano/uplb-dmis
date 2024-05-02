@@ -11,7 +11,7 @@ const AttendantSchema = new mongoose.Schema(
         middle_name: {type: String, required: false},
         suffix: {type: String, required: false},
         sex: {type: String, required: true},
-        birthday: {type: Date, required: true},
+        birthday: {type: String, required: true},
         contact_number: {type: String, required: true},
         email: {type: String, required: true},
         home_address: {type: String, required: true},

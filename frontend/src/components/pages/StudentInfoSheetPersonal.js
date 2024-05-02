@@ -10,9 +10,23 @@ function StudentInfoSheetPersonal () {
 
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
+    const [ currentResident, setResident] = useState();
 
-    const [fileData, setFileData] = useState();
-    const [fileId, setFileId] = useState();
+    const fetchData = () => {
+        const link = window.location.href;
+        const id = link.slice(link.lastIndexOf('/')+1,link.length);
+        const getResident = axios.get(apiUrl("/resident/") + id, { withCredentials: true });
+            axios.all([getResident]).then(
+                axios.spread((...allData) => {
+                    const allResidentData = allData[0].data
+                    setResident(allResidentData)
+                    var picture_id = allData[0].data.picture_id.split(".")[0]
+                    fetch(apiUrl("/picture/" + picture_id), {
+                        method: "GET",
+                    }).then((response) => response.json())
+                })
+            )
+    }
     
 
     useEffect(()=>{
@@ -20,7 +34,7 @@ function StudentInfoSheetPersonal () {
             navigate("/")
         } 
         else {
-            // fetchData()
+            fetchData()
         }
     },[]);
 
@@ -32,7 +46,7 @@ function StudentInfoSheetPersonal () {
                 <div className='upper-div'>
                     <div>
                         <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
-                        <button className='complete-profile-button' onClick={() => navigate("/complete-resident-profile")}>COMPLETE PROFILE</button>
+                        
                     </div>
                     
                     <p className='page-title'>STUDENT INFORMATION SHEET</p>
@@ -41,124 +55,231 @@ function StudentInfoSheetPersonal () {
                         <button className='edit-profile-button'>EDIT PROFILE</button>
                     </div>
                     
-                    {/* <button className='save-button' onClick = {sendData}>SAVE</button> */}
                 </div>
-                <div className='body-div'>
-                    <div className='left-div'>
-                        <div className='student-div'>
-                            <div className='image-div'>
-                                image here
-                            </div>
-                            <div className='profile-info'>
-                                <p>ANNA DELA CRUZ</p>
-                                <p>2019-08206</p>
-                                <p>ROOM NO. 1209</p>
-                                <p>ROLE</p>
-                            </div>
+
+                { currentResident !== undefined ?
+                
+                    <div className='body-div'>
+                        <div className='profile-div-left'>
+                            <img className='profile-pic' src={require(`../pictures/${currentResident.picture_id}`)}></img>
+                            <br></br>
+                            <p className='profile-info'>{currentResident.first_name + " "  + currentResident.last_name}</p>
+                            <p className='profile-info'><b>Resident</b></p>
+                            <p className='profile-info'><i>{currentResident.dorm}</i></p>
                         </div>
-                        <div className='nav-div'>
-                            <button className='stud-info-sheet-nav-personal'><Link to='/student-info-sheet-personal'><a className='info-sheet-btn'>PERSONAL</a></Link></button>
-                            <button className='stud-info-sheet-nav'><Link to='/student-info-sheet-family'><a className='info-sheet-btn'>FAMILY</a></Link></button>
-                            <button className='stud-info-sheet-nav'><Link to='/student-info-sheet-check-in'><a className='info-sheet-btn'>CHECK IN</a></Link></button>
-                            <button className='stud-info-sheet-nav'><Link to='/student-info-sheet-emergency'><a className='info-sheet-btn'>EMERGENCY</a></Link></button>
-                            <button className='stud-info-sheet-nav'><Link to='/student-info-sheet-payment'><a className='info-sheet-btn'>PAYMENT</a></Link></button>
-                            <button className='stud-info-sheet-nav'><Link to='/student-info-sheet-violation'><a className='info-sheet-btn'>VIOLATION</a></Link></button>
-                        </div>
-                    </div>
-                    <div className='right-div'>
-                        <form className='form-div'>
-                            <table>
-                                <tr className='table-row'>
-                                    <td className='cell-title'>First Name</td>
-                                    <td className='cell-title'>Middle Name</td>
-                                    <td className='cell-title'>Last Name</td>
-                                    <td className='cell-title'>Suffix</td>
+
+                        <div className='profile-div-right'>
+                            <table className='table-display'>
+                                <h3 className='section-label'>Personal Information</h3>
+                                <tr className='table-row-display'>
+                                    <td className='cell-title-display'>First Name</td>
+                                    <td className='cell-title-display'>Middle Name</td>
+                                    <td className='cell-title-display'>Last Name</td>
+                                    <td className='cell-title-display'>Suffix</td>
+                                </tr>
+                                <tr className='table-row-display'>
+                                    <td className='cell-input-display'>{currentResident.first_name}</td>
+                                    <td className='cell-input-display'>{currentResident.middle_name}</td>
+                                    <td className='cell-input-display'>{currentResident.last_name}</td>
+                                    <td className='cell-input-display'>{currentResident.suffix}</td>
+                                </tr>
+                                <tr className='table-row-display'>
+                                    <td className='cell-title-display'>Assigned Sex</td>
+                                    <td className='cell-title-display'>Birthday</td>
+                                    <td className='cell-title-display'>Contact Number</td>
+                                    <td className='cell-title-display'>Email</td>
                                     
                                 </tr>
-                                <tr className='table-row'>
-                                    <td className='cell-input'></td>
-                                    <td className='cell-input'></td>
-                                    <td className='cell-input'></td>
-                                    <td className='cell-input'></td>
-                                    
+                                <tr className='table-row-display'>
+                                    <td className='cell-input-display'>{currentResident.sex}</td>
+                                    <td className='cell-input-display'>{currentResident.birthday}</td>
+                                    <td className='cell-input-display'>{currentResident.contact_number}</td>
+                                    <td className='cell-input-display'>{currentResident.email}</td>
+                                </tr>  
+                                
+                                <tr className='table-row-display'>
+                                    <td className='cell-title-display'>Home Address</td>
+                                    <td className='cell-title-display'>Region</td>
+                                    <td className='cell-title-display'>College</td>
+                                    <td className='cell-title-display'>Degree Program</td>
+                                </tr>
+                                <tr className='table-row-display'>
+                                    <td className='cell-input-display'>{currentResident.home_address}</td>
+                                    <td className='cell-input-display'>{currentResident.region}</td>
+                                    <td className='cell-input-display'>{currentResident.college}</td>
+                                    <td className='cell-input-display'>{currentResident.degree_program}</td>
                                 </tr>
 
-                                <tr className='table-row'>
-                                    <td className='cell-title'>Assigned Sex</td>
-                                    <td className='cell-title'>Student Number</td>
-                                    <td className='cell-title'>Civil Status</td>
-                                    <td className='cell-title'>Birthday</td>
-                                    
+                                <tr className='table-row-display'>
+                                    <td className='cell-title-display'>Last School Attended</td>
+                                    <td className='cell-title-display'>Classification</td>
+                                    <td className='cell-title-display'>Honors Received</td>
+                                    <td className='cell-title-display'>Talents</td>
                                 </tr>
-                                <tr className='table-row'>
-                                    <td className='cell-input'></td>
-                                    <td className='cell-input'></td>
-                                    <td className='cell-input'></td>
-                                    <td className='cell-input'></td>
-                                    
+                                <tr className='table-row-display'>
+                                    <td className='cell-input-display'>{currentResident.last_school_attended}</td>
+                                    <td className='cell-input-display'>{currentResident.classification}</td>
+                                    <td className='cell-input-display'>{currentResident.honors_received}</td>
+                                    <td className='cell-input-display'>{currentResident.talents}</td>
                                 </tr>
 
-                                <tr className='table-row'>
-                                    <td className='cell-title'>Contact Number</td>
-                                    <td className='cell-title'>Email</td>
-                                    <td className='cell-title'>Home Address</td>
-                                    <td className='cell-title'>Region</td>
+                                <tr className='table-row-display'>
+                                    <td className='cell-title-display'>Hobbies</td>
+                                    <td className='cell-title-display'>Organizations</td>
+                                    <td className='cell-title-display'>Ailments</td>
+                                    <td className='cell-title-display'>Medications</td>
                                 </tr>
-                                <tr className='table-row'>
-                                    <td className='cell-input'></td>
-                                    <td className='cell-input'></td>
-                                    <td className='cell-input'></td>
-                                    <td className='cell-input'></td>
-                                    
-                                </tr>
-
-                                <tr className='table-row'>
-                                    <td className='cell-title'>College</td>
-                                    <td className='cell-title'>Degree Program</td>
-                                    <td className='cell-title'>Last School Attended</td>
-                                    <td className='cell-title'>Classification</td>
-                                    
-                                </tr>
-                                <tr className='table-row'>
-                                    <td className='cell-input'></td>
-                                    <td className='cell-input'></td>
-                                    <td className='cell-input'></td>
-                                    <td className='cell-input'></td>
-                                    
+                                <tr className='table-row-display'>
+                                    <td className='cell-input-display'>{currentResident.hobbies}</td>
+                                    <td className='cell-input-display'>{currentResident.organizations}</td>
+                                    <td className='cell-input-display'>{currentResident.ailments}</td>
+                                    <td className='cell-input-display'>{currentResident.medications}</td>
                                 </tr>
 
-                                <tr className='table-row'>
-                                    <td className='cell-title'>Honors Received</td>
-                                    <td className='cell-title'>Talents</td>
-                                    <td className='cell-title'>Hobbies</td>
-                                    <td className='cell-title'>Organizations</td>
+                                <tr className='table-row-display'>
+                                    <td className='cell-title-display'>Scholarships</td>
+                                    <td className='cell-title-display'>Monthly Stipend</td>
                                 </tr>
-                                <tr className='table-row'>
-                                    <td className='cell-input'></td>
-                                    <td className='cell-input'></td>
-                                    <td className='cell-input'></td>
-                                    <td className='cell-input'></td>
+                                <tr className='table-row-display'>
+                                    <td className='cell-input-display'>{currentResident.scholarships}</td>
+                                    <td className='cell-input-display'>{currentResident.monthly_stipend}</td>
                                 </tr>
-
-                                <tr className='table-row'>
-                                    <td className='cell-title'>Ailments</td>
-                                    <td className='cell-title'>Medications</td>
-                                    <td className='cell-title'>Scholarships</td>
-                                    <td className='cell-title'>Monthly Stipend</td>
-                                </tr>
-                                <tr className='table-row'>
-                                    <td className='cell-input'></td>
-                                    <td className='cell-input'></td>
-                                    <td className='cell-input'></td>
-                                    <td className='cell-input'></td>
-                                </tr>
-
-                            </table>
                             
-                        </form>
+                            </table>
+
+                            <br></br>
+                            <hr className='horizontal-line'></hr>
+                            <br></br>
+
+                            <table className='table-display'>
+                                <h3 className='section-label'>Family Information</h3>
+                                <tr className='table-row-display'>
+                                    <td className='cell-title-display'>Parents' Status</td>
+                                    <td className='cell-title-display'>Number of Brothers</td>
+                                    <td className='cell-title-display'>Number of Sisters</td>
+                                    <td className='cell-title-display'>Birth Order</td>
+                                </tr>
+                                <tr className='table-row-display'>
+                                    <td className='cell-input-display'>{currentResident.parents_status}</td>
+                                    <td className='cell-input-display'>{currentResident.number_of_brothers}</td>
+                                    <td className='cell-input-display'>{currentResident.number_of_sisters}</td>
+                                    <td className='cell-input-display'>{currentResident.birth_order}</td>
+                                </tr>
+                                <tr className='table-row-display'>
+                                    <td className='cell-title-display'>Father's Name</td>
+                                    <td className='cell-title-display'>Father's Occupation</td>
+                                    <td className='cell-title-display'>Father's Monthly Income</td>
+                                    <td className='cell-title-display'>Name of Firm/Employer</td>
+                                    
+                                </tr>
+                                <tr className='table-row-display'>
+                                    <td className='cell-input-display'>{currentResident.father_details.father_name}</td>
+                                    <td className='cell-input-display'>{currentResident.father_details.father_occupation}</td>
+                                    <td className='cell-input-display'>{currentResident.father_details.father_monthly_income}</td>
+                                    <td className='cell-input-display'>{currentResident.father_details.father_employer}</td>
+                                </tr>  
+                                
+                                <tr className='table-row-display'>
+                                    <td className='cell-title-display'>Office Address</td>
+                                    <td className='cell-title-display'>Father's Phone Number</td>
+                                </tr>
+                                <tr className='table-row-display'>
+                                    <td className='cell-input-display'>{currentResident.father_details.father_office}</td>
+                                    <td className='cell-input-display'>{currentResident.father_details.father_phone}</td>
+                                </tr>
+                                <tr className='table-row-display'>
+                                    <td className='cell-title-display'>Mother's Name</td>
+                                    <td className='cell-title-display'>Mother's Occupation</td>
+                                    <td className='cell-title-display'>Mother's Monthly Income</td>
+                                    <td className='cell-title-display'>Name of Firm/Employer</td>
+                                    
+                                </tr>
+                                <tr className='table-row-display'>
+                                    <td className='cell-input-display'>{currentResident.mother_details.mother_name}</td>
+                                    <td className='cell-input-display'>{currentResident.mother_details.mother_occupation}</td>
+                                    <td className='cell-input-display'>{currentResident.mother_details.mother_monthly_income}</td>
+                                    <td className='cell-input-display'>{currentResident.mother_details.mother_employer}</td>
+                                </tr>  
+                                
+                                <tr className='table-row-display'>
+                                    <td className='cell-title-display'>Office Address</td>
+                                    <td className='cell-title-display'>Mother's Phone Number</td>
+                                </tr>
+                                <tr className='table-row-display'>
+                                    <td className='cell-input-display'>{currentResident.mother_details.mother_office}</td>
+                                    <td className='cell-input-display'>{currentResident.mother_details.mother_phone}</td>
+                                </tr>
+                            
+                            </table>
+
+                            <br></br>
+                            <hr className='horizontal-line'></hr>
+                            <br></br>
+
+                            <table className='table-display'>
+                                <h3 className='section-label'>Emergency Details</h3>
+                                <tr className='table-row-display'>
+                                    <td className='cell-title-display'>Name</td>
+                                    <td className='cell-title-display'>Address</td>
+                                    <td className='cell-title-display'>Contact Number</td>
+                                </tr>
+                                <tr className='table-row-display'>
+                                    <td className='cell-input-display'>{currentResident.emergency_details.emergency_contact_1.name}</td>
+                                    <td className='cell-input-display'>{currentResident.emergency_details.emergency_contact_1.address}</td>
+                                    <td className='cell-input-display'>{currentResident.emergency_details.emergency_contact_1.phone}</td>
+                                </tr>
+                                
+                                <tr className='table-row-display'>
+                                    <td className='cell-title-display'>Name</td>
+                                    <td className='cell-title-display'>Address</td>
+                                    <td className='cell-title-display'>Contact Number</td>
+                                </tr>
+                                <tr className='table-row-display'>
+                                    <td className='cell-input-display'>{currentResident.emergency_details.emergency_contact_2.name}</td>
+                                    <td className='cell-input-display'>{currentResident.emergency_details.emergency_contact_2.address}</td>
+                                    <td className='cell-input-display'>{currentResident.emergency_details.emergency_contact_2.phone}</td>
+                                </tr>
+                            
+                            </table>
+
+                            <br></br>
+                            <hr className='horizontal-line'></hr>
+                            <br></br>
+
+                            <table className='table-display'>
+                                <h3 className='section-label'>Check In Details</h3>
+                                <tr className='table-row-display'>
+                                    <td className='cell-title-display'>First Sem Check In Date</td>
+                                    <td className='cell-title-display'>First Sem Check Out Date</td>
+                                    <td className='cell-title-display'>First Sem Form 5</td>
+                                    <td className='cell-title-display'>First Sem Room Number</td>
+                                </tr>
+                                <tr className='table-row-display'>
+                                    <td className='cell-input-display'>{currentResident.check_in_out_details.first_sem.checkin}</td>
+                                    <td className='cell-input-display'>{currentResident.check_in_out_details.first_sem.checkout}</td>
+                                    <td className='cell-input-display'>{currentResident.check_in_out_details.first_sem.form5}</td>
+                                    <td className='cell-input-display'>{currentResident.check_in_out_details.first_sem.room_number}</td>
+                                </tr>
+                                
+                                <tr className='table-row-display'>
+                                    <td className='cell-title-display'>Second Sem Check In Date</td>
+                                    <td className='cell-title-display'>Second Sem Check Out Date</td>
+                                    <td className='cell-title-display'>Second Sem Form 5</td>
+                                    <td className='cell-title-display'>Second Sem Room Number</td>
+                                </tr>
+                                <tr className='table-row-display'>
+                                    <td className='cell-input-display'>{currentResident.check_in_out_details.second_sem.checkin}</td>
+                                    <td className='cell-input-display'>{currentResident.check_in_out_details.second_sem.checkout}</td>
+                                    <td className='cell-input-display'>{currentResident.check_in_out_details.second_sem.form5}</td>
+                                    <td className='cell-input-display'>{currentResident.check_in_out_details.second_sem.room_number}</td>
+                                </tr>
+                            
+                            </table>
+
+                        </div>
                         
                     </div>
-                </div>
+                : "" }
                 
             </div>
         </div>

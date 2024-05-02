@@ -17,39 +17,21 @@ function ManagerProfile () {
     const [ currentManager, setManager] = useState();
 
     const fetchData = () => {
-        
-        const getTempManagers = axios.get(apiUrl("/manager"), { withCredentials: true });
-        axios.all([getTempManagers]).then(
-            axios.spread((...allData) => {
-                setTempManager(allData[0].data)
-                matchUser(tempManager)
-            })
-        )
+        const link = window.location.href;
+        const id = link.slice(link.lastIndexOf('/')+1,link.length);
+        const getManager = axios.get(apiUrl("/manager/") + id, { withCredentials: true });
+            axios.all([getManager]).then(
+                axios.spread((...allData) => {
+                    const allManagerData = allData[0].data
+                    setManager(allManagerData)
+                    var picture_id = allData[0].data.picture_id.split(".")[0]
+                    fetch(apiUrl("/picture/" + picture_id), {
+                        method: "GET",
+                    }).then((response) => response.json())
+                })
+            )
     }
 
-    const matchUser = (tempManager) => {
-        if (tempManager !== undefined) {
-
-            tempManager.map((tempManager, i) => {
-                if (user._id === tempManager.user_id) {
-
-                    const currentManager = tempManager;
-
-                    const getManager = axios.get(apiUrl("/manager/") + currentManager._id, { withCredentials: true });
-                    axios.all([getManager]).then(
-                        axios.spread((...allData) => {
-                            const allManagerData = allData[0].data
-                            setManager(allManagerData)
-                            var picture_id = allData[0].data.picture_id.split(".")[0]
-                            fetch(apiUrl("/picture/" + picture_id), {
-                                method: "GET",
-                            }).then((response) => response.json())
-                        })
-                    )
-                }
-            })
-        }
-    }
 
     useEffect(()=>{
         if(isAuthenticated === false){
@@ -134,8 +116,8 @@ function ManagerProfile () {
                     </div>
 
                 :
-
-                fetchData()
+                ""
+                // fetchData()
                 }
                 
                                     

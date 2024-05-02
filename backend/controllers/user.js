@@ -23,7 +23,8 @@ exports.login = async (req, res) => {
         picture: userobject.picture,
         role: 'user',
         dorm: 'UP Dorm',
-        completed_profile: false
+        completed_profile: false,
+        profile_id: ""
     }
 
     // checking if user already in database and has correct role
@@ -97,9 +98,9 @@ exports.checkifloggedin = async (req, res) => {
     //if success, send first name, last name, and email
     const user = tokenDetails.user
     // console.log(user);
-    let {_id, email, first_name, last_name, picture, role, dorm, completed_profile} = user
+    let {_id, email, first_name, last_name, picture, role, dorm, completed_profile, profile_id} = user
 
-    return res.status(tokenDetails.code).send({User: {_id, email, first_name, last_name, picture, role, dorm, completed_profile}, status: true})
+    return res.status(tokenDetails.code).send({User: {_id, email, first_name, last_name, picture, role, dorm, completed_profile, profile_id}, status: true})
     
 }
 
@@ -171,6 +172,7 @@ exports.changeCompletedProfile = async(req,res) => {
     // if(token.user.role == 'dorm manager'){
         const email = req.body.email
         const newCompletedProfile = req.body.completed_profile
+        const newProfileID = req.body.profile_id
         try{
             const existing = await User.getOne({email: email});
             if(existing){
@@ -181,7 +183,8 @@ exports.changeCompletedProfile = async(req,res) => {
                     picture: existing.picture,
                     role: existing.role,
                     dorm: existing.dorm,
-                    completed_profile: newCompletedProfile
+                    completed_profile: newCompletedProfile,
+                    profile_id: newProfileID
                 }
                 const edit = await User.editCompletedProfile(user)
                 console.log(`User completed_profile changed: ${edit}`)

@@ -27,16 +27,16 @@ function App() {
             <Route exact={true} path="/" element={<LandingPage />} />
             <Route exact={true} path="/dashboard" element={<Dashboard />} />
             <Route exact={true} path="/complete-resident-profile" element={<CompleteResidentProfile />} />
-            <Route exact={true} path="complete-manager-profile" element={<CompleteManagerProfile />} />
-            <Route exact={true} path="complete-attendant-profile" element={<CompleteAttendantProfile />} />
-            <Route exact={true} path="manager-profile" element={<ManagerProfile />} />
-            <Route exact={true} path="attendant-profile" element={<AttendantProfile />} />
-            <Route exact={true} path="/student-info-sheet-check-in" element={<StudentInfoSheetCheckIn />} />
-            <Route exact={true} path="/student-info-sheet-emergency" element={<StudentInfoSheetEmergency />} />
-            <Route exact={true} path="/student-info-sheet-family" element={<StudentInfoSheetFamily />} />
-            <Route exact={true} path="/student-info-sheet-payment" element={<StudentInfoSheetPayment />} />
-            <Route exact={true} path="/student-info-sheet-personal" element={<StudentInfoSheetPersonal />} />
-            <Route exact={true} path="/student-info-sheet-violation" element={<StudentInfoSheetViolation />} />
+            <Route exact={true} path="/complete-manager-profile" element={<CompleteManagerProfile />} />
+            <Route exact={true} path="/complete-attendant-profile" element={<CompleteAttendantProfile />} />
+            <Route exact={true} path="/manager/:id" element={<ManagerProfile />} />
+            <Route exact={true} path="/attendant/:id" element={<AttendantProfile />} />
+            <Route exact={true} path="/resident-check-in/:id" element={<StudentInfoSheetCheckIn />} />
+            <Route exact={true} path="/resident-emergency/:id" element={<StudentInfoSheetEmergency />} />
+            <Route exact={true} path="/resident-family/:id" element={<StudentInfoSheetFamily />} />
+            <Route exact={true} path="/resident-payment/:id" element={<StudentInfoSheetPayment />} />
+            <Route exact={true} path="/resident-personal/:id" element={<StudentInfoSheetPersonal />} />
+            <Route exact={true} path="/resident-violation/:id" element={<StudentInfoSheetViolation />} />
             <Route exact={true} path="/generate-soa" element={<GenerateSOA />} />
             <Route exact={true} path="/upload-receipt" element={<UploadReceipt />} />
             <Route exact={true} path="/dorm-information" element={<DormInformation />} />

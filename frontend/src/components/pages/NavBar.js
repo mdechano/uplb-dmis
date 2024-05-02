@@ -56,35 +56,37 @@ function NavBar () {
                     <a className='user-name'>{user.first_name}&nbsp;&nbsp;&nbsp;&nbsp;</a>
                     <div className='dropdown'>
                         <img className="user-image" alt="profile" src={user.picture}/>
-                        { role === 'resident' ?
+                        { role === 'resident' && user.completed_profile === true ?
                         <div className='dropdown-content'>
-                            <a><Link to='/student-info-sheet-personal'>Student Information Sheet</Link></a>
+                            {/* <a><Link to='/student-personal'>Student Information Sheet</Link></a> */}
+                            <a onClick={() => navigate('/resident-personal/'+user.profile_id)}>Student Information Sheet</a>
                             <a><Link to='/generate-soa'>Generate SOA</Link></a>
                             <a><Link to='/upload-receipt'>Upload Receipt</Link></a>
                             <a><Link to='/dorm-information'>Dorm Information</Link></a>
                             
                         </div>
                         : "" }
-                        { role === 'dorm manager' ?
+                        { role === 'dorm manager' && user.completed_profile === true  ?
                         <div className='dropdown-content'>
                             <a><Link>Resident List</Link></a>
-                            <a><Link to='/manager-profile'>Dorm Manager Profile</Link></a>
+                            <a onClick={() => navigate('/manager/'+user.profile_id)}>Dorm Manager Profile</a>
+                            {/* <a><Link to='/manager-profile'>Dorm Manager Profile</Link></a> */}
                             <a><Link>Dorm Assistants</Link></a>
                             <a><Link to='/dorm-information'>Dorm Information</Link></a>
                         </div>
                         : "" }
-                        { role === 'dorm attendant' ?
+                        { role === 'dorm attendant' && user.completed_profile === true  ?
                         <div className='dropdown-content'>
                         <a><Link>Resident List</Link></a>
-                        <a><Link to='/attendant-profile'>Dorm Attendant Profile</Link></a>
+                        <a onClick={() => navigate('/attendant/'+user.profile_id)}>Dorm Attendant Profile</a>
                         <a><Link>Dorm Assistants</Link></a>
                         <a><Link to='/dorm-information'>Dorm Information</Link></a>
                         </div>
                         : "" }
-                        { role === 'dorm assistant' ?
+                        { role === 'dorm assistant' && user.completed_profile === true  ?
                         <div className='dropdown-content'>
                         <a><Link>Resident List</Link></a>
-                        <a><Link to='/student-info-sheet-personal'>Student Information Sheet</Link></a>
+                        <a><Link to='/student-personal'>Student Information Sheet</Link></a>
                         <a><Link to='/generate-soa'>Generate SOA</Link></a>
                         <a><Link to='/upload-receipt'>Upload Receipt</Link></a>
                         <a><Link to='/dorm-information'>Dorm Information</Link></a>

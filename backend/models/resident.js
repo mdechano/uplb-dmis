@@ -13,7 +13,7 @@ const ResidentSchema = new mongoose.Schema(
         sex: {type: String, required: true},
         student_no: {type: String, required: true},
         civil_status: {type: String, required: true},
-        birthday: {type: Date, required: true},
+        birthday: {type: String, required: true},
         contact_number: {type: String, required: true},
         email: {type: String, required: true},
         home_address: {type: String, required: true},

@@ -176,7 +176,7 @@ function CompleteManagerProfile () {
             <NavBar></NavBar>
             <div classname = 'complete-manager-profile-div'>
                 <div className='upper-div'>
-                    <button className='back-button' onClick = {()=> navigate("/manager-profile")}>BACK</button>
+                    <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
                     <p className='page-title'>COMPLETE MANAGER PROFILE</p>
                     <button className='save-button' onClick={sendData}>SAVE</button>
                 </div>

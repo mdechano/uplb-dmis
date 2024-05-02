@@ -55,18 +55,15 @@ function ManagerProfile () {
         const link = window.location.href;
         const id = link.slice(link.lastIndexOf('/')+1,link.length);
         const getManager = axios.get(apiUrl("/manager/") + id, { withCredentials: true });
-        // const getScholarships = axios.get(apiUrl("/scholarship"), { withCredentials: true });
         axios.all([getManager]).then(
             axios.spread((...allData) => {
                 const allManagerData = allData[0].data
-                // const allScholarshipData = allData[1].data
                 setManager(allManagerData)
                 console.log(currentManager)
-                // setScholarship(allScholarshipData)
-                // var uploadID = allData[0].data.upload_id.split(".")[0]
-                // fetch(apiUrl("/upload/" + uploadID), {
-                //     method: "GET",
-                // }).then((response) => response.json())
+                var pictureID = allData[0].data.picture_id.split(".")[0]
+                fetch(apiUrl("/picture/" + pictureID), {
+                    method: "GET",
+                }).then((response) => response.json())
             })
         )
     }
@@ -89,10 +86,8 @@ function ManagerProfile () {
 
                 <div className='upper-div'>
                     <div>
-                        <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
-                        { user.completed_profile === false ?
-                        <button className='complete-profile-button' onClick={() => navigate("/complete-manager-profile")}>COMPLETE PROFILE</button>
-                        : ""}
+                        <button className='back-button' onClick = {()=> navigate('../dashboard', { replace: true })}>BACK</button>
+                        
                     </div>
                     
                     <p className='page-title'>MANAGER PROFILE</p>

@@ -91,7 +91,7 @@ function NavBar () {
                     <a className='user-name'>{user.first_name}&nbsp;&nbsp;&nbsp;&nbsp;</a>
                     <div className='dropdown'>
                         <img className="user-image" alt="profile" src={user.picture}/>
-                        { role === 'resident' ?
+                        {/* { role === 'resident' ?
                         <div className='dropdown-content'>
                             <a><Link to='/student-info-sheet-personal'>Student Information Sheet</Link></a>
                             <a><Link to='/generate-soa'>Generate SOA</Link></a>
@@ -104,13 +104,13 @@ function NavBar () {
                         <div className='dropdown-content'>
                             <a><Link>Resident List</Link></a>
                             <a><Link to='/manager-profile'>Dorm Manager Profile</Link></a>
-                            {/* <a onClick={() => navigate('/'+ 'manager-profile/' + managerID)}>Dorm Manager Profile</a> */}
+                            <a onClick={() => navigate('/'+ 'manager-profile/' + managerID)}>Dorm Manager Profile</a>
                             <a><Link>Dorm Assistants</Link></a>
                             <a><Link to='/dorm-information'>Dorm Information</Link></a>
-                            {/* <li>Resident List</li>
+                            <li>Resident List</li>
                             <li onClick={navigate('/manager-profile')}>Dorm Manager Profile</li>
                             <li>Dorm Assistants</li>
-                            <li>Dorm Information</li> */}
+                            <li>Dorm Information</li>
                         </div>
                         : "" }
                         { role === 'dorm attendant' ?
@@ -129,7 +129,7 @@ function NavBar () {
                         <a><Link to='/upload-receipt'>Upload Receipt</Link></a>
                         <a><Link to='/dorm-information'>Dorm Information</Link></a>
                         </div>
-                        : "" }
+                        : "" } */}
                     </div>
                     <a>&nbsp;&nbsp;&nbsp;&nbsp;</a>
                     <button className='logoutbtn' onClick={logout}>Logout</button>

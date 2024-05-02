@@ -217,8 +217,8 @@ input[type=date] {
     height: 100%;
 }
 
-.edit-profile-button {
-    /* width: fit-content; */
+/* .edit-profile-button {
+    width: fit-content;
     margin: 10px;
     border-radius: 35px;
     background-color: #0A4424;
@@ -226,7 +226,7 @@ input[type=date] {
     font-family: "Montserrat", sans-serif;
     padding: 5px 5px 5px 5px;
     color: white;
-}
+} */
 
 hr.horizontal-line {
     border: 1px solid black;

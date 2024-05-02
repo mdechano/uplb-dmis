@@ -15,36 +15,6 @@ const Dashboard = () => {
     const [userRole, setNewRole] = useState("");
     const [userDorm, setNewDorm] = useState("");
 
-    const [tempManager, setTempManager] = useState();
-    // const [managerID, setManagerID] = useState("");
-
-    const fetchData = () => {
-        const getTempManagers = axios.get(apiUrl("/manager"), { withCredentials: true });
-        // const getTempAttendants = axios.get(apiUrl("/attendant"), { withCredentials: true });
-        // const getTempResidents = axios.get(apiUrl("/resident"), { withCredentials: true });
-        axios.all([getTempManagers]).then(
-            axios.spread((...allData) => {
-                setTempManager(allData[0].data)
-                console.log(tempManager)
-                // setTempAttendant(allData[1].data)
-                // setTempResident(allData[2].data)
-                matchUserManager(tempManager)
-            })
-        )
-    }
-
-    const matchUserManager = (manager) => {
-        if (manager !== undefined) {
-            manager.map((manager, i) => {
-                console.log(manager)
-                if (user._id === manager.user_id) {
-                    // console.log(manager._id)
-                    navigate('/'+ 'manager-profile/' + manager._id)
-                } 
-            })
-        }
-    }
-
     useEffect(()=>{
         if(isAuthenticated === false){
             navigate("/")
@@ -87,54 +57,55 @@ const Dashboard = () => {
         <div >
             <NavBar></NavBar>
             <div className='dashboard-body'>
-            <div className='dashboard-notice'>
-                
-                {user ?
-                <div>
-                    <p className='greet'>Greetings, {user.first_name}!</p>
+                <div className='dashboard-notice'>
+                    
+                    {user ?
+                    <div>
+                        <p className='greet'>Greetings, {user.first_name}!</p>
+                        <br></br>
+                        <p className='paragraph'>Welcome to the UPLB Dormitory Management Information System.</p>  
+                    </div>
+                    :
+                    ""
+                    }
                     <br></br>
-                    <p className='paragraph'>Welcome to the UPLB Dormitory Management Information System.</p>  
-                </div>
-                :
-                ""
-                }
-                <br></br>
-                { role === 'resident' && user.completed_profile === false ?
-                 <div>
-                 <p className='paragraph'>To access resident permissions, kindly complete your profile first.</p>
-                 <br></br>
-                 <button className='dashboard-buttons-complete-profile' onClick={() => navigate("/complete-resident-profile")}>COMPLETE PROFILE</button>
-             </div>
-                :
-                ""
-                }
-
-                { role === 'dorm manager' && user.completed_profile === false  ?
-                <div>
-                    <p className='paragraph'>To access dorm manager permissions, kindly complete your profile first.</p>
+                    { role === 'resident' && user.completed_profile === false ?
+                    <div>
+                    <p className='paragraph'>To access resident permissions, kindly complete your profile first.</p>
                     <br></br>
-                    <button className='dashboard-buttons-complete-profile' onClick={() => navigate("/complete-manager-profile")}>COMPLETE PROFILE</button>
-                </div>
-                
-                :
-                ""
-                }
+                    <button className='dashboard-buttons-complete-profile' onClick={() => navigate("/complete-resident-profile")}>COMPLETE PROFILE</button>
+                    </div>
+                    :
+                    ""
+                    }
 
-                { role === 'dorm attendant' && user.completed_profile === false  ?
-                 <div>
-                 <p className='paragraph'>To access dorm attendant permissions, kindly complete your profile first.</p>
-                 <br></br>
-                 <button className='dashboard-buttons-complete-profile' onClick={() => navigate("/complete-attendant-profile")}>COMPLETE PROFILE</button>
-                </div>
-                :
-                ""
-                }
-                
-            </div>
+                    { role === 'dorm manager' && user.completed_profile === false  ?
+                    <div>
+                        <p className='paragraph'>To access dorm manager permissions, kindly complete your profile first.</p>
+                        <br></br>
+                        <button className='dashboard-buttons-complete-profile' onClick={() => navigate("/complete-manager-profile")}>COMPLETE PROFILE HERE</button>
+                    </div>
+                    
+                    :
+                    ""
+                    }
 
-            <div className='sign-up-board'>
+                    { role === 'dorm attendant' && user.completed_profile === false  ?
+                    <div>
+                    <p className='paragraph'>To access dorm attendant permissions, kindly complete your profile first.</p>
+                    <br></br>
+                    <button className='dashboard-buttons-complete-profile' onClick={() => navigate("/complete-attendant-profile")}>COMPLETE PROFILE</button>
+                    </div>
+                    :
+                    ""
+                    }
+                    
+                </div>
+
+            
 
             { role === 'user' ?
+            <div className='sign-up-board'>
                 
                     <form className='complete-sign-up'>
                         <p><b>First, let's get you set up.</b></p>
@@ -172,58 +143,10 @@ const Dashboard = () => {
                         </div>
                         
                     </form>
+                  </div>   
                     :
                     ""
-                }
-
-                <br></br>
-            
-                { role === 'resident' && user.completed_profile === true ?
-                        <div>
-                            <a><Link to='/student-info-sheet-personal'>Student Information Sheet</Link></a>
-                            <a><Link to='/generate-soa'>Generate SOA</Link></a>
-                            <a><Link to='/upload-receipt'>Upload Receipt</Link></a>
-                            <a><Link to='/dorm-information'>Dorm Information</Link></a>
-                            
-                        </div>
-                :
-                ""
-                }
-
-                { role === 'dorm manager' && user.completed_profile === true  ?
-                    <div className='dashboard-buttons-div'>
-                        <button className='dashboard-buttons'>Resident List</button>
-                        <button className='dashboard-buttons' onClick={fetchData()}>Dorm Manager Profile</button>
-                        <button className='dashboard-buttons'>Dorm Attendant and Assistants</button>
-                        <button className='dashboard-buttons'>Dorm Information</button>
-                    </div>
-                :
-                ""
-                }
-
-                { role === 'dorm attendant' && user.completed_profile === true ?
-                        <div>
-                        <a><Link>Resident List</Link></a>
-                        <a><Link to='/attendant-profile'>Dorm Attendant Profile</Link></a>
-                        <a><Link>Dorm Assistants</Link></a>
-                        <a><Link to='/dorm-information'>Dorm Information</Link></a>
-                        </div>
-                : 
-                ""
-                }
-
-                { role === 'dorm assistant' && user.completed_profile === true  ?
-                        <div>
-                        <a><Link>Resident List</Link></a>
-                        <a><Link to='/student-info-sheet-personal'>Student Information Sheet</Link></a>
-                        <a><Link to='/generate-soa'>Generate SOA</Link></a>
-                        <a><Link to='/upload-receipt'>Upload Receipt</Link></a>
-                        <a><Link to='/dorm-information'>Dorm Information</Link></a>
-                        </div>
-                : "" }
-
-                
-            </div>
+            }
 
             </div>
 

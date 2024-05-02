@@ -16,58 +16,40 @@ function ManagerProfile () {
     const [tempManager, setTempManager] = useState();
     const [ currentManager, setManager] = useState();
 
-    // const fetchData = () => {
-        
-    //     const getTempManagers = axios.get(apiUrl("/manager"), { withCredentials: true });
-    //     axios.all([getTempManagers]).then(
-    //         axios.spread((...allData) => {
-    //             setTempManager(allData[0].data)
-    //             matchUser(tempManager)
-    //         })
-    //     )
-    // }
-
-    // const matchUser = (tempManager) => {
-    //     if (tempManager !== undefined) {
-
-    //         tempManager.map((tempManager, i) => {
-    //             if (user._id === tempManager.user_id) {
-
-    //                 const currentManager = tempManager;
-
-    //                 const getManager = axios.get(apiUrl("/manager/") + currentManager._id, { withCredentials: true });
-    //                 axios.all([getManager]).then(
-    //                     axios.spread((...allData) => {
-    //                         const allManagerData = allData[0].data
-    //                         setManager(allManagerData)
-    //                         // var picture_id = allData[0].data.picture_id.split(".")[0]
-    //                         // fetch(apiUrl("/picture/" + picture_id), {
-    //                         //     method: "GET",
-    //                         // }).then((response) => response.json())
-    //                     })
-    //                 )
-    //             }
-    //         })
-    //     }
-    // }
-
     const fetchData = () => {
-        const link = window.location.href;
-        const id = link.slice(link.lastIndexOf('/')+1,link.length);
-        const getManager = axios.get(apiUrl("/manager/") + id, { withCredentials: true });
-        axios.all([getManager]).then(
+        
+        const getTempManagers = axios.get(apiUrl("/manager"), { withCredentials: true });
+        axios.all([getTempManagers]).then(
             axios.spread((...allData) => {
-                const allManagerData = allData[0].data
-                setManager(allManagerData)
-                console.log(currentManager)
-                var pictureID = allData[0].data.picture_id.split(".")[0]
-                fetch(apiUrl("/picture/" + pictureID), {
-                    method: "GET",
-                }).then((response) => response.json())
+                setTempManager(allData[0].data)
+                matchUser(tempManager)
             })
         )
     }
 
+    const matchUser = (tempManager) => {
+        if (tempManager !== undefined) {
+
+            tempManager.map((tempManager, i) => {
+                if (user._id === tempManager.user_id) {
+
+                    const currentManager = tempManager;
+
+                    const getManager = axios.get(apiUrl("/manager/") + currentManager._id, { withCredentials: true });
+                    axios.all([getManager]).then(
+                        axios.spread((...allData) => {
+                            const allManagerData = allData[0].data
+                            setManager(allManagerData)
+                            var picture_id = allData[0].data.picture_id.split(".")[0]
+                            fetch(apiUrl("/picture/" + picture_id), {
+                                method: "GET",
+                            }).then((response) => response.json())
+                        })
+                    )
+                }
+            })
+        }
+    }
 
     useEffect(()=>{
         if(isAuthenticated === false){
@@ -86,7 +68,7 @@ function ManagerProfile () {
 
                 <div className='upper-div'>
                     <div>
-                        <button className='back-button' onClick = {()=> navigate('../dashboard', { replace: true })}>BACK</button>
+                        <button className='back-button' onClick = {()=> navigate('/dashboard')}>BACK</button>
                         
                     </div>
                     
@@ -100,15 +82,60 @@ function ManagerProfile () {
                 
                 { currentManager !== undefined ?
                     <div className='body-div'>
-                        <div className='manager-profile-div-left'>
-                            {currentManager.first_name}
+                        <div className='profile-div-left'>
+                            <img className='profile-pic' src={require(`../pictures/${currentManager.picture_id}`)}></img>
+                            <br></br>
+                            <p className='profile-info'>{currentManager.first_name + " "  + currentManager.last_name}</p>
+                            <p className='profile-info'><b>Dorm Manager</b></p>
+                            <p className='profile-info'><i>{currentManager.dorm}</i></p>
+                        </div>
+
+                        <div className='profile-div-right'>
+                        <table className='table-display'>
+                                    <tr className='table-row-display'>
+                                        <td className='cell-title-display'>First Name</td>
+                                        <td className='cell-title-display'>Middle Name</td>
+                                        <td className='cell-title-display'>Last Name</td>
+
+                                        <td className='cell-title-display'>Suffix</td>
+                                    </tr>
+                                    <tr className='table-row-display'>
+                                        <td className='cell-input-display'>{currentManager.first_name}</td>
+                                        <td className='cell-input-display'>{currentManager.middle_name}</td>
+                                        <td className='cell-input-display'>{currentManager.last_name}</td>
+                                        <td className='cell-input-display'>{currentManager.suffix}</td>
+                                    </tr>
+                                    <tr className='table-row-display'>
+                                        <td className='cell-title-display'>Assigned Sex</td>
+                                        <td className='cell-title-display'>Birthday</td>
+                                        
+                                    </tr>
+                                    <tr className='table-row-display'>
+                                        <td className='cell-input-display'>{currentManager.sex}</td>
+                                        <td className='cell-input-display'>{currentManager.birthday}</td>
+                                      </tr>  
+                                    
+                                    <tr className='table-row-display'>
+                                        <td className='cell-title-display'>Contact Number</td>
+                                        <td className='cell-title-display'>Email</td>
+                                        <td className='cell-title-display'>Home Address</td>
+                                        
+                                    </tr>
+                                    <tr className='table-row-display'>
+                                        <td className='cell-input-display'>{currentManager.contact_number}</td>
+                                        <td className='cell-input-display'>{currentManager.email}</td>
+                                        <td className='cell-input-display'>{currentManager.home_address}</td>
+                                        
+                                    </tr>
+                                
+                        </table>
                         </div>
                         
                     </div>
 
-                : 
-                // fetchData()
-                "hello"
+                :
+
+                fetchData()
                 }
                 
                                     

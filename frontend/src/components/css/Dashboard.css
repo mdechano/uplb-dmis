@@ -1,6 +1,7 @@
 .dashboard-body {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    align-items: center;
 }
 
 .dashboard-notice {
@@ -10,8 +11,8 @@
     box-shadow: 2px 2px 2px 2px #8888888f;
     width: 70%;
     margin-top: 50px;
-    margin-left: 5%;
-    margin-right: 3%;
+    /* margin-left: 5%;
+    margin-right: 3%; */
     padding-top: 40px;
     padding-left: 3%;
     padding-right: 3%;
@@ -25,10 +26,10 @@
     background-color: white;
     border-radius: 10px;
     box-shadow: 2px 2px 2px 2px #8888888f;
-    width: 30%;
-    margin-top: 50px;
+    width: 50%;
+    margin-top: 30px;
     /* margin-left: 5%; */
-    margin-right: 5%;
+    /* margin-right: 5%; */
     padding-top: 30px;
     padding-bottom: 30px;
     font-family: "Montserrat", sans-serif;
@@ -134,7 +135,7 @@
   background-clip: padding-box;
   background-color: #0A4424;
   border: 1px solid transparent;
-  border-radius: .25rem;
+  border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
   box-sizing: border-box;
   color: #fff;
@@ -153,7 +154,7 @@
   -webkit-user-select: none;
   touch-action: manipulation;
   vertical-align: baseline;
-  width: 25%;
+  width: 20%;
   margin-top: 5px;
   margin-bottom: 5px;
 

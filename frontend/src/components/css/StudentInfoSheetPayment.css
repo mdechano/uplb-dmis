@@ -1,0 +1,165 @@
+.edit-profile-button {
+    width: 125px;
+    height: 40px;
+    border-radius: 35px;
+    background-color: #0A4424;
+    color: white;
+    font-weight: bold;
+    font-family: "Montserrat", sans-serif;
+}
+
+
+.profile-div-left {
+    border: 0px solid grey;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px 2px #8888888f;
+    width: 20%;
+    height: auto;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.profile-pic {
+    width: 250px;
+}
+
+.profile-info {
+    padding: 2px 2px 2px 2px;
+    font-family: "Montserrat", sans-serif;
+}
+
+.profile-nav {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.profile-nav-btn {
+  align-items: center;
+  background-clip: padding-box;
+  background-color: #0A4424;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  justify-content: center;
+  line-height: 1.25;
+  min-height: 40px;
+  position: relative;
+  text-decoration: none;
+  transition: all 250ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  width: 250px;
+  margin-top: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.profile-nav-btn:hover,
+.profile-nav-btn:focus {
+    background-color: #068b42;
+  
+}
+
+
+  .profile-nav-btn-current {
+    align-items: center;
+    background-clip: padding-box;
+    background-color: #d9a026;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    justify-content: center;
+    line-height: 1.25;
+    min-height: 40px;
+    position: relative;
+    text-decoration: none;
+    transition: all 250ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: baseline;
+    width: 100%;
+    margin-top: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .profile-nav-btn-current:hover,
+.profile-nav-btn-current:focus {
+    background-color: #f4bc45;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+}
+
+
+.profile-div-right {
+    width: 75%;
+    height: auto;
+    border: 0px solid grey;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px 2px #8888888f;
+    padding-top: 20px;
+    padding-bottom: 30px;
+    padding-left: 30px;
+    padding-right: 20px;
+    /* position: fixed; */
+}
+
+.table-row-display {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.cell-title-display {
+    color: #76090C;
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+    padding: 8px;
+  text-align: left;
+  width: 10%;
+}
+
+.cell-input-display {
+    padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  background-color: #f2f2f2;
+}
+
+hr.horizontal-line {
+    border: 1px solid black;
+}
+
+.section-label {
+    padding: 5px 5px 5px 5px;
+}
+
+.slas {
+    font-weight: bold;
+    padding-bottom: 2px;
+}

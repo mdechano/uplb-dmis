@@ -36,6 +36,86 @@
     font-family: "Montserrat", sans-serif;
 }
 
+.profile-nav {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.profile-nav-btn {
+  align-items: center;
+  background-clip: padding-box;
+  background-color: #0A4424;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  justify-content: center;
+  line-height: 1.25;
+  min-height: 40px;
+  position: relative;
+  text-decoration: none;
+  transition: all 250ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  width: 250px;
+  margin-top: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.profile-nav-btn:hover,
+.profile-nav-btn:focus {
+    background-color: #068b42;
+  
+}
+
+
+  .profile-nav-btn-current {
+    align-items: center;
+    background-clip: padding-box;
+    background-color: #d9a026;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    justify-content: center;
+    line-height: 1.25;
+    min-height: 40px;
+    position: relative;
+    text-decoration: none;
+    transition: all 250ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: baseline;
+    width: 100%;
+    margin-top: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .profile-nav-btn-current:hover,
+.profile-nav-btn-current:focus {
+    background-color: #f4bc45;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+}
+
+
 .profile-div-right {
     width: 75%;
     height: auto;

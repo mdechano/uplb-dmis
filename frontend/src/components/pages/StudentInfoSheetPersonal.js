@@ -61,11 +61,20 @@ function StudentInfoSheetPersonal () {
                 
                     <div className='body-div'>
                         <div className='profile-div-left'>
+                           
                             <img className='profile-pic' src={require(`../pictures/${currentResident.picture_id}`)}></img>
                             <br></br>
                             <p className='profile-info'>{currentResident.first_name + " "  + currentResident.last_name}</p>
                             <p className='profile-info'><b>Resident</b></p>
                             <p className='profile-info'><i>{currentResident.dorm}</i></p>
+                            
+                            <br></br>
+                            <div className='profile-nav'>
+                                <button className='profile-nav-btn-current' onClick={() => navigate('/resident-personal/'+currentResident._id)}>PERSONAL INFORMATION</button>
+                                <button className='profile-nav-btn' onClick={() => navigate('/resident-check-in/'+currentResident._id)}>CHECK IN DETAILS</button>
+                                <button className='profile-nav-btn' onClick={() => navigate('/resident-payment/'+currentResident._id)}>PAYMENT DETAILS</button>
+                                <button className='profile-nav-btn' onClick={() => navigate('/resident-violation/'+currentResident._id)}>VIOLATION DETAILS</button>
+                            </div>
                         </div>
 
                         <div className='profile-div-right'>
@@ -241,41 +250,7 @@ function StudentInfoSheetPersonal () {
                                 </tr>
                             
                             </table>
-
-                            <br></br>
-                            <hr className='horizontal-line'></hr>
-                            <br></br>
-
-                            <table className='table-display'>
-                                <h3 className='section-label'>Check In Details</h3>
-                                <tr className='table-row-display'>
-                                    <td className='cell-title-display'>First Sem Check In Date</td>
-                                    <td className='cell-title-display'>First Sem Check Out Date</td>
-                                    <td className='cell-title-display'>First Sem Form 5</td>
-                                    <td className='cell-title-display'>First Sem Room Number</td>
-                                </tr>
-                                <tr className='table-row-display'>
-                                    <td className='cell-input-display'>{currentResident.check_in_out_details.first_sem.checkin}</td>
-                                    <td className='cell-input-display'>{currentResident.check_in_out_details.first_sem.checkout}</td>
-                                    <td className='cell-input-display'>{currentResident.check_in_out_details.first_sem.form5}</td>
-                                    <td className='cell-input-display'>{currentResident.check_in_out_details.first_sem.room_number}</td>
-                                </tr>
-                                
-                                <tr className='table-row-display'>
-                                    <td className='cell-title-display'>Second Sem Check In Date</td>
-                                    <td className='cell-title-display'>Second Sem Check Out Date</td>
-                                    <td className='cell-title-display'>Second Sem Form 5</td>
-                                    <td className='cell-title-display'>Second Sem Room Number</td>
-                                </tr>
-                                <tr className='table-row-display'>
-                                    <td className='cell-input-display'>{currentResident.check_in_out_details.second_sem.checkin}</td>
-                                    <td className='cell-input-display'>{currentResident.check_in_out_details.second_sem.checkout}</td>
-                                    <td className='cell-input-display'>{currentResident.check_in_out_details.second_sem.form5}</td>
-                                    <td className='cell-input-display'>{currentResident.check_in_out_details.second_sem.room_number}</td>
-                                </tr>
                             
-                            </table>
-
                         </div>
                         
                     </div>

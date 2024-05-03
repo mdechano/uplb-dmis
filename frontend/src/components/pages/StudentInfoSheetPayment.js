@@ -1,12 +1,42 @@
-import {React, useState, useEffect} from 'react';
-import {Link} from 'react-router-dom'
-import {useNavigate} from 'react-router-dom';
-import '../css/StudentInfoSheetPayment.css'
+import {React, useEffect, useState} from 'react';
+import {Link, useNavigate} from 'react-router-dom';
+import {apiUrl} from '../utilities/apiUrl';
+import useStore from '../utilities/authHook';
+import axios from "axios";
+import '../css/StudentInfoSheetPayment.css';
 import NavBar from './NavBar';
 
 function StudentInfoSheetPayment () {
 
     const navigate = useNavigate();
+    const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
+    const [ currentResident, setResident] = useState();
+
+    const fetchData = () => {
+        const link = window.location.href;
+        const id = link.slice(link.lastIndexOf('/')+1,link.length);
+        const getResident = axios.get(apiUrl("/resident/") + id, { withCredentials: true });
+            axios.all([getResident]).then(
+                axios.spread((...allData) => {
+                    const allResidentData = allData[0].data
+                    setResident(allResidentData)
+                    var picture_id = allData[0].data.picture_id.split(".")[0]
+                    fetch(apiUrl("/picture/" + picture_id), {
+                        method: "GET",
+                    }).then((response) => response.json())
+                })
+            )
+    }
+    
+    useEffect(()=>{
+        if(isAuthenticated === false){
+            navigate("/")
+        } 
+        else {
+            fetchData()
+        }
+    },[]);
+
 
     return (
         <div>
@@ -18,58 +48,54 @@ function StudentInfoSheetPayment () {
                     <p className='page-title'>STUDENT INFORMATION SHEET</p>
                     <button className='save-button'>SAVE</button>
                 </div>
+
+                { currentResident !== undefined ?
                 <div className='body-div'>
-                    <div className='left-div'>
-                        <div className='student-div'>
-                            <div className='image-div'>
-                                image here
-                            </div>
-                            <div className='profile-info'>
-                                <p>ANNA DELA CRUZ</p>
-                                <p>2019-08206</p>
-                                <p>ROOM NO. 1209</p>
-                                <p>ROLE</p>
-                            </div>
-                        </div>
-                        <div className='nav-div'>
-                            <button className='stud-info-sheet-nav'><Link to='/student-info-sheet-personal'><a className='info-sheet-btn'>PERSONAL</a></Link></button>
-                            <button className='stud-info-sheet-nav'><Link to='/student-info-sheet-family'><a className='info-sheet-btn'>FAMILY</a></Link></button>
-                            <button className='stud-info-sheet-nav'><Link to='/student-info-sheet-check-in'><a className='info-sheet-btn'>CHECK IN</a></Link></button>
-                            <button className='stud-info-sheet-nav'><Link to='/student-info-sheet-emergency'><a className='info-sheet-btn'>EMERGENCY</a></Link></button>
-                            <button className='stud-info-sheet-nav-payment'><Link to='/student-info-sheet-payment'><a className='info-sheet-btn'>PAYMENT</a></Link></button>
-                            <button className='stud-info-sheet-nav'><Link to='/student-info-sheet-violation'><a className='info-sheet-btn'>VIOLATION</a></Link></button>
+                    <div className='profile-div-left'>
+                        <img className='profile-pic' src={require(`../pictures/${currentResident.picture_id}`)}></img>
+                        <br></br>
+                        <p className='profile-info'>{currentResident.first_name + " " + currentResident.last_name}</p>
+                        <p className='profile-info'><b>Resident</b></p>
+                        <p className='profile-info'><i>{currentResident.dorm}</i></p>
+                        <br></br>
+                        <div className='profile-nav'>
+                            <button className='profile-nav-btn' onClick={() => navigate('/resident-personal/'+currentResident._id)}>PERSONAL INFORMATION</button>
+                            <button className='profile-nav-btn' onClick={() => navigate('/resident-check-in/'+currentResident._id)}>CHECK IN DETAILS</button>
+                            <button className='profile-nav-btn-current' onClick={() => navigate('/resident-payment/'+currentResident._id)}>PAYMENT DETAILS</button>
+                            <button className='profile-nav-btn' onClick={() => navigate('/resident-violation/'+currentResident._id)}>VIOLATION DETAILS</button>
                         </div>
                     </div>
-                    <div className='right-div'>
-                        <form className='form-div'>
-                            <p>Your confirmed payment will appear here after verification.</p>
-                            <label for='sts-bracket'>STS Bracket</label>
-                            <p className='sts-bracket-input'>PD80</p>
-                            <br></br>
-                            <table>
-                                <tr>
-                                    <th className='cell-title'>Term</th>
-                                    <th className='cell-title'>Period Covered</th>
-                                    <th className='cell-title'>OR#</th>
-                                    <th className='cell-title'>Dorm Fee</th>
-                                    <th className='cell-title'>Appliances</th>
-                                    <th className='cell-title'>Date Paid</th>
-                                </tr>
-                                <tr className='table-form-tr'>
-                                    <td className='cell-input'>1st</td>
-                                    <td className='cell-input'>September</td>
-                                    <td className='cell-input'>5660978</td>
-                                    <td className='cell-input'>500</td>
-                                    <td className='cell-input'>169</td>
-                                </tr>
-                                <tr className='table-form-tr'>
-                                    
-                                </tr>
-                            </table>
-                        </form>
+
+                    <div className='profile-div-right'>
                         
+                            <p className='payment-note'>Your confirmed payment will appear here after verification. Only authorized personal can edit this page.</p>
+                            <br></br>
+                            <p className='slas'>SLAS Status</p>
+                            <p className='sts-bracket'>{currentResident.slas}</p>
+                            <br></br>
+                            <table className='table-display'>
+                                <tr className='table-row-display'>
+                                    <td className='cell-title-display'>Term</td>
+                                    <td className='cell-title-display'>Period Covered</td>
+                                    <td className='cell-title-display'>OR#</td>
+                                    <td className='cell-title-display'>Dorm Fee</td>
+                                    <td className='cell-title-display'>Appliances</td>
+                                    <td className='cell-title-display'>Date Paid</td>
+                                </tr>
+                                <tr className='table-row-display'>
+                                    <td className='cell-input-display'>{}</td>
+                                    <td className='cell-input-display'>{}</td>
+                                    <td className='cell-input-display'>{}</td>
+                                    <td className='cell-input-display'>{}</td>
+                                    <td className='cell-input-display'>{}</td>
+                                    <td className='cell-input-display'>{}</td>
+                                </tr>
+                                
+                            </table>
+                            
                     </div>
                 </div>
+                : "" }
             </div>
         </div>
     )

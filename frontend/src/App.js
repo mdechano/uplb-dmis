@@ -8,8 +8,6 @@ import CompleteAttendantProfile from './components/pages/CompleteAttendantProfil
 import AttendantProfile from './components/pages/AttendantProfile';
 import ManagerProfile from './components/pages/ManagerProfile';
 import StudentInfoSheetCheckIn from './components/pages/StudentInfoSheetCheckIn';
-import StudentInfoSheetEmergency from './components/pages/StudentInfoSheetEmergency';
-import StudentInfoSheetFamily from './components/pages/StudentInfoSheetFamily';
 import StudentInfoSheetPayment from './components/pages/StudentInfoSheetPayment';
 import StudentInfoSheetPersonal from './components/pages/StudentInfoSheetPersonal';
 import StudentInfoSheetViolation from './components/pages/StudentInfoSheetViolation';
@@ -32,8 +30,6 @@ function App() {
             <Route exact={true} path="/manager/:id" element={<ManagerProfile />} />
             <Route exact={true} path="/attendant/:id" element={<AttendantProfile />} />
             <Route exact={true} path="/resident-check-in/:id" element={<StudentInfoSheetCheckIn />} />
-            <Route exact={true} path="/resident-emergency/:id" element={<StudentInfoSheetEmergency />} />
-            <Route exact={true} path="/resident-family/:id" element={<StudentInfoSheetFamily />} />
             <Route exact={true} path="/resident-payment/:id" element={<StudentInfoSheetPayment />} />
             <Route exact={true} path="/resident-personal/:id" element={<StudentInfoSheetPersonal />} />
             <Route exact={true} path="/resident-violation/:id" element={<StudentInfoSheetViolation />} />

@@ -352,8 +352,8 @@ function CompleteResidentProfile () {
                                                 <option value="intersex">Intersex</option>
                                             </select>
                                         </td>
-                                        <td className='cell-input'><input type="text" id="student_no" name="studentnum" required></input></td>
-                                        <td className='cell-input'><input type="text" id="civil_status" name="civilstatus" required></input></td>
+                                        <td className='cell-input'><input type="text" id="student_no" required placeholder='format: 20XX-XXXXX'></input></td>
+                                        <td className='cell-input'><input type="text" id="civil_status" required></input></td>
                                         {/* <td className='cell-input'> */}
                                         <select className='custom-select-birthday-month' id="birth-month">
                                                 <option value="January">January</option>

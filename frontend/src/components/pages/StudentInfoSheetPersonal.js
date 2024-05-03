@@ -44,17 +44,9 @@ function StudentInfoSheetPersonal () {
 
             <div className='stud-info-sheet-div'>
                 <div className='upper-div'>
-                    <div>
-                        <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
-                        
-                    </div>
-                    
+                    <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
                     <p className='page-title'>STUDENT INFORMATION SHEET</p>
-                    <div>
-                        
-                        <button className='edit-profile-button'>EDIT PROFILE</button>
-                    </div>
-                    
+                    <button className='edit-profile-button'>EDIT PROFILE</button>
                 </div>
 
                 { currentResident !== undefined ?
@@ -65,6 +57,7 @@ function StudentInfoSheetPersonal () {
                             <img className='profile-pic' src={require(`../pictures/${currentResident.picture_id}`)}></img>
                             <br></br>
                             <p className='profile-info'>{currentResident.first_name + " "  + currentResident.last_name}</p>
+                            <p className='profile-info'>{currentResident.student_no}</p>
                             <p className='profile-info'><b>Resident</b></p>
                             <p className='profile-info'><i>{currentResident.dorm}</i></p>
                             

@@ -43,10 +43,10 @@ function StudentInfoSheetPayment () {
             <NavBar></NavBar>
 
             <div className='stud-info-sheet-div'>
-            <div className='upper-div'>
+                <div className='upper-div'>
                     <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
                     <p className='page-title'>STUDENT INFORMATION SHEET</p>
-                    <button className='save-button'>SAVE</button>
+                    <div className='extra-space'></div>
                 </div>
 
                 { currentResident !== undefined ?
@@ -55,6 +55,7 @@ function StudentInfoSheetPayment () {
                         <img className='profile-pic' src={require(`../pictures/${currentResident.picture_id}`)}></img>
                         <br></br>
                         <p className='profile-info'>{currentResident.first_name + " " + currentResident.last_name}</p>
+                        <p className='profile-info'>{currentResident.student_no}</p>
                         <p className='profile-info'><b>Resident</b></p>
                         <p className='profile-info'><i>{currentResident.dorm}</i></p>
                         <br></br>
@@ -68,10 +69,10 @@ function StudentInfoSheetPayment () {
 
                     <div className='profile-div-right'>
                         
-                            <p className='payment-note'>Your confirmed payment will appear here after verification. Only authorized personal can edit this page.</p>
+                            <p className='payment-note'><i>Your confirmed payment will appear here after verification. Only authorized personal can edit this page. Kindly contact them for concerns.</i></p>
                             <br></br>
                             <p className='slas'>SLAS Status</p>
-                            <p className='sts-bracket'>{currentResident.slas}</p>
+                            <p className='sts-bracket'><i>{currentResident.slas}</i></p>
                             <br></br>
                             <table className='table-display'>
                                 <tr className='table-row-display'>
@@ -90,6 +91,18 @@ function StudentInfoSheetPayment () {
                                     <td className='cell-input-display'>{}</td>
                                     <td className='cell-input-display'>{}</td>
                                 </tr>
+
+                                {/* implement this*/}
+                                {/* { currentResident.appliances_information.appliance_1.appliance !== "" ?
+                                <tr className='table-row-display'>
+                                    <td className='cell-input-display'>{currentResident.appliances_information.appliance_1.appliance}</td>
+                                    <td className='cell-input-display'>{currentResident.appliances_information.appliance_1.date_installed_1st_sem}</td>
+                                    <td className='cell-input-display'>{currentResident.appliances_information.appliance_1.date_returned_1st_sem}</td>
+                                    <td className='cell-input-display'>{currentResident.appliances_information.appliance_1.date_installed_2nd_sem}</td>
+                                    <td className='cell-input-display'>{currentResident.appliances_information.appliance_1.date_returned_2nd_sem}</td>
+                                </tr>
+                            
+                                : ""} */}
                                 
                             </table>
                             

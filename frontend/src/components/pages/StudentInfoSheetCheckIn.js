@@ -43,7 +43,7 @@ function StudentInfoSheetCheckIn () {
             <NavBar></NavBar>
 
             <div className='stud-info-sheet-div'>
-            <div className='upper-div'>
+                <div className='upper-div'>
                     <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
                     <p className='page-title'>STUDENT INFORMATION SHEET</p>
                     <button className='edit-profile-button'>EDIT PROFILE</button>
@@ -56,6 +56,7 @@ function StudentInfoSheetCheckIn () {
                         <img className='profile-pic' src={require(`../pictures/${currentResident.picture_id}`)}></img>
                         <br></br>
                         <p className='profile-info'>{currentResident.first_name + " "  + currentResident.last_name}</p>
+                        <p className='profile-info'>{currentResident.student_no}</p>
                         <p className='profile-info'><b>Resident</b></p>
                         <p className='profile-info'><i>{currentResident.dorm}</i></p>
                         <br></br>
@@ -140,7 +141,7 @@ function StudentInfoSheetCheckIn () {
                                 <td className='cell-title-display'>Date Returned 2nd Sem</td>
                             </tr>
 
-                        { currentResident.appliances_information.appliance_1.appliance !== " " ?
+                        { currentResident.appliances_information.appliance_1.appliance !== "" ?
                             <tr className='table-row-display'>
                                 <td className='cell-input-display'>{currentResident.appliances_information.appliance_1.appliance}</td>
                                 <td className='cell-input-display'>{currentResident.appliances_information.appliance_1.date_installed_1st_sem}</td>
@@ -151,18 +152,18 @@ function StudentInfoSheetCheckIn () {
                             
                         : ""}
 
-                        { currentResident.appliances_information.appliance_2.appliance !== " " ?
+                        { currentResident.appliances_information.appliance_2.appliance !== "" ?
                             <tr className='table-row-display'>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_2.appliance}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_2.date_installed_1st_sem}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_2.date_returned_1st_sem}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_2.date_installed_2nd_sem}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_2.date_returned_2nd_sem}</td>
+                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_2.appliance}</td>
+                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_2.date_installed_1st_sem}</td>
+                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_2.date_returned_1st_sem}</td>
+                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_2.date_installed_2nd_sem}</td>
+                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_2.date_returned_2nd_sem}</td>
                             </tr>
                             
                         : ""}
 
-                        { currentResident.appliances_information.appliance_3.appliance !== " " ?
+                        { currentResident.appliances_information.appliance_3.appliance !== "" ?
                             <tr className='table-row-display'>
                                 <td className='cell-input-display'>{currentResident.appliances_information.appliance_3.appliance}</td>
                                 <td className='cell-input-display'>{currentResident.appliances_information.appliance_3.date_installed_1st_sem}</td>
@@ -173,18 +174,18 @@ function StudentInfoSheetCheckIn () {
                             
                         : ""}
 
-                        { currentResident.appliances_information.appliance_4.appliance !== " " ?
+                        { currentResident.appliances_information.appliance_4.appliance !== "" ?
                             <tr className='table-row-display'>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_4.appliance}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_4.date_installed_1st_sem}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_4.date_returned_1st_sem}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_4.date_installed_2nd_sem}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_4.date_returned_2nd_sem}</td>
+                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_4.appliance}</td>
+                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_4.date_installed_1st_sem}</td>
+                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_4.date_returned_1st_sem}</td>
+                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_4.date_installed_2nd_sem}</td>
+                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_4.date_returned_2nd_sem}</td>
                             </tr>
                             
                         : ""}
 
-                        { currentResident.appliances_information.appliance_5.appliance !== " " ?
+                        { currentResident.appliances_information.appliance_5.appliance !== "" ?
                             <tr className='table-row-display'>
                                 <td className='cell-input-display'>{currentResident.appliances_information.appliance_5.appliance}</td>
                                 <td className='cell-input-display'>{currentResident.appliances_information.appliance_5.date_installed_1st_sem}</td>
@@ -195,18 +196,18 @@ function StudentInfoSheetCheckIn () {
                             
                         : ""}
 
-                        { currentResident.appliances_information.appliance_6.appliance !== " " ?
+                        { currentResident.appliances_information.appliance_6.appliance !== "" ?
                             <tr className='table-row-display'>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_6.appliance}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_6.date_installed_1st_sem}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_6.date_returned_1st_sem}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_6.date_installed_2nd_sem}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_6.date_returned_2nd_sem}</td>
+                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_6.appliance}</td>
+                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_6.date_installed_1st_sem}</td>
+                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_6.date_returned_1st_sem}</td>
+                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_6.date_installed_2nd_sem}</td>
+                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_6.date_returned_2nd_sem}</td>
                             </tr>
                             
                         : ""}
 
-                        { currentResident.appliances_information.appliance_7.appliance !== " " ?
+                        { currentResident.appliances_information.appliance_7.appliance !== "" ?
                             <tr className='table-row-display'>
                                 <td className='cell-input-display'>{currentResident.appliances_information.appliance_7.appliance}</td>
                                 <td className='cell-input-display'>{currentResident.appliances_information.appliance_7.date_installed_1st_sem}</td>
@@ -217,18 +218,19 @@ function StudentInfoSheetCheckIn () {
                             
                         : ""}
 
-                        { currentResident.appliances_information.appliance_8.appliance !== " " ?
+                        { currentResident.appliances_information.appliance_8.appliance !== "" ?
                             <tr className='table-row-display'>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_8.appliance}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_8.date_installed_1st_sem}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_8.date_returned_1st_sem}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_8.date_installed_2nd_sem}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_8.date_returned_2nd_sem}</td>
+                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_8.appliance}</td>
+                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_8.date_installed_1st_sem}</td>
+                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_8.date_returned_1st_sem}</td>
+                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_8.date_installed_2nd_sem}</td>
+                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_8.date_returned_2nd_sem}</td>
                             </tr>
                             
                         : ""}
 
                         </table>
+
 
                     </div>
                     

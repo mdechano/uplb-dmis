@@ -60,10 +60,9 @@ exports.addResident = async (req,res) => {
         appliances_information: body.appliances_information,
         emergency_details: body.emergency_details,
         slas: body.slas,
-        picture_id: body.picture_id
-        // payment_details: body.payment_details,
-        // violation_details: body.violation_details,
-        // dorm_id: body.dorm_id
+        picture_id: body.picture_id,
+        payment_details: body.payment_details,
+        violation_details: body.violation_details
     };
     try{
         const existing = await Resident.getOne({student_no: newResident.student_no})

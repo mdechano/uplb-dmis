@@ -43,8 +43,7 @@ const ResidentSchema = new mongoose.Schema(
         slas: {type: String},
         payment_details: {type: Object},
         violation_details: {type: Object},
-        picture_id: {type: String},
-        dorm_id: {type: String}
+        picture_id: {type: String}
     }
 );
 

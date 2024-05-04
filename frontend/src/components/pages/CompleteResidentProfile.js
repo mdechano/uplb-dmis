@@ -345,7 +345,7 @@ function CompleteResidentProfile () {
                                     </tr>
                                     <tr className='table-row'>
                                         <td className='cell-input'>
-                                            <select className='custom-select-sex' id="sex" name="sex">
+                                            <select className='custom-select-sex' id="sex" required>
                                                 <option>Select Sex</option>
                                                 <option value="female">Female</option>
                                                 <option value="male">Male</option>
@@ -465,9 +465,9 @@ function CompleteResidentProfile () {
                                                 <option value="GS">Graduate School</option>
                                             </select>
                                         </td>
-                                        <td className='cell-input'><input type='text' id='degree_program' name='degprog' required></input></td>
-                                        <td className='cell-input'><input type='text' id='last_school_attended' name='last-school' required></input></td>
-                                        <td className='cell-input'><input type='text' id='classification' name='classification' required></input></td>
+                                        <td className='cell-input'><input type='text' id='degree_program' placeholder='format: BS Computer Science' required></input></td>
+                                        <td className='cell-input'><input type='text' id='last_school_attended' required></input></td>
+                                        <td className='cell-input'><input type='text' id='classification' ></input></td>
                                         
                                     </tr>
 
@@ -478,10 +478,10 @@ function CompleteResidentProfile () {
                                         <td className='cell-title'>Organizations</td>
                                     </tr>
                                     <tr className='table-row'>
-                                        <td className='cell-input'><input type='text' id='honors_received' name='honors'></input></td>
-                                        <td className='cell-input'><input type='text' id='talents' name='talents'></input></td>
-                                        <td className='cell-input'><input type='text' id='hobbies' name='hobbies'></input></td>
-                                        <td className='cell-input'><input type='text' id='organizations' name='organizations'></input></td>
+                                        <td className='cell-input'><input type='text' id='honors_received'></input></td>
+                                        <td className='cell-input'><input type='text' id='talents' ></input></td>
+                                        <td className='cell-input'><input type='text' id='hobbies' ></input></td>
+                                        <td className='cell-input'><input type='text' id='organizations' ></input></td>
                                     </tr>
 
                                     <tr className='table-row'>
@@ -491,10 +491,10 @@ function CompleteResidentProfile () {
                                         <td className='cell-title'>Monthly Stipend</td>
                                     </tr>
                                     <tr className='table-row'>
-                                        <td className='cell-input'><input type='text' id='ailments' name='ailments'></input></td>
-                                        <td className='cell-input'><input type='text' id='medications' name='medications'></input></td>
-                                        <td className='cell-input'><input type='text' id='scholarships' name='scholarships'></input></td>
-                                        <td className='cell-input'><input type='text' id='monthly_stipend' name='stipend'></input></td>
+                                        <td className='cell-input'><input type='text' id='ailments' ></input></td>
+                                        <td className='cell-input'><input type='text' id='medications' ></input></td>
+                                        <td className='cell-input'><input type='text' id='scholarships' ></input></td>
+                                        <td className='cell-input'><input type='text' id='monthly_stipend' ></input></td>
                                     </tr>
                                 </table>
                             </div>
@@ -522,9 +522,9 @@ function CompleteResidentProfile () {
                                         <td className='cell-title'>Father's Monthly Income</td>
                                     </tr>
                                     <tr>
-                                        <td className='cell-input'><input type="text" id="fathername" name="fathername"></input></td>
-                                        <td className='cell-input'><input type="text" id="fatheroccupation" name="fatheroccupation"></input></td>
-                                        <td className='cell-input'><input type="text" id="fatherincome" name="fatherincome"></input></td>
+                                        <td className='cell-input'><input type="text" id="fathername" ></input></td>
+                                        <td className='cell-input'><input type="text" id="fatheroccupation" ></input></td>
+                                        <td className='cell-input'><input type="text" id="fatherincome" ></input></td>
                                     </tr>
 
                                     <tr>
@@ -533,9 +533,9 @@ function CompleteResidentProfile () {
                                         <td className='cell-title'>Father's Cellphone/Telephone no.</td>
                                     </tr>
                                     <tr>
-                                        <td className='cell-input'><input type="text" id="fatheremployer" name="fatheremployer"></input></td>
-                                        <td className='cell-input'><input type="text" id="fatheroffice" name="fatheroffice"></input></td>
-                                        <td className='cell-input'><input type="text" id="fatherphone" name="fatherphone"></input></td>
+                                        <td className='cell-input'><input type="text" id="fatheremployer" ></input></td>
+                                        <td className='cell-input'><input type="text" id="fatheroffice" ></input></td>
+                                        <td className='cell-input'><input type="text" id="fatherphone" ></input></td>
                                     </tr>
                                     <br></br>
                                     <tr>
@@ -544,9 +544,9 @@ function CompleteResidentProfile () {
                                         <td className='cell-title'>Mother's Monthly Income</td>
                                     </tr>
                                     <tr>
-                                        <td className='cell-input'><input type="text" id="mothername" name="mothername"></input></td>
-                                        <td className='cell-input'><input type="text" id="motheroccupation" name="motheroccupation"></input></td>
-                                        <td className='cell-input'><input type="text" id="motherincome" name="motherincome"></input></td>
+                                        <td className='cell-input'><input type="text" id="mothername" ></input></td>
+                                        <td className='cell-input'><input type="text" id="motheroccupation" ></input></td>
+                                        <td className='cell-input'><input type="text" id="motherincome" ></input></td>
                                     </tr>
 
                                     <tr>
@@ -555,9 +555,9 @@ function CompleteResidentProfile () {
                                         <td className='cell-title'>Mother's Cellphone/Telephone no.</td>
                                     </tr>
                                     <tr>
-                                        <td className='cell-input'><input type="text" id="motheremployer" name="motheremployer"></input></td>
-                                        <td className='cell-input'><input type="text" id="motheroffice" name="motheroffice"></input></td>
-                                        <td className='cell-input'><input type="text" id="motherphone" name="motherphone"></input></td>
+                                        <td className='cell-input'><input type="text" id="motheremployer" ></input></td>
+                                        <td className='cell-input'><input type="text" id="motheroffice" ></input></td>
+                                        <td className='cell-input'><input type="text" id="motherphone" ></input></td>
                                     </tr>
                                     <br></br>
                                     <tr>
@@ -566,9 +566,9 @@ function CompleteResidentProfile () {
                                         <td className='cell-title'>Birth Order</td>
                                     </tr>
                                     <tr>
-                                        <td className='cell-input'><input type="text" id="numberbrothers" name="numberbrothers"></input></td>
-                                        <td className='cell-input'><input type="text" id="numbersisters" name="numbersisters"></input></td>
-                                        <td className='cell-input'><input type="text" id="birthorder" name="birthorder"></input></td>
+                                        <td className='cell-input'><input type="text" id="numberbrothers" ></input></td>
+                                        <td className='cell-input'><input type="text" id="numbersisters" ></input></td>
+                                        <td className='cell-input'><input type="text" id="birthorder" ></input></td>
                                     </tr>
 
                                 </table>
@@ -649,20 +649,20 @@ function CompleteResidentProfile () {
                                             <br></br>
                                             <br></br>
                                             <tr>
-                                                <td><input type='number' id='gadgets' name='gadgets' className='appliances-number'></input></td>
+                                                <td><input type='number' id='gadgets'  className='appliances-number'></input></td>
                                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;Gadgets (cellphone, iPad, tablet)</td>
                                             </tr>
                                             <tr>
                                                 
-                                                <td><input type='number' id='laptop' name='laptop' className='appliances-number'></input></td>
+                                                <td><input type='number' id='laptop'className='appliances-number'></input></td>
                                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;Laptop</td>
                                             </tr>
                                             <tr>
-                                                <td><input type='number' id='printer' name='printer' className='appliances-number'></input></td>
+                                                <td><input type='number' id='printer' className='appliances-number'></input></td>
                                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;Printer</td>
                                             </tr>
                                             <tr>
-                                                <td><input type='number' id='rice-cooker' name='rice-cooker' className='appliances-number'></input></td>
+                                                <td><input type='number' id='rice-cooker' className='appliances-number'></input></td>
                                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;Rice Cooker</td>
                                             </tr>
                                         </div>

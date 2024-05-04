@@ -14,22 +14,11 @@ function EditDormInformation () {
     const [dorm, setDorm] = useState();
 
     const fetchData = () => {
-        // const getDorm = axios.get(apiUrl("/dorm"), { withCredentials: true });
-        // const getAttendant = axios.get(apiUrl("/attendant"), { withCredentials: true });
-        // axios.all([getDorm, getAttendant]).then(
-        //     axios.spread((...allData) => {
-        //         const allDormData = allData[0].data
-        //         const allAttendantData = allData[1].data
-        //         setDorm(allDormData)
-        //         editDormInfo(allAttendantData)
-        //     })
-        // )
         const getDorm = axios.get(apiUrl("/dorm"), { withCredentials: true });
         axios.all([getDorm]).then(
             axios.spread((...allData) => {
                 const allDormData = allData[0].data
                 setDorm(allDormData)
-                // editDorm(user)
             })
         )
     }
@@ -143,22 +132,22 @@ function EditDormInformation () {
                                                 </tr>
                                                 <tr>
                                                     <td>Office Hours</td> 
-                                                    <td><input type='time' id='office_hours_start'></input></td>
-                                                    <td><input type='time' id='office_hours_end'></input></td>
+                                                    <td><input type='time' id='office_hours_start' required></input></td>
+                                                    <td><input type='time' id='office_hours_end' required></input></td>
                                                 </tr>
                                                 <tr>
                                                     <td>Late Permit Hours</td> 
-                                                    <td><input type='time' id='late_permit_start'></input></td>
-                                                    <td><input type='time' id='late_permit_end'></input></td>
+                                                    <td><input type='time' id='late_permit_start' required></input></td>
+                                                    <td><input type='time' id='late_permit_end' required></input></td>
                                                 </tr>
                                                 <tr>
                                                     <td>Overnight Permit Hours</td> 
-                                                    <td><input type='time' id='overnight_permit_start'></input></td>
-                                                    <td><input type='time' id='overnight_permit_end'></input></td>
+                                                    <td><input type='time' id='overnight_permit_start' required></input></td>
+                                                    <td><input type='time' id='overnight_permit_end' required></input></td>
                                                 </tr>
                                                 <tr>
                                                     <td>Stayover Permit Hours</td> 
-                                                    <td><input type='time' id='stayover_permit_start'></input></td>
+                                                    <td><input type='time' id='stayover_permit_start' required></input></td>
                                                 </tr>
                                             </table>
                                     </div>

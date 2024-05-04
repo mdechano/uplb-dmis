@@ -62,7 +62,7 @@ function AttendantProfile () {
                     <p className='page-title'>ATTENDANT PROFILE</p>
 
                     <div>
-                        <button className='edit-profile-button'>EDIT PROFILE</button>
+                        <button className='edit-profile-button' onClick = {()=> navigate("/edit-attendant")}>EDIT PROFILE</button>
                     </div>
                 </div>
 

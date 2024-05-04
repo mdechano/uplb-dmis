@@ -207,10 +207,10 @@ function CompleteManagerProfile () {
                                         <td className='cell-title'>Suffix</td>
                                     </tr>
                                     <tr className='table-row'>
-                                        <td className='cell-input'><input type="text" id="first_name" name="firstname"></input></td>
-                                        <td className='cell-input'><input type="text" id="middle_name" name="middlename"></input></td>
-                                        <td className='cell-input'><input type="text" id="last_name" name="lastname"></input></td>
-                                        <td className='cell-input'><input type="text" id="suffix" name="suffix"></input></td>
+                                        <td className='cell-input'><input type="text" id="first_name" required></input></td>
+                                        <td className='cell-input'><input type="text" id="middle_name" ></input></td>
+                                        <td className='cell-input'><input type="text" id="last_name" required></input></td>
+                                        <td className='cell-input'><input type="text" id="suffix" ></input></td>
                                         
                                     </tr>
                                     <tr className='table-row'>
@@ -220,7 +220,7 @@ function CompleteManagerProfile () {
                                     </tr>
                                     <tr className='table-row'>
                                         <td className='cell-input'>
-                                            <select className='custom-select-sex' id="sex">
+                                            <select className='custom-select-sex' id="sex" required>
                                                 <option>Select Sex</option>
                                                 <option value="female">Female</option>
                                                 <option value="male">Male</option>
@@ -228,7 +228,7 @@ function CompleteManagerProfile () {
                                             </select>
                                         </td>
                                         {/* <td className='cell-input'> */}
-                                            <select className='custom-select-birthday-month' id="birth-month">
+                                            <select className='custom-select-birthday-month' id="birth-month" >
                                                 <option value="January">January</option>
                                                 <option value="February">February</option>
                                                 <option value="February">March</option>
@@ -287,9 +287,9 @@ function CompleteManagerProfile () {
                                         
                                     </tr>
                                     <tr className='table-row'>
-                                        <td className='cell-input'><input type='text' id='contact_number' name='contactnumber'></input></td>
-                                        <td className='cell-input'><input type='text' id='email' name='email'></input></td>
-                                        <td className='cell-input'><input type='text' id='home_address' name='address'></input></td>
+                                        <td className='cell-input'><input type='text' id='contact_number' required></input></td>
+                                        <td className='cell-input'><input type='text' id='email' required></input></td>
+                                        <td className='cell-input'><input type='text' id='home_address' required></input></td>
                                         
                                         
                                     </tr>
@@ -313,8 +313,8 @@ function CompleteManagerProfile () {
                                         <td className='cell-title'>Office Hours</td>
                                         </tr>
                                         <tr className='table-row'>
-                                            <td className='cell-input'>FROM <input type='time' id='office_hours_start'></input></td>
-                                            <td className='cell-input'>TO <input type='time' id='office_hours_end'></input></td>
+                                            <td className='cell-input'>FROM <input type='time' id='office_hours_start' required></input></td>
+                                            <td className='cell-input'>TO <input type='time' id='office_hours_end' required></input></td>
                                         </tr>
                                     </div>
                                     
@@ -323,21 +323,21 @@ function CompleteManagerProfile () {
                                             <td className='cell-title'>Late Permit Hours</td>
                                         </tr>
                                         <tr className='table-row'>
-                                        <td className='cell-input'>FROM <input type='time' id='late_permit_start'></input></td>
-                                            <td className='cell-input'>TO <input type='time' id='late_permit_end'></input></td>
+                                        <td className='cell-input'>FROM <input type='time' id='late_permit_start' required></input></td>
+                                            <td className='cell-input'>TO <input type='time' id='late_permit_end' required></input></td>
                                         </tr>
                                         <tr className='table-row'>
                                             <td className='cell-title'>Overnight Permit Hours</td>
                                         </tr>
                                         <tr className='table-row'>
-                                        <td className='cell-input'>FROM <input type='time' id='overnight_permit_start'></input></td>
-                                            <td className='cell-input'>TO <input type='time' id='overnight_permit_end'></input></td>
+                                        <td className='cell-input'>FROM <input type='time' id='overnight_permit_start' required></input></td>
+                                            <td className='cell-input'>TO <input type='time' id='overnight_permit_end' required></input></td>
                                         </tr>
                                         <tr className='table-row'>
                                             <td className='cell-title'>Stayover/Homebound Permit Hours</td>
                                         </tr>
                                         <tr className='table-row'>
-                                            <td className='cell-input'>FROM <input type='time' id='stayover_permit_start'></input></td>
+                                            <td className='cell-input'>FROM <input type='time' id='stayover_permit_start' required></input></td>
                                         </tr>
                                     </div>
                                     

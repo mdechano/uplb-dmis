@@ -49,16 +49,9 @@ function ManagerProfile () {
             <div className='manager-profile-div'>
 
                 <div className='upper-div'>
-                    <div>
-                        <button className='back-button' onClick = {()=> navigate('/dashboard')}>BACK</button>
-                        
-                    </div>
-                    
+                    <button className='back-button' onClick = {()=> navigate('/dashboard')}>BACK</button>
                     <p className='page-title'>MANAGER PROFILE</p>
-
-                    <div>
-                        <button className='edit-profile-button'>EDIT PROFILE</button>
-                    </div>
+                    <button className='edit-profile-button' onClick={()=> navigate('/edit-manager')}>EDIT PROFILE</button>
                 </div>
 
                 

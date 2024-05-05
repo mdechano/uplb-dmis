@@ -11,8 +11,8 @@ function CompleteManagerProfile () {
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
 
-    const [fileData, setFileData] = useState();
-    const [fileId, setFileId] = useState();
+    const [picture, setPicture] = useState();
+    const [allPicture, setAllPicture] = useState();
 
     let allEmails = []
  
@@ -63,7 +63,7 @@ function CompleteManagerProfile () {
                     contact_number: document.getElementById("contact_number").value,
                     email: document.getElementById("email").value,
                     home_address: document.getElementById("home_address").value,
-                    picture_id: fileId
+                    picture_id: "fileId"
                 })
             })
             .then(response => {return response.json()})
@@ -135,31 +135,47 @@ function CompleteManagerProfile () {
         }
     }
 
-
-    const fileChangeHandler = (e) => {
-        console.log(e.target.files[0]);
-        setFileData(e.target.files[0]);
-    };
+    const convertToBase64 = (e) => {
+        e.preventDefault();
+        var reader = new FileReader();
+        reader.readAsDataURL(e.target.files[0]);
+        reader.onload = () => {
+            console.log(reader.result);
+            setPicture(reader.result);
+        };
+        reader.onerror = error => {
+            console.log("Error: ", error);
+        }
+    }
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
     
-        // Handle File Data from the state Before Sending
-        const data = new FormData();
-        data.append("image", fileData);
-
-        console.log(data);
-    
-        fetch(apiUrl("/picture"), {
-          method: "POST",
-          body: data,
+        fetch(apiUrl("/picture"),{
+            method: "POST",
+            credentials:'include',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                base64: picture
+            })
         })
-        .then((response) => response.json())
-        .then((result) => {
-            console.log(result.id);
-            setFileId(result.id);
-        });
+        .then(response => {return response.json()})
+        .then((data) => console.log(data))
+        .then(renderImage)
     };
+
+    const renderImage = () => {
+        fetch(apiUrl("/picture/render-image"),{
+            method: "GET",
+        })
+        .then(response => {return response.json()})
+        .then((data) => {
+            console.log(data)
+            setAllPicture(data)
+        })
+    }
 
     useEffect(()=>{
         if(isAuthenticated === false){
@@ -184,7 +200,8 @@ function CompleteManagerProfile () {
                     <div className='left-div'>
                         <form className='upload-div'>
                             <div className='upload-body'>
-                                <input className='upload-img-file' type="file" onChange={fileChangeHandler} ></input>
+                                {picture === "" || picture === null ? "" : <img width={100} src={picture}></img>}
+                                <input className='upload-img-file' type="file" onChange={convertToBase64} ></input>
                                 <br></br>
                                 <br></br>
                                 <br></br>
@@ -193,6 +210,13 @@ function CompleteManagerProfile () {
                             <div className='upload-note'>
                                 Upload Picture Here<br></br>(1x1 or 2x2)
                             </div>
+
+                            {allPicture !== undefined ?
+                                allPicture.map(data => {
+                                    return(
+                                    <img width={100} src={data.base64_string}></img>
+                                    )
+                            }) : ""}
                         </form>
                     </div>
 

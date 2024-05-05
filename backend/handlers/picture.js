@@ -16,11 +16,11 @@ exports.create = (object) => {
     });
 }
 
-exports.getOne = (query, next) => {
+exports.getAll = () => {
     return new Promise((resolve, reject) => {
-        Picture.findOne(query, (err, imgdata) => {
+        Picture.find((err, picture) => {
             if (err) { reject(err); }
-            resolve(imgdata);
+            resolve(picture);
         });
     });
 }

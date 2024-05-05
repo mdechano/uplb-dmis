@@ -24,10 +24,10 @@ function ManagerProfile () {
                 axios.spread((...allData) => {
                     const allManagerData = allData[0].data
                     setManager(allManagerData)
-                    var picture_id = allData[0].data.picture_id.split(".")[0]
-                    fetch(apiUrl("/picture/" + picture_id), {
-                        method: "GET",
-                    }).then((response) => response.json())
+                    // var picture_id = allData[0].data.picture_id.split(".")[0]
+                    // fetch(apiUrl("/picture/" + picture_id), {
+                    //     method: "GET",
+                    // }).then((response) => response.json())
                 })
             )
     }

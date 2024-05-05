@@ -24,8 +24,9 @@ exports.uploadImage = async (req, res) => {
         }
         const cType = final_img.contentType
         const extension = cType.slice(6,cType.length)
-    
+
         Picture.create(final_img)
+        // console.log(picture)
         //console.log(randId)
         return res.status(200).send({success: true, id: `${randId}.${extension}`})
     }

@@ -153,10 +153,11 @@ function CompleteManagerProfile () {
         fetch(apiUrl("/picture"), {
           method: "POST",
           body: data,
-        }).then((response) => response.json())
+        })
+        .then((response) => response.json())
         .then((result) => {
-            setFileId(result.id);
             console.log(result.id);
+            setFileId(result.id);
         });
     };
 

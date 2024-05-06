@@ -3,9 +3,7 @@ import {React, useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import useStore from '../utilities/authHook';
 import {apiUrl} from '../utilities/apiUrl';
-import UPLBLogoText from '../images/UPLBLogoText.png'
-import DDMenu from '../images/DDMenu.png'
-import profilepic from '../images/userprofile.png'
+import axios, { all } from "axios";
 import '../css/NavBar.css'
 import NavBar from './NavBar';
 import '../css/ManagerProfile.css';
@@ -14,14 +12,41 @@ function ManagerProfile () {
 
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
-    // const [role, setRole] = useState();
+    const [ currentUser, setUser] = useState();
+    const [tempManager, setTempManager] = useState();
+    const [ currentManager, setManager] = useState();
+    const [allPicture, setAllPictures] = useState();
+
+    const fetchData = () => {
+        const link = window.location.href;
+        const id = link.slice(link.lastIndexOf('/')+1,link.length);
+        const getManager = axios.get(apiUrl("/manager/") + id, { withCredentials: true });
+            axios.all([getManager]).then(
+                axios.spread((...allData) => {
+                    const allManagerData = allData[0].data
+                    setManager(allManagerData)
+                })
+            )
+    }
+
+    const renderImage = () => {
+        fetch(apiUrl("/picture"),{
+            method: "GET",
+        })
+        .then(response => {return response.json()})
+        .then((data) => {
+            console.log(data)
+            setAllPictures(data)
+        })
+    }
 
     useEffect(()=>{
         if(isAuthenticated === false){
             navigate("/")
         } 
         else {
-            // fetchData()
+            fetchData()
+            renderImage()
         }
     },[]);
 
@@ -32,30 +57,78 @@ function ManagerProfile () {
             <div className='manager-profile-div'>
 
                 <div className='upper-div'>
-                    <div>
-                        <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
-                        { user.completed_profile === false ?
-                        <button className='complete-profile-button' onClick={() => navigate("/complete-manager-profile")}>COMPLETE PROFILE</button>
-                        : ""}
-                    </div>
-                    
+                    <button className='back-button' onClick = {()=> navigate('/dashboard')}>BACK</button>
                     <p className='page-title'>MANAGER PROFILE</p>
-
-                    <div>
-                        <button className='edit-profile-button'>EDIT PROFILE</button>
-                    </div>
+                    <button className='edit-profile-button' onClick={()=> navigate('/edit-manager')}>EDIT PROFILE</button>
                 </div>
 
-                <div className='body-div'>
-                    <div className='manager-profile-div-left'>
-                        hello left
+                
+                { currentManager !== undefined ?
+                    <div className='body-div'>
+                        <div className='profile-div-left'>
+                            {allPicture !== undefined ?
+                                allPicture.map(data => {
+                                    if (currentManager.base64_string === data.base64_string) {
+                                        return(
+                                        <img width={250} src={data.base64_string}></img>
+                                        )
+                                    }
+                            }) : ""}
+                            <br></br>
+                            <p className='profile-info'>{currentManager.first_name + " "  + currentManager.last_name}</p>
+                            <p className='profile-info'><b>Dorm Manager</b></p>
+                            <p className='profile-info'><i>{currentManager.dorm}</i></p>
+                        </div>
+
+                        <div className='profile-div-right'>
+                        <table className='table-display'>
+                                    <tr className='table-row-display'>
+                                        <td className='cell-title-display'>First Name</td>
+                                        <td className='cell-title-display'>Middle Name</td>
+                                        <td className='cell-title-display'>Last Name</td>
+
+                                        <td className='cell-title-display'>Suffix</td>
+                                    </tr>
+                                    <tr className='table-row-display'>
+                                        <td className='cell-input-display'>{currentManager.first_name}</td>
+                                        <td className='cell-input-display'>{currentManager.middle_name}</td>
+                                        <td className='cell-input-display'>{currentManager.last_name}</td>
+                                        <td className='cell-input-display'>{currentManager.suffix}</td>
+                                    </tr>
+                                    <tr className='table-row-display'>
+                                        <td className='cell-title-display'>Assigned Sex</td>
+                                        <td className='cell-title-display'>Birthday</td>
+                                        
+                                    </tr>
+                                    <tr className='table-row-display'>
+                                        <td className='cell-input-display'>{currentManager.sex}</td>
+                                        <td className='cell-input-display'>{currentManager.birthday}</td>
+                                      </tr>  
+                                    
+                                    <tr className='table-row-display'>
+                                        <td className='cell-title-display'>Contact Number</td>
+                                        <td className='cell-title-display'>Email</td>
+                                        <td className='cell-title-display'>Home Address</td>
+                                        
+                                    </tr>
+                                    <tr className='table-row-display'>
+                                        <td className='cell-input-display'>{currentManager.contact_number}</td>
+                                        <td className='cell-input-display'>{currentManager.email}</td>
+                                        <td className='cell-input-display'>{currentManager.home_address}</td>
+                                        
+                                    </tr>
+                                
+                        </table>
+                        </div>
+                        
                     </div>
 
-                    <div className='manager-profile-div-right'>
-                        hello right
-                    </div>
-                </div>
-
+                :
+                ""
+                // fetchData()
+                }
+                
+                                    
                 
             </div>
 

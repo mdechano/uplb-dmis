@@ -1,18 +1,23 @@
 // dependencies
 const express = require('express')
 const cookieParser = require("cookie-parser");
+const myParser = require("body-parser");
 const Router = require('./router');
-// const formData = require('express-form-data');
+const formData = require('express-form-data');
 const path = require('path')
 require("dotenv").config();
 
 // initialize express app
 exports.start = () => {
     const App = express();
-    // App.use(formData.parse());
-    App.use(express.urlencoded({ extended: true }));
-    App.use(express.json());
+    App.use(formData.parse());
     App.use(cookieParser());
+    App.use(express.json({limit: '200mb'}));
+    App.use(express.urlencoded({limit: '200mb',  extended: true }));
+    // App.use(myParser.json({limit: '200mb'}));
+    // App.use(myParser.urlencoded({limit: '200mb', extended: true}));
+    // App.use(myParser.text({limit: '200mb'}));
+    
 
     App.use((req, res, next) => {
         res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000")

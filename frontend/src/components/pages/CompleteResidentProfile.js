@@ -11,8 +11,8 @@ function CompleteResidentProfile () {
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
 
-    const [fileData, setFileData] = useState();
-    const [fileId, setFileId] = useState();
+    const [picture, setPicture] = useState();
+    // const [resident, setResident]= useState();
     let allEmails = []
  
     const fetchData = () => {
@@ -39,10 +39,6 @@ function CompleteResidentProfile () {
         e.preventDefault();
         var tempEmail = document.getElementById("email").value;
         var notuniqueEmail = checkEmailExists(tempEmail); // boolean
-
-        const user_id = user._id;
-        const dorm = user.dorm;
-        const role = user.role;
 
         const father_details = {
             father_name: document.getElementById("fathername").value,
@@ -84,7 +80,7 @@ function CompleteResidentProfile () {
             printer: document.getElementById("printer").value,
             rice_cooker: document.getElementById("rice-cooker").value,
             electric_fan: document.getElementById("electric-fan").value,
-            refrigerator: document.getElementById("refrigerator").vaule
+            refrigerator: document.getElementById("refrigerator").value
         }
 
         const appliances_information = {
@@ -170,9 +166,9 @@ function CompleteResidentProfile () {
                     'Content-Type':'application/json'
                 },
                 body: JSON.stringify({
-                    user_id: user_id, 
-                    dorm: dorm,
-                    role: role,
+                    user_id: user._id, 
+                    dorm: user.dorm,
+                    role: user.role,
                     first_name: document.getElementById("first_name").value,
                     last_name: document.getElementById("last_name").value,
                     middle_name: document.getElementById("middle_name").value,
@@ -180,7 +176,7 @@ function CompleteResidentProfile () {
                     sex: document.getElementById("sex").value,
                     student_no: document.getElementById("student_no").value,
                     civil_status: document.getElementById("civil_status").value,
-                    birthday: document.getElementById("birthday").value,
+                    birthday: document.getElementById("birth-month").value + " " + document.getElementById("birth-day").value + ", " + document.getElementById("birth-year").value,
                     contact_number: document.getElementById("contact_number").value,
                     email: document.getElementById("email").value,
                     home_address: document.getElementById("home_address").value,
@@ -207,39 +203,119 @@ function CompleteResidentProfile () {
                     appliances: appliances,
                     appliances_information: appliances_information,
                     emergency_details: emergency_details,
-                    slas: "None"
-                    // payment_details: {type: Object},
-                    // violation_details: {type: Object},
-                    // picture_id: {type: String},
-                    // dorm_id: {type: String}
+                    slas: "None",
+                    base64_string: picture
                 })
             })
             .then(response => {return response.json()})
-            .then(
-                data => {
-                console.log(data.message)
-                console.log(data.success)
-                if (data.success == false) {
-                    alert("Error completing resident profile.")
-                    setTimeout(() => {
-                        window.location.reload()
-                    })
-                } else {
-                    alert("Successfully completed resident profile.")
-                    setTimeout(() => {
-                        window.location.reload()
-                    })
-                }
-                }
-            )
-        } else {
-            alert("Inputted email address already exists!")
-            setTimeout(() => {
-                window.location.reload()
+            .then(getResidents)
+        }
+        // else {
+        //     alert("Inputted email address already exists!")
+        //     setTimeout(() => {
+        //         window.location.reload()
+        //     })
+        // }
+    }
+
+    const getResidents = () => {
+        const getResident = axios.get(apiUrl("/resident"), { withCredentials: true });
+        const getPictures = axios.get(apiUrl("/picture"), { withCredentials: true });
+        axios.all([getResident, getPictures]).then(
+            axios.spread((...allData) => {
+                setResidentInfo(allData[0].data, allData[1].data)
             })
+        )
+    }
+
+    const setResidentInfo = (resident, picture) =>  {
+        if (resident !== undefined && picture !== undefined) {
+            resident.map((person, i) => {
+                if(i === (resident.length - 1)){
+                    picture.map((pic, i) => {
+                        if (person.base64_string === pic.base64_string) {
+                            const currentPicture = pic;
+
+                            console.log(currentPicture._id)
+
+                            fetch(apiUrl("/picture/"+currentPicture._id),{
+                                method: "PUT",
+                                credentials:'include',
+                                headers:{
+                                    'Content-Type':'application/json'
+                                },
+                                body: JSON.stringify({
+                                    base64_string: currentPicture.base64_string,
+                                    profile_id: person._id
+                                    })
+                                })
+                            .then(
+                                fetch(apiUrl("/user/change-completed-profile"), {
+                                    method: "PUT",
+                                    credentials:'include',
+                                    headers:{
+                                        'Content-Type':'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        email: person.email,
+                                        completed_profile: true,
+                                        profile_id: person._id
+                                    })
+                                })
+                                .then(response => {return response.json()})
+                                .then(
+                                    alert("Successfully completed resident profile."),
+                                    setTimeout(function(){
+                                        window.location.reload();
+                                    }, 1000)
+                                )
+                            )
+                        }
+                    })
+                    
+                }
+            }) 
+        }
+    }
+
+    const convertToBase64 = (e) => {
+        var reader = new FileReader();
+        reader.readAsDataURL(e.target.files[0]);
+        reader.onload = () => {
+            console.log(reader.result);
+            setPicture(reader.result);
+        };
+        reader.onerror = error => {
+            console.log("Error: ", error);
         }
 
-        
+    }
+
+    const onSubmitHandler = (e) => {
+        e.preventDefault();
+
+        var width = document.getElementById('image-upload').naturalWidth;
+        var height = document.getElementById('image-upload').naturalHeight;
+
+        if (width != height) {
+            alert("Image must be 1x1 or 2x2. Please try another")
+        } else {
+            fetch(apiUrl("/picture"),{
+                method: "POST",
+                credentials:'include',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify({
+                    base64_string: picture,
+                    profile_id: ""
+                })
+            })
+            .then(response => {return response.json()})
+            .then((data) => console.log(data))
+            .then(alert("Successfully uploaded image."))
+            // .then(renderImage)
+        }
     }
 
     useEffect(()=>{
@@ -262,17 +338,19 @@ function CompleteResidentProfile () {
                 </div>
                 <div className="body-div">
                     <div className='left-div'>
-                        <div className='student-div'>
-                            <div className='image-div'>
-                                image here
+                    <form className='upload-div'>
+                            <div className='upload-body'>
+                                {picture === "" || picture === null ? "" : <img id='image-upload' width={100} src={picture}></img>}
+                                <input className='upload-img-file'  type="file" accept="image/png, image/jpeg, image/jpg" onChange={convertToBase64} ></input>
+                                <br></br>
+                                <br></br>
+                                <br></br>
+                                <button className='upload-img-submit' type="submit" onClick={onSubmitHandler} >SUBMIT</button>
                             </div>
-                            <div className='profile-info'>
-                                <p>ANNA DELA CRUZ</p>
-                                <p>2019-08206</p>
-                                <p>ROOM NO. 1209</p>
-                                <p>ROLE</p>
+                            <div className='upload-note'>
+                                Upload Picture Here<br></br>(1x1 or 2x2)
                             </div>
-                        </div>
+                        </form>
                     </div>
                     <div className="right-div">
                         <form className="form-div">
@@ -302,16 +380,67 @@ function CompleteResidentProfile () {
                                     </tr>
                                     <tr className='table-row'>
                                         <td className='cell-input'>
-                                            <select id="sex" name="sex">
+                                            <select className='custom-select-sex' id="sex" required>
                                                 <option>Select Sex</option>
                                                 <option value="female">Female</option>
                                                 <option value="male">Male</option>
                                                 <option value="intersex">Intersex</option>
                                             </select>
                                         </td>
-                                        <td className='cell-input'><input type="text" id="student_no" name="studentnum" required></input></td>
-                                        <td className='cell-input'><input type="text" id="civil_status" name="civilstatus" required></input></td>
-                                        <td className='cell-input'><input type='date' id='birthday' name='birthday' required></input></td>
+                                        <td className='cell-input'><input type="text" id="student_no" required placeholder='format: 20XX-XXXXX'></input></td>
+                                        <td className='cell-input'><input type="text" id="civil_status" required></input></td>
+                                        {/* <td className='cell-input'> */}
+                                        <select className='custom-select-birthday-month' id="birth-month">
+                                                <option value="January">January</option>
+                                                <option value="February">February</option>
+                                                <option value="February">March</option>
+                                                <option value="April">April</option>
+                                                <option value="May">May</option>
+                                                <option value="June">June</option>
+                                                <option value="July">July</option>
+                                                <option value="August">August</option>
+                                                <option value="September">September</option>
+                                                <option value="October">October</option>
+                                                <option value="November">November</option>
+                                                <option value="December">December</option>
+                                            </select>
+                                        {/* </td>
+                                        <td className='cell-input'> */}
+                                            <select className='custom-select-birthday-day' id="birth-day">
+                                                <option value="01">01</option>
+                                                <option value="02">02</option>
+                                                <option value="03">03</option>
+                                                <option value="04">04</option>
+                                                <option value="05">05</option>
+                                                <option value="06">06</option>
+                                                <option value="07">07</option>
+                                                <option value="08">08</option>
+                                                <option value="09">09</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                                <option value="13">13</option>
+                                                <option value="14">14</option>
+                                                <option value="15">15</option>
+                                                <option value="16">16</option>
+                                                <option value="17">17</option>
+                                                <option value="18">18</option>
+                                                <option value="19">19</option>
+                                                <option value="20">20</option>
+                                                <option value="21">21</option>
+                                                <option value="22">22</option>
+                                                <option value="23">23</option>
+                                                <option value="24">24</option>
+                                                <option value="25">25</option>
+                                                <option value="26">26</option>
+                                                <option value="27">27</option>
+                                                <option value="28">28</option>
+                                                <option value="29">29</option>
+                                                <option value="30">30</option>
+                                                <option value="31">31</option>
+                                            </select>
+                                        {/* </td> */}
+                                        <td className='cell-input'><input type="text" className='year' id="birth-year" placeholder='year'></input></td>
                                         
                                     </tr>
                                     <tr className='table-row'>
@@ -325,22 +454,22 @@ function CompleteResidentProfile () {
                                         <td className='cell-input'><input type='text' id='email' name='email' required></input></td>
                                         <td className='cell-input'><input type='text' id='home_address' name='address' required></input></td>
                                         <td className='cell-input'>
-                                            <select id='region' name='region'>
+                                            <select className='custom-select-sex' id='region' name='region'>
                                                 <option>Select Region</option>
-                                                <option value="region-1">Region I</option>
-                                                <option value="region-2">Region II</option>
-                                                <option value="region-3">Region III</option>
-                                                <option value="region-4a">Region IV-A</option>
-                                                <option value="region-4b">Region IV-B</option>
-                                                <option value="region-5">Region V</option>
-                                                <option value="region-6">Region VI</option>
-                                                <option value="region-7">Region VII</option>
-                                                <option value="region-8">Region VIII</option>
-                                                <option value="region-9">Region IX</option>
-                                                <option value="region-10">Region X</option>
-                                                <option value="region-11">Region XI</option>
-                                                <option value="region-12">Region XII</option>
-                                                <option value="region-13">Region XIII</option>
+                                                <option value="Region I">Region I</option>
+                                                <option value="Region II">Region II</option>
+                                                <option value="Region III">Region III</option>
+                                                <option value="Region IV-A">Region IV-A</option>
+                                                <option value="Region IV-B">Region IV-B</option>
+                                                <option value="Region V">Region V</option>
+                                                <option value="Region VI">Region VI</option>
+                                                <option value="Region VII">Region VII</option>
+                                                <option value="Region VIII">Region VIII</option>
+                                                <option value="Region IX">Region IX</option>
+                                                <option value="Region X">Region X</option>
+                                                <option value="Region XI">Region XI</option>
+                                                <option value="Region XII">Region XII</option>
+                                                <option value="Region XIII">Region XIII</option>
                                                 <option value="NCR">NCR</option>
                                                 <option value="CAR">CAR</option>
                                                 <option value="BARMM">BARMM</option>
@@ -358,7 +487,7 @@ function CompleteResidentProfile () {
                                     </tr>
                                     <tr className='table-row'>
                                         <td className='cell-input'>
-                                            <select id='college' name='college' required>
+                                            <select className='custom-select-sex' id='college' name='college' required>
                                                 <option>Select College</option>
                                                 <option value="CAS">CAS</option>
                                                 <option value="CAFS">CAFS</option>
@@ -371,9 +500,9 @@ function CompleteResidentProfile () {
                                                 <option value="GS">Graduate School</option>
                                             </select>
                                         </td>
-                                        <td className='cell-input'><input type='text' id='degree_program' name='degprog' required></input></td>
-                                        <td className='cell-input'><input type='text' id='last_school_attended' name='last-school' required></input></td>
-                                        <td className='cell-input'><input type='text' id='classification' name='classification' required></input></td>
+                                        <td className='cell-input'><input type='text' id='degree_program' placeholder='format: BS Computer Science' required></input></td>
+                                        <td className='cell-input'><input type='text' id='last_school_attended' required></input></td>
+                                        <td className='cell-input'><input type='text' id='classification' ></input></td>
                                         
                                     </tr>
 
@@ -384,10 +513,10 @@ function CompleteResidentProfile () {
                                         <td className='cell-title'>Organizations</td>
                                     </tr>
                                     <tr className='table-row'>
-                                        <td className='cell-input'><input type='text' id='honors_received' name='honors'></input></td>
-                                        <td className='cell-input'><input type='text' id='talents' name='talents'></input></td>
-                                        <td className='cell-input'><input type='text' id='hobbies' name='hobbies'></input></td>
-                                        <td className='cell-input'><input type='text' id='organizations' name='organizations'></input></td>
+                                        <td className='cell-input'><input type='text' id='honors_received'></input></td>
+                                        <td className='cell-input'><input type='text' id='talents' ></input></td>
+                                        <td className='cell-input'><input type='text' id='hobbies' ></input></td>
+                                        <td className='cell-input'><input type='text' id='organizations' ></input></td>
                                     </tr>
 
                                     <tr className='table-row'>
@@ -397,10 +526,10 @@ function CompleteResidentProfile () {
                                         <td className='cell-title'>Monthly Stipend</td>
                                     </tr>
                                     <tr className='table-row'>
-                                        <td className='cell-input'><input type='text' id='ailments' name='ailments'></input></td>
-                                        <td className='cell-input'><input type='text' id='medications' name='medications'></input></td>
-                                        <td className='cell-input'><input type='text' id='scholarships' name='scholarships'></input></td>
-                                        <td className='cell-input'><input type='text' id='monthly_stipend' name='stipend'></input></td>
+                                        <td className='cell-input'><input type='text' id='ailments' ></input></td>
+                                        <td className='cell-input'><input type='text' id='medications' ></input></td>
+                                        <td className='cell-input'><input type='text' id='scholarships' ></input></td>
+                                        <td className='cell-input'><input type='text' id='monthly_stipend' ></input></td>
                                     </tr>
                                 </table>
                             </div>
@@ -413,7 +542,7 @@ function CompleteResidentProfile () {
                                     <h3 className='cell-title'>Parents' Status</h3>
                                     <br></br>
                                     <div className='custom-select'>
-                                        <select className='parents-status' id='parents-status'>
+                                        <select  className='custom-select-sex'  id='parents-status'>
                                             <option value=""disabled defaultValue hidden>Choose Parents' Status</option>
                                             <option value='Still Married'>Still Married</option>
                                             <option value='Separated'>Separated</option>
@@ -428,9 +557,9 @@ function CompleteResidentProfile () {
                                         <td className='cell-title'>Father's Monthly Income</td>
                                     </tr>
                                     <tr>
-                                        <td className='cell-input'><input type="text" id="fathername" name="fathername"></input></td>
-                                        <td className='cell-input'><input type="text" id="fatheroccupation" name="fatheroccupation"></input></td>
-                                        <td className='cell-input'><input type="text" id="fatherincome" name="fatherincome"></input></td>
+                                        <td className='cell-input'><input type="text" id="fathername" ></input></td>
+                                        <td className='cell-input'><input type="text" id="fatheroccupation" ></input></td>
+                                        <td className='cell-input'><input type="text" id="fatherincome" ></input></td>
                                     </tr>
 
                                     <tr>
@@ -439,9 +568,9 @@ function CompleteResidentProfile () {
                                         <td className='cell-title'>Father's Cellphone/Telephone no.</td>
                                     </tr>
                                     <tr>
-                                        <td className='cell-input'><input type="text" id="fatheremployer" name="fatheremployer"></input></td>
-                                        <td className='cell-input'><input type="text" id="fatheroffice" name="fatheroffice"></input></td>
-                                        <td className='cell-input'><input type="text" id="fatherphone" name="fatherphone"></input></td>
+                                        <td className='cell-input'><input type="text" id="fatheremployer" ></input></td>
+                                        <td className='cell-input'><input type="text" id="fatheroffice" ></input></td>
+                                        <td className='cell-input'><input type="text" id="fatherphone" ></input></td>
                                     </tr>
                                     <br></br>
                                     <tr>
@@ -450,9 +579,9 @@ function CompleteResidentProfile () {
                                         <td className='cell-title'>Mother's Monthly Income</td>
                                     </tr>
                                     <tr>
-                                        <td className='cell-input'><input type="text" id="mothername" name="mothername"></input></td>
-                                        <td className='cell-input'><input type="text" id="motheroccupation" name="motheroccupation"></input></td>
-                                        <td className='cell-input'><input type="text" id="motherincome" name="motherincome"></input></td>
+                                        <td className='cell-input'><input type="text" id="mothername" ></input></td>
+                                        <td className='cell-input'><input type="text" id="motheroccupation" ></input></td>
+                                        <td className='cell-input'><input type="text" id="motherincome" ></input></td>
                                     </tr>
 
                                     <tr>
@@ -461,9 +590,9 @@ function CompleteResidentProfile () {
                                         <td className='cell-title'>Mother's Cellphone/Telephone no.</td>
                                     </tr>
                                     <tr>
-                                        <td className='cell-input'><input type="text" id="motheremployer" name="motheremployer"></input></td>
-                                        <td className='cell-input'><input type="text" id="motheroffice" name="motheroffice"></input></td>
-                                        <td className='cell-input'><input type="text" id="motherphone" name="motherphone"></input></td>
+                                        <td className='cell-input'><input type="text" id="motheremployer" ></input></td>
+                                        <td className='cell-input'><input type="text" id="motheroffice" ></input></td>
+                                        <td className='cell-input'><input type="text" id="motherphone" ></input></td>
                                     </tr>
                                     <br></br>
                                     <tr>
@@ -472,9 +601,9 @@ function CompleteResidentProfile () {
                                         <td className='cell-title'>Birth Order</td>
                                     </tr>
                                     <tr>
-                                        <td className='cell-input'><input type="text" id="numberbrothers" name="numberbrothers"></input></td>
-                                        <td className='cell-input'><input type="text" id="numbersisters" name="numbersisters"></input></td>
-                                        <td className='cell-input'><input type="text" id="birthorder" name="birthorder"></input></td>
+                                        <td className='cell-input'><input type="text" id="numberbrothers" ></input></td>
+                                        <td className='cell-input'><input type="text" id="numbersisters" ></input></td>
+                                        <td className='cell-input'><input type="text" id="birthorder" ></input></td>
                                     </tr>
 
                                 </table>
@@ -513,7 +642,7 @@ function CompleteResidentProfile () {
                                             <td className='cell-title'><th>DATE CHECK IN &nbsp;&nbsp;</th></td>
                                             <td>1st Sem &nbsp;&nbsp;&nbsp;</td>
                                             <td><input type="date" id="first-sem-checkin" name="first-sem-checkin"></input></td>
-                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;&nbsp;</td>
+                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;&nbsp;</td>
                                             <td><input type="date" id="second-sem-checkin" name="second-sem-checkin"></input></td>
                                         </tr>
                                         
@@ -521,7 +650,7 @@ function CompleteResidentProfile () {
                                             <td className='cell-title'><th>DATE CHECK OUT &nbsp;&nbsp;</th></td>
                                             <td>1st Sem &nbsp;&nbsp;&nbsp;</td>
                                             <td><input type="date" id="first-sem-checkout" name="first-sem-checkout"></input></td>
-                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;&nbsp;</td>
+                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;&nbsp;</td>
                                             <td><input type="date" id="second-sem-checkout" name="second-sem-checkout"></input></td>
                                         </tr>
 
@@ -529,7 +658,7 @@ function CompleteResidentProfile () {
                                             <td className='cell-title'><th>FORM 5</th></td>
                                             <td>1st Sem &nbsp;&nbsp;&nbsp;</td>
                                             <td><input type="text" id="first-sem-form5" name="first-sem-form5"></input></td>
-                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;&nbsp;</td>
+                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;&nbsp;</td>
                                             <td><input type="text" id="second-sem-form5" name="second-sem-form5"></input></td>
                                         </tr>
 
@@ -537,7 +666,7 @@ function CompleteResidentProfile () {
                                             <td className='cell-title'><th>ROOM NUMBER</th></td>
                                             <td>1st Sem &nbsp;&nbsp;&nbsp;</td>
                                             <td><input type="text" id="first-sem-room-number" name="room-number-1"></input></td>
-                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;&nbsp;</td>
+                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;&nbsp;</td>
                                             <td><input type="text" id="second-sem-room-number" name="room-number-2"></input></td>
                                         </tr>
 
@@ -555,20 +684,20 @@ function CompleteResidentProfile () {
                                             <br></br>
                                             <br></br>
                                             <tr>
-                                                <td><input type='number' id='gadgets' name='gadgets' className='appliances-number'></input></td>
+                                                <td><input type='number' id='gadgets'  className='appliances-number'></input></td>
                                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;Gadgets (cellphone, iPad, tablet)</td>
                                             </tr>
                                             <tr>
                                                 
-                                                <td><input type='number' id='laptop' name='laptop' className='appliances-number'></input></td>
+                                                <td><input type='number' id='laptop'className='appliances-number'></input></td>
                                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;Laptop</td>
                                             </tr>
                                             <tr>
-                                                <td><input type='number' id='printer' name='printer' className='appliances-number'></input></td>
+                                                <td><input type='number' id='printer' className='appliances-number'></input></td>
                                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;Printer</td>
                                             </tr>
                                             <tr>
-                                                <td><input type='number' id='rice-cooker' name='rice-cooker' className='appliances-number'></input></td>
+                                                <td><input type='number' id='rice-cooker' className='appliances-number'></input></td>
                                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;Rice Cooker</td>
                                             </tr>
                                         </div>

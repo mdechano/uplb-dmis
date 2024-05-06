@@ -35,7 +35,7 @@ exports.addAttendant = async (req, res) => {
         contact_number: body.contact_number,
         email: body.email,
         home_address: body.home_address,
-        picture_id: body.picture_id
+        base64_string: body.base64_string
     };
 
     try{
@@ -95,7 +95,7 @@ exports.editAttendant = async (req, res) => {
         contact_number: body.contact_number,
         email: body.email,
         home_address: body.home_address,
-        picture_id: body.picture_id
+        base64_string: body.base64_string
     };
 
     try{

@@ -3,7 +3,6 @@ const Router = require('express').Router;
 
 const Attendant = Router();
 
-//Attendant.post('/upload', AttendantController.uploadImage);
 Attendant.post('/', AttendantController.addAttendant);
 Attendant.put('/:id', AttendantController.editAttendant);
 Attendant.delete('/', AttendantController.deleteAttendant);

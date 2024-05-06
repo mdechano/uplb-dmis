@@ -88,10 +88,10 @@ exports.edit = (object) =>{
             resident.appliances_information = object.appliances_information,
             resident.emergency_details = object.emergency_details,  
             resident.slas = object.slas,
+            resident.base64_string = object.base64_string,
             resident.payment_details = object.payment_details,
             resident.violation_details = object.violation_details,
-            resident.picture_id = object.picture_id,
-            resident.dorm_id = object.dorm_id
+            
             
             resident.save((err, resident) => {
                 if(err) { reject(err); }

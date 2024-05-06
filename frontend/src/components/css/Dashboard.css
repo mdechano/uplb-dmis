@@ -1,14 +1,22 @@
+.dashboard-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .dashboard-notice {
     border: 0px solid grey;
     background-color: white;
     border-radius: 10px;
     box-shadow: 2px 2px 2px 2px #8888888f;
-    margin-top: 20px;
-    margin-left: 15%;
-    margin-right: 15%;
-    padding: 50px;
-    padding-left: 5%;
-    padding-right: 5%;
+    width: 70%;
+    margin-top: 50px;
+    /* margin-left: 5%;
+    margin-right: 3%; */
+    padding-top: 40px;
+    padding-left: 3%;
+    padding-right: 3%;
+    padding-bottom: 40px;
     font-size: 20px;
     font-family: "Montserrat", sans-serif;
 }
@@ -18,13 +26,12 @@
     background-color: white;
     border-radius: 10px;
     box-shadow: 2px 2px 2px 2px #8888888f;
-    margin-top: 15px;
-    margin-left: 15%;
-    margin-right: 15%;
-    padding-top: 20px;
+    width: 50%;
+    margin-top: 30px;
+    /* margin-left: 5%; */
+    /* margin-right: 5%; */
+    padding-top: 30px;
     padding-bottom: 30px;
-    padding-left: 5%;
-    padding-right: 5%;
     font-family: "Montserrat", sans-serif;
     
 }
@@ -35,7 +42,7 @@
 }
 
 .complete-sign-up {
-    padding: 10px 10px;
+    /* padding: 5px 5px; */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -43,7 +50,7 @@
 }
 
 .set-up {
-    width: 40%;
+    width: 75%;
     padding-top: 20px;
     display: flex;
     flex-direction: column;
@@ -51,7 +58,7 @@
 
 .dashboard-custom-select {
     width: 100%;
-    padding: 10px 20px;
+    padding: 10px 10px;
     border: 1px solid ;
     border-radius: 4px;
     background-color: #f5f5f5;
@@ -65,4 +72,106 @@
     color: white;
     font-weight: bold;
     padding: 10px 10px;
+}
+
+.dashboard-buttons-div {
+    /* border: 1px solid black; */
+    display: flex;
+    flex-direction: column;
+    padding: 10px 10px 10px 10px;
+    align-items: center;
+    /* justify-content: center; */
+}
+
+.dashboard-buttons {
+   
+    align-items: center;
+  background-clip: padding-box;
+  background-color: #0A4424;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 1.25;
+  min-height: 3rem;
+  position: relative;
+  text-decoration: none;
+  transition: all 250ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  width: 75%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  
+}
+
+.dashboard-buttons:hover,
+.dashboard-buttons:focus {
+  background-color: #068b42;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+}
+
+.dashboard-buttons:hover {
+  transform: translateY(-1px);
+}
+
+.dashboard-buttons:active {
+  background-color: #22ff86;
+  box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
+  transform: translateY(0);
+}
+
+.dashboard-buttons-complete-profile {
+    align-items: center;
+  background-clip: padding-box;
+  background-color: #0A4424;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 1.25;
+  min-height: 3rem;
+  position: relative;
+  text-decoration: none;
+  transition: all 250ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  width: 20%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+
+}
+
+.dashboard-buttons-complete-profile:hover,
+.dashboard-buttons-complete-profile:focus {
+  background-color: #068b42;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+}
+
+.dashboard-buttons-complete-profile:hover {
+  transform: translateY(-1px);
+}
+
+.dashboard-buttons-complete-profile:active {
+  background-color: #22ff86;
+  box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
+  transform: translateY(0);
 }

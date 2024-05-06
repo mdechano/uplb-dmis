@@ -11,9 +11,9 @@ function CompleteManagerProfile () {
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
 
-    const [fileData, setFileData] = useState();
-    const [fileId, setFileId] = useState();
-    // const [new_completed_profile, setCompletedProfile] = useState();
+    const [picture, setPicture] = useState();
+    // const [allPicture, setAllPicture] = useState();
+
     let allEmails = []
  
     const fetchData = () => {
@@ -59,85 +59,147 @@ function CompleteManagerProfile () {
                     middle_name: document.getElementById("middle_name").value,
                     suffix: document.getElementById("suffix").value,
                     sex: document.getElementById("sex").value,
-                    birthday: document.getElementById("birthday").value,
+                    birthday: document.getElementById("birth-month").value + " " + document.getElementById("birth-day").value + ", " + document.getElementById("birth-year").value,
                     contact_number: document.getElementById("contact_number").value,
                     email: document.getElementById("email").value,
                     home_address: document.getElementById("home_address").value,
-                    // upload_id: 
+                    base64_string: picture
                 })
             })
             .then(response => {return response.json()})
-            .then(getManagers)
-        } else {
-            alert("Inputted email address already exists!");
-        }
+            .then(getManagersandPictures)
+        } 
     }
 
-    const getManagers = () => {
-        const getManager = axios.get(apiUrl("/manager"), { withCredentials: true });
-        axios.all([getManager]).then(
+    const getManagersandPictures = () => {
+        const getManagers = axios.get(apiUrl("/manager"), { withCredentials: true });
+        const getPictures = axios.get(apiUrl("/picture"), { withCredentials: true });
+        axios.all([getManagers, getPictures]).then(
             axios.spread((...allData) => {
-                sendDormInfo(allData[0].data)
+                sendDormInfo(allData[0].data, allData[1].data)
             })
         )
     }
 
-    const sendDormInfo = (manager) => {
+    const sendDormInfo = (manager, picture) => {
         
         if (manager !== undefined) {
             manager.map((person, i) => {
                 if(i === (manager.length - 1)){
-                    fetch(apiUrl("/dorm/"),{
-                        method: "POST",
-                        credentials:'include',
-                        headers:{
-                            'Content-Type':'application/json'
-                        },
-                        body: JSON.stringify({
-                            dorm_name: user.dorm,
-                            dorm_manager_id: person._id,
-                            dorm_manager_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value,
-                            dorm_manager_email: document.getElementById("email").value,
-                            dorm_manager_contact_number: document.getElementById("contact_number").value,
-                            office_hours_start: document.getElementById("office_hours_start").value,
-                            office_hours_end: document.getElementById("office_hours_end").value,
-                            late_permit_start: document.getElementById("late_permit_start").value,
-                            late_permit_end: document.getElementById("late_permit_end").value,
-                            overnight_permit_start: document.getElementById("overnight_permit_start").value,
-                            overnight_permit_end: document.getElementById("overnight_permit_end").value,
-                            stayover_permit_start: document.getElementById("stayover_permit_start").value
+
+                    if (picture !== undefined) {
+
+                        picture.map((pic, i) => {
+                            if (person.base64_string === pic.base64_string) {
+                                // const currentPerson = person;
+                                const currentPicture = pic;
+
+                                console.log(currentPicture._id)
+
+                                fetch(apiUrl("/picture/"+currentPicture._id),{
+                                    method: "PUT",
+                                    credentials:'include',
+                                    headers:{
+                                        'Content-Type':'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                       base64_string: currentPicture.base64_string,
+                                       profile_id: person._id
+                                    })
+                                })
+                                .then(response => {return response.json()})
+                                .then(
+                                    fetch(apiUrl("/dorm/"),{
+                                        method: "POST",
+                                        credentials:'include',
+                                        headers:{
+                                            'Content-Type':'application/json'
+                                        },
+                                        body: JSON.stringify({
+                                            dorm_name: user.dorm,
+                                            dorm_manager_id: person._id,
+                                            dorm_manager_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value,
+                                            dorm_manager_email: document.getElementById("email").value,
+                                            dorm_manager_contact_number: document.getElementById("contact_number").value,
+                                            office_hours_start: document.getElementById("office_hours_start").value,
+                                            office_hours_end: document.getElementById("office_hours_end").value,
+                                            late_permit_start: document.getElementById("late_permit_start").value,
+                                            late_permit_end: document.getElementById("late_permit_end").value,
+                                            overnight_permit_start: document.getElementById("overnight_permit_start").value,
+                                            overnight_permit_end: document.getElementById("overnight_permit_end").value,
+                                            stayover_permit_start: document.getElementById("stayover_permit_start").value
+                                        })
+                                    })
+                                .then(response => {return response.json()}))
+                                .then(
+                                    fetch(apiUrl("/user/change-completed-profile"), {
+                                        method: "PUT",
+                                        credentials:'include',
+                                        headers:{
+                                            'Content-Type':'application/json'
+                                        },
+                                        body: JSON.stringify({
+                                            email: person.email,
+                                            completed_profile: true,
+                                            profile_id: person._id
+                                        })
+                                    })
+                                    .then(response => {return response.json()})
+                                    .then(
+                                        alert("Successfully completed manager profile and submitted dorm information."),
+                                        setTimeout(function(){
+                                            window.location.reload();
+                                        }, 1000)
+                                    )
+                                )
+                            }
                         })
-                    })
-                    .then(response => {return response.json()})
-                    .then(
-                        changeCompletedProfile(user)
-                    )
+                        
+                        
+                    }
                 }
             }) 
         }
     }
 
-
-    const changeCompletedProfile = (person) => {
-        fetch(apiUrl("/user/change-completed-profile"), {
-            method: "PUT",
-            credentials:'include',
-            headers:{
-                'Content-Type':'application/json'
-            },
-            body: JSON.stringify({
-                email: person.email,
-                completed_profile: true
-            })
-        })
-        .then(response => {return response.json()})
-        .then(
-            alert("Successfully completed manager profile and submitted dorm information."),
-            setTimeout(function(){
-                window.location.reload();
-             }, 1000)
-        )
+    const convertToBase64 = (e) => {
+            var reader = new FileReader();
+            reader.readAsDataURL(e.target.files[0]);
+            reader.onload = () => {
+                console.log(reader.result);
+                setPicture(reader.result);
+            };
+            reader.onerror = error => {
+                console.log("Error: ", error);
+            }
     }
+
+    const onSubmitHandler = (e) => {
+        e.preventDefault();
+
+        var width = document.getElementById('image-upload').naturalWidth;
+        var height = document.getElementById('image-upload').naturalHeight;
+
+        if (width != height) {
+            alert("Image must be 1x1 or 2x2. Please try another")
+        } else {
+            fetch(apiUrl("/picture"),{
+                method: "POST",
+                credentials:'include',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify({
+                    base64_string: picture,
+                    profile_id: ""
+                })
+            })
+            .then(response => {return response.json()})
+            .then((data) => console.log(data))
+            .then(alert("Successfully uploaded image."))
+            // .then(renderImage)
+        }
+    };
 
     useEffect(()=>{
         if(isAuthenticated === false){
@@ -153,7 +215,7 @@ function CompleteManagerProfile () {
             <NavBar></NavBar>
             <div classname = 'complete-manager-profile-div'>
                 <div className='upper-div'>
-                    <button className='back-button' onClick = {()=> navigate("/manager-profile")}>BACK</button>
+                    <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
                     <p className='page-title'>COMPLETE MANAGER PROFILE</p>
                     <button className='save-button' onClick={sendData}>SAVE</button>
                 </div>
@@ -162,15 +224,23 @@ function CompleteManagerProfile () {
                     <div className='left-div'>
                         <form className='upload-div'>
                             <div className='upload-body'>
-                                <input className='upload-img-file' type="file"></input>
+                                {picture === "" || picture === null ? "" : <img id='image-upload' width={100} src={picture}></img>}
+                                <input className='upload-img-file'  type="file" accept="image/png, image/jpeg, image/jpg" onChange={convertToBase64} ></input>
                                 <br></br>
                                 <br></br>
                                 <br></br>
-                                <button className='upload-img-submit' type="submit">SUBMIT</button>
+                                <button className='upload-img-submit' type="submit" onClick={onSubmitHandler} >SUBMIT</button>
                             </div>
                             <div className='upload-note'>
                                 Upload Picture Here<br></br>(1x1 or 2x2)
                             </div>
+
+                            {/* {allPicture !== undefined ?
+                                allPicture.map(data => {
+                                    return(
+                                    <img width={100} src={data.base64_string}></img>
+                                    )
+                            }) : ""} */}
                         </form>
                     </div>
 
@@ -186,10 +256,10 @@ function CompleteManagerProfile () {
                                         <td className='cell-title'>Suffix</td>
                                     </tr>
                                     <tr className='table-row'>
-                                        <td className='cell-input'><input type="text" id="first_name" name="firstname"></input></td>
-                                        <td className='cell-input'><input type="text" id="middle_name" name="middlename"></input></td>
-                                        <td className='cell-input'><input type="text" id="last_name" name="lastname"></input></td>
-                                        <td className='cell-input'><input type="text" id="suffix" name="suffix"></input></td>
+                                        <td className='cell-input'><input type="text" id="first_name" required></input></td>
+                                        <td className='cell-input'><input type="text" id="middle_name" ></input></td>
+                                        <td className='cell-input'><input type="text" id="last_name" required></input></td>
+                                        <td className='cell-input'><input type="text" id="suffix" ></input></td>
                                         
                                     </tr>
                                     <tr className='table-row'>
@@ -199,15 +269,65 @@ function CompleteManagerProfile () {
                                     </tr>
                                     <tr className='table-row'>
                                         <td className='cell-input'>
-                                            <select className='custom-select-sex' id="sex" name="sex">
+                                            <select className='custom-select-sex' id="sex" required>
                                                 <option>Select Sex</option>
                                                 <option value="female">Female</option>
                                                 <option value="male">Male</option>
                                                 <option value="intersex">Intersex</option>
                                             </select>
                                         </td>
-                                        <td className='cell-input'><input type='date' id='birthday' name='birthday'></input></td>
-                                        
+                                        {/* <td className='cell-input'> */}
+                                            <select className='custom-select-birthday-month' id="birth-month" >
+                                                <option value="January">January</option>
+                                                <option value="February">February</option>
+                                                <option value="February">March</option>
+                                                <option value="April">April</option>
+                                                <option value="May">May</option>
+                                                <option value="June">June</option>
+                                                <option value="July">July</option>
+                                                <option value="August">August</option>
+                                                <option value="September">September</option>
+                                                <option value="October">October</option>
+                                                <option value="November">November</option>
+                                                <option value="December">December</option>
+                                            </select>
+                                        {/* </td>
+                                        <td className='cell-input'> */}
+                                            <select className='custom-select-birthday-day' id="birth-day">
+                                                <option value="01">01</option>
+                                                <option value="02">02</option>
+                                                <option value="03">03</option>
+                                                <option value="04">04</option>
+                                                <option value="05">05</option>
+                                                <option value="06">06</option>
+                                                <option value="07">07</option>
+                                                <option value="08">08</option>
+                                                <option value="09">09</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                                <option value="13">13</option>
+                                                <option value="14">14</option>
+                                                <option value="15">15</option>
+                                                <option value="16">16</option>
+                                                <option value="17">17</option>
+                                                <option value="18">18</option>
+                                                <option value="19">19</option>
+                                                <option value="20">20</option>
+                                                <option value="21">21</option>
+                                                <option value="22">22</option>
+                                                <option value="23">23</option>
+                                                <option value="24">24</option>
+                                                <option value="25">25</option>
+                                                <option value="26">26</option>
+                                                <option value="27">27</option>
+                                                <option value="28">28</option>
+                                                <option value="29">29</option>
+                                                <option value="30">30</option>
+                                                <option value="31">31</option>
+                                            </select>
+                                        {/* </td> */}
+                                        <td className='cell-input'><input type="text" className='year' id="birth-year" placeholder='year'></input></td>
                                     </tr>
                                     <tr className='table-row'>
                                         <td className='cell-title'>Contact Number</td>
@@ -216,9 +336,9 @@ function CompleteManagerProfile () {
                                         
                                     </tr>
                                     <tr className='table-row'>
-                                        <td className='cell-input'><input type='text' id='contact_number' name='contactnumber'></input></td>
-                                        <td className='cell-input'><input type='text' id='email' name='email'></input></td>
-                                        <td className='cell-input'><input type='text' id='home_address' name='address'></input></td>
+                                        <td className='cell-input'><input type='text' id='contact_number' required></input></td>
+                                        <td className='cell-input'><input type='text' id='email' required></input></td>
+                                        <td className='cell-input'><input type='text' id='home_address' required></input></td>
                                         
                                         
                                     </tr>
@@ -242,8 +362,8 @@ function CompleteManagerProfile () {
                                         <td className='cell-title'>Office Hours</td>
                                         </tr>
                                         <tr className='table-row'>
-                                            <td className='cell-input'>FROM <input type='time' id='office_hours_start'></input></td>
-                                            <td className='cell-input'>TO <input type='time' id='office_hours_end'></input></td>
+                                            <td className='cell-input'>FROM <input type='time' id='office_hours_start' required></input></td>
+                                            <td className='cell-input'>TO <input type='time' id='office_hours_end' required></input></td>
                                         </tr>
                                     </div>
                                     
@@ -252,21 +372,21 @@ function CompleteManagerProfile () {
                                             <td className='cell-title'>Late Permit Hours</td>
                                         </tr>
                                         <tr className='table-row'>
-                                        <td className='cell-input'>FROM <input type='time' id='late_permit_start'></input></td>
-                                            <td className='cell-input'>TO <input type='time' id='late_permit_end'></input></td>
+                                        <td className='cell-input'>FROM <input type='time' id='late_permit_start' required></input></td>
+                                            <td className='cell-input'>TO <input type='time' id='late_permit_end' required></input></td>
                                         </tr>
                                         <tr className='table-row'>
                                             <td className='cell-title'>Overnight Permit Hours</td>
                                         </tr>
                                         <tr className='table-row'>
-                                        <td className='cell-input'>FROM <input type='time' id='overnight_permit_start'></input></td>
-                                            <td className='cell-input'>TO <input type='time' id='overnight_permit_end'></input></td>
+                                        <td className='cell-input'>FROM <input type='time' id='overnight_permit_start' required></input></td>
+                                            <td className='cell-input'>TO <input type='time' id='overnight_permit_end' required></input></td>
                                         </tr>
                                         <tr className='table-row'>
                                             <td className='cell-title'>Stayover/Homebound Permit Hours</td>
                                         </tr>
                                         <tr className='table-row'>
-                                            <td className='cell-input'>FROM <input type='time' id='stayover_permit_start'></input></td>
+                                            <td className='cell-input'>FROM <input type='time' id='stayover_permit_start' required></input></td>
                                         </tr>
                                     </div>
                                     

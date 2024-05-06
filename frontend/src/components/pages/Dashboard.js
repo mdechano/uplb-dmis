@@ -5,6 +5,7 @@ import '../css/Dashboard.css'
 import NavBar from '../pages/NavBar';
 import useStore from '../utilities/authHook';
 import {apiUrl} from '../utilities/apiUrl';
+import axios, { all } from "axios";
 
 const Dashboard = () => {
 
@@ -53,26 +54,65 @@ const Dashboard = () => {
     }
    
     return (
-        <div>
+        <div >
             <NavBar></NavBar>
-
-            <div className='dashboard-notice'>
-                
-                {user ?
-                <div>
-                    <p className='greet'>Greetings, {user.first_name}!</p>
+            <div className='dashboard-body'>
+                <div className='dashboard-notice'>
+                    
+                    {user ?
+                    <div>
+                        <p className='greet'>Greetings, {user.first_name}!</p>
+                        <br></br>
+                        <p className='paragraph'>Welcome to the UPLB Dormitory Management Information System.</p>  
+                    </div>
+                    :
+                    ""
+                    }
                     <br></br>
-                    <p className='paragraph'>Welcome to the UPLB Dormitory Management Information System.</p>  
-                </div>
-                :
-                ""
-                }
-                
-            </div>
+                    { role === 'resident' && user.completed_profile === false ?
+                    <div>
+                    <p className='paragraph'>To access resident permissions, kindly complete your profile first.</p>
+                    <br></br>
+                    <button className='dashboard-buttons-complete-profile' onClick={() => navigate("/complete-resident-profile")}>COMPLETE PROFILE</button>
+                    </div>
+                    :
+                    ""
+                    }
 
-            <div className='sign-up-board'>
+                    { role === 'dorm manager' && user.completed_profile === false  ?
+                    <div>
+                        <p className='paragraph'>To access dorm manager permissions, kindly complete your profile first.</p>
+                        <br></br>
+                        <button className='dashboard-buttons-complete-profile' onClick={() => navigate("/complete-manager-profile")}>COMPLETE PROFILE HERE</button>
+                    </div>
+                    
+                    :
+                    ""
+                    }
+
+                    { role === 'dorm attendant' && user.completed_profile === false  ?
+                    <div>
+                    <p className='paragraph'>To access dorm attendant permissions, kindly complete your profile first.</p>
+                    <br></br>
+                    <button className='dashboard-buttons-complete-profile' onClick={() => navigate("/complete-attendant-profile")}>COMPLETE PROFILE</button>
+                    </div>
+                    :
+                    ""
+                    }
+                    { role === 'dorm assistant' && user.completed_profile === true ?
+                    <div>
+                    <p className='paragraph'>As a dorm assistant, you have elevated resident permissions.</p>
+                    </div>
+                    :
+                    ""
+                    }
+                    
+                </div>
+
+            
 
             { role === 'user' ?
+            <div className='sign-up-board'>
                 
                     <form className='complete-sign-up'>
                         <p><b>First, let's get you set up.</b></p>
@@ -110,33 +150,12 @@ const Dashboard = () => {
                         </div>
                         
                     </form>
+                  </div>   
                     :
                     ""
-                }
-
-                <br></br>
-
-                { role === 'resident' ?
-                <p className='paragraph'>To complete your profile, please navigate to the Student Information Sheet on your menu.</p>
-                :
-                ""
-                }
-
-                { role === 'dorm manager' ?
-                <p className='paragraph'>To complete your profile, please navigate to Dorm Manager Profile on your menu.</p>
-                :
-                ""
-                }
-
-                { role === 'dorm attendant' ?
-                <p className='paragraph'>To complete your profile, please navigate to the Dorm Attendant Profile on your menu.</p>
-                :
-                ""
-                }
+            }
 
             </div>
-
-            
 
         </div>
     )

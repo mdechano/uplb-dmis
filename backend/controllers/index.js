@@ -3,5 +3,6 @@ exports.controllers = {
     DormController: require('./dorm'),
     ManagerController: require('./manager'),
     AttendantController: require('./attendant'),
-    ResidentController: require('./resident')
+    ResidentController: require('./resident'),
+    PictureController: require('./picture')
 }

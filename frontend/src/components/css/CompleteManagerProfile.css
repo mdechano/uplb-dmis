@@ -103,10 +103,10 @@ body {
    justify-items: center;
     justify-content: space-between; */
 }
-
+/* 
 .upload-img-file {
     padding-left: 15%;
-}
+} */
 
 .upload-img-submit {
     width: 75%;
@@ -191,6 +191,10 @@ input[type=text]:focus {
     background-color: lightblue;
 }
 
+input[type=text].year {
+    width: 40%;
+}
+
 input[type=date] {
     padding: 10px;
     width: 100%;
@@ -204,6 +208,21 @@ input[type=date] {
     background-color: white;
 }
 
+.custom-select-birthday-month {
+    width: 50%;
+    height: 40px;
+    border-radius: 4px;
+    background-color: white;
+    margin-right: 10px;
+    margin-top: 5px;
+}
+
+.custom-select-birthday-day {
+    width: 40%;
+    height: 40px;
+    border-radius: 4px;
+    background-color: white;
+}
 
 .complete-profile-button {
     /* width: fit-content; */
@@ -217,8 +236,8 @@ input[type=date] {
     height: 100%;
 }
 
-.edit-profile-button {
-    /* width: fit-content; */
+/* .edit-profile-button {
+    width: fit-content;
     margin: 10px;
     border-radius: 35px;
     background-color: #0A4424;
@@ -226,7 +245,7 @@ input[type=date] {
     font-family: "Montserrat", sans-serif;
     padding: 5px 5px 5px 5px;
     color: white;
-}
+} */
 
 hr.horizontal-line {
     border: 1px solid black;

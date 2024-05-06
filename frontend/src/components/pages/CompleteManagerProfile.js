@@ -12,7 +12,6 @@ function CompleteManagerProfile () {
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
 
     const [picture, setPicture] = useState();
-    // const [allPicture, setAllPicture] = useState();
 
     let allEmails = []
  
@@ -67,96 +66,70 @@ function CompleteManagerProfile () {
                 })
             })
             .then(response => {return response.json()})
-            .then(getManagersandPictures)
+            .then(getManagers)
         } 
+        else {
+            alert("Inputted email address already exists!")
+        }
     }
 
-    const getManagersandPictures = () => {
+    const getManagers = () => {
         const getManagers = axios.get(apiUrl("/manager"), { withCredentials: true });
-        const getPictures = axios.get(apiUrl("/picture"), { withCredentials: true });
-        axios.all([getManagers, getPictures]).then(
+        axios.all([getManagers]).then(
             axios.spread((...allData) => {
-                sendDormInfo(allData[0].data, allData[1].data)
+                sendDormInfo(allData[0].data)
             })
         )
     }
 
-    const sendDormInfo = (manager, picture) => {
+    const sendDormInfo = (manager) => {
         
         if (manager !== undefined) {
             manager.map((person, i) => {
                 if(i === (manager.length - 1)){
 
-                    if (picture !== undefined) {
-
-                        picture.map((pic, i) => {
-                            if (person.base64_string === pic.base64_string) {
-                                // const currentPerson = person;
-                                const currentPicture = pic;
-
-                                console.log(currentPicture._id)
-
-                                fetch(apiUrl("/picture/"+currentPicture._id),{
-                                    method: "PUT",
-                                    credentials:'include',
-                                    headers:{
-                                        'Content-Type':'application/json'
-                                    },
-                                    body: JSON.stringify({
-                                       base64_string: currentPicture.base64_string,
-                                       profile_id: person._id
-                                    })
-                                })
-                                .then(response => {return response.json()})
-                                .then(
-                                    fetch(apiUrl("/dorm/"),{
-                                        method: "POST",
-                                        credentials:'include',
-                                        headers:{
-                                            'Content-Type':'application/json'
-                                        },
-                                        body: JSON.stringify({
-                                            dorm_name: user.dorm,
-                                            dorm_manager_id: person._id,
-                                            dorm_manager_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value,
-                                            dorm_manager_email: document.getElementById("email").value,
-                                            dorm_manager_contact_number: document.getElementById("contact_number").value,
-                                            office_hours_start: document.getElementById("office_hours_start").value,
-                                            office_hours_end: document.getElementById("office_hours_end").value,
-                                            late_permit_start: document.getElementById("late_permit_start").value,
-                                            late_permit_end: document.getElementById("late_permit_end").value,
-                                            overnight_permit_start: document.getElementById("overnight_permit_start").value,
-                                            overnight_permit_end: document.getElementById("overnight_permit_end").value,
-                                            stayover_permit_start: document.getElementById("stayover_permit_start").value
-                                        })
-                                    })
-                                .then(response => {return response.json()}))
-                                .then(
-                                    fetch(apiUrl("/user/change-completed-profile"), {
-                                        method: "PUT",
-                                        credentials:'include',
-                                        headers:{
-                                            'Content-Type':'application/json'
-                                        },
-                                        body: JSON.stringify({
-                                            email: person.email,
-                                            completed_profile: true,
-                                            profile_id: person._id
-                                        })
-                                    })
-                                    .then(response => {return response.json()})
-                                    .then(
-                                        alert("Successfully completed manager profile and submitted dorm information."),
-                                        setTimeout(function(){
-                                            window.location.reload();
-                                        }, 1000)
-                                    )
-                                )
-                            }
+                    fetch(apiUrl("/dorm/"),{
+                        method: "POST",
+                        credentials:'include',
+                        headers:{
+                            'Content-Type':'application/json'
+                        },
+                        body: JSON.stringify({
+                            dorm_name: user.dorm,
+                            dorm_manager_id: person._id,
+                            dorm_manager_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value,
+                            dorm_manager_email: document.getElementById("email").value,
+                            dorm_manager_contact_number: document.getElementById("contact_number").value,
+                            office_hours_start: document.getElementById("office_hours_start").value,
+                            office_hours_end: document.getElementById("office_hours_end").value,
+                            late_permit_start: document.getElementById("late_permit_start").value,
+                            late_permit_end: document.getElementById("late_permit_end").value,
+                            overnight_permit_start: document.getElementById("overnight_permit_start").value,
+                            overnight_permit_end: document.getElementById("overnight_permit_end").value,
+                            stayover_permit_start: document.getElementById("stayover_permit_start").value
                         })
-                        
-                        
-                    }
+                    })
+                    .then(response => {return response.json()})
+                    .then(
+                        fetch(apiUrl("/user/change-completed-profile"), {
+                            method: "PUT",
+                            credentials:'include',
+                            headers:{
+                                'Content-Type':'application/json'
+                            },
+                            body: JSON.stringify({
+                                email: person.email,
+                                completed_profile: true,
+                                profile_id: person._id
+                            })
+                    }))
+                    .then(response => {return response.json()})
+                    .then(
+                        alert("Successfully completed manager profile and submitted dorm information."),
+                        setTimeout(function(){
+                            window.location.reload();
+                        }, 1000)
+                    )
                 }
             }) 
         }
@@ -190,8 +163,8 @@ function CompleteManagerProfile () {
                     'Content-Type':'application/json'
                 },
                 body: JSON.stringify({
-                    base64_string: picture,
-                    profile_id: ""
+                    base64_string: picture
+                    // profile_id: ""
                 })
             })
             .then(response => {return response.json()})

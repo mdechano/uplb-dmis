@@ -210,69 +210,43 @@ function CompleteResidentProfile () {
             .then(response => {return response.json()})
             .then(getResidents)
         }
-        // else {
-        //     alert("Inputted email address already exists!")
-        //     setTimeout(() => {
-        //         window.location.reload()
-        //     })
-        // }
+        else {
+            alert("Inputted email address already exists!")
+        }
     }
 
     const getResidents = () => {
         const getResident = axios.get(apiUrl("/resident"), { withCredentials: true });
-        const getPictures = axios.get(apiUrl("/picture"), { withCredentials: true });
-        axios.all([getResident, getPictures]).then(
+        axios.all([getResident]).then(
             axios.spread((...allData) => {
-                setResidentInfo(allData[0].data, allData[1].data)
+                setResidentInfo(allData[0].data)
             })
         )
     }
 
-    const setResidentInfo = (resident, picture) =>  {
-        if (resident !== undefined && picture !== undefined) {
+    const setResidentInfo = (resident) =>  {
+        if (resident !== undefined) {
             resident.map((person, i) => {
                 if(i === (resident.length - 1)){
-                    picture.map((pic, i) => {
-                        if (person.base64_string === pic.base64_string) {
-                            const currentPicture = pic;
-
-                            console.log(currentPicture._id)
-
-                            fetch(apiUrl("/picture/"+currentPicture._id),{
-                                method: "PUT",
-                                credentials:'include',
-                                headers:{
-                                    'Content-Type':'application/json'
-                                },
-                                body: JSON.stringify({
-                                    base64_string: currentPicture.base64_string,
-                                    profile_id: person._id
-                                    })
-                                })
-                            .then(
-                                fetch(apiUrl("/user/change-completed-profile"), {
-                                    method: "PUT",
-                                    credentials:'include',
-                                    headers:{
-                                        'Content-Type':'application/json'
-                                    },
-                                    body: JSON.stringify({
-                                        email: person.email,
-                                        completed_profile: true,
-                                        profile_id: person._id
-                                    })
-                                })
-                                .then(response => {return response.json()})
-                                .then(
-                                    alert("Successfully completed resident profile."),
-                                    setTimeout(function(){
-                                        window.location.reload();
-                                    }, 1000)
-                                )
-                            )
-                        }
+                    fetch(apiUrl("/user/change-completed-profile"), {
+                        method: "PUT",
+                        credentials:'include',
+                        headers:{
+                            'Content-Type':'application/json'
+                        },
+                        body: JSON.stringify({
+                            email: person.email,
+                            completed_profile: true,
+                            profile_id: person._id
+                        })
                     })
-                    
+                    .then(response => {return response.json()})
+                    .then(
+                        alert("Successfully completed resident profile."),
+                        setTimeout(function(){
+                            window.location.reload();
+                         }, 1000)
+                    )
                 }
             }) 
         }
@@ -307,8 +281,8 @@ function CompleteResidentProfile () {
                     'Content-Type':'application/json'
                 },
                 body: JSON.stringify({
-                    base64_string: picture,
-                    profile_id: ""
+                    base64_string: picture
+                    // profile_id: ""
                 })
             })
             .then(response => {return response.json()})

@@ -13,17 +13,19 @@ function CompleteAttendantProfile () {
 
     const [picture, setPicture] = useState();
     const [dorm, setDorm] = useState();
-    const [attendant, setAttendant] = useState();
 
     let allEmails = []
  
     const fetchData = () => {
         const getAttendants = axios.get(apiUrl("/attendant"), { withCredentials: true });
-        axios.all([getAttendants]).then(
+        const getDorm = axios.get(apiUrl("/dorm"), { withCredentials: true });
+        axios.all([getAttendants, getDorm]).then(
             axios.spread((...allData) => {
                 for (let i = 0; i < allData[0].data.length; i++) {
                     allEmails.push(allData[0].data[i].email)
                 }
+                const allDormData = allData[1].data
+                setDorm(allDormData)
             })
         )
         console.log(allEmails);
@@ -72,21 +74,16 @@ function CompleteAttendantProfile () {
             .then(response => {return response.json()})
             .then(editDorm)
         }
-        // else {
-        //     alert("Inputted email address already exists!");
-        // }
+        else {
+            alert("Inputted email address already exists!")
+        }
     }
 
     const editDorm = () => {
-        const getDorm = axios.get(apiUrl("/dorm"), { withCredentials: true });
         const getAttendant = axios.get(apiUrl("/attendant"), { withCredentials: true });
-        axios.all([getDorm, getAttendant]).then(
+        axios.all([getAttendant]).then(
             axios.spread((...allData) => {
-                const allDormData = allData[0].data
-                const allAttendantData = allData[1].data
-                setDorm(allDormData)
-                setAttendant(allAttendantData)
-                editDormInfo(attendant)
+                editDormInfo(allData[0].data)
             })
         )
     }
@@ -97,40 +94,60 @@ function CompleteAttendantProfile () {
             attendant.map((person, i) => {
                 if(i === (attendant.length - 1)) {
                     if (dorm !== undefined) {
-                            dorm.map((dorm, i) => {
-                                if (person.dorm === dorm.dorm_name) {
+                        dorm.map((dorm, i) => {
+                            if (person.dorm === dorm.dorm_name) {
 
-                                    const currentPerson = person
-                                    const currentDorm = dorm
+                                const currentPerson = person
+                                const currentDorm = dorm
                                     
-                                    fetch(apiUrl("/dorm/"+currentDorm._id),{
+                                fetch(apiUrl("/dorm/"+currentDorm._id),{
+                                    method: "PUT",
+                                    credentials:'include',
+                                    headers:{
+                                        'Content-Type':'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        dorm_name: currentDorm.dorm_name,
+                                        dorm_details: currentDorm.dorm_details,
+                                        dorm_manager_id: currentDorm.dorm_manager_id,
+                                        dorm_manager_name: currentDorm.dorm_manager_name,
+                                        dorm_manager_email: currentDorm.dorm_manager_email,
+                                        dorm_manager_contact_number: currentDorm.dorm_manager_contact_number,
+                                        office_hours_start: currentDorm.office_hours_start,
+                                        office_hours_end: currentDorm.office_hours_end,
+                                        late_permit_start: currentDorm.late_permit_start,
+                                        late_permit_end: currentDorm.late_permit_end,
+                                        overnight_permit_start: currentDorm.overnight_permit_start,
+                                        overnight_permit_end: currentDorm.overnight_permit_end,
+                                        stayover_permit_start: currentDorm.stayover_permit_start,
+                                        dorm_attendant_id: currentPerson._id,
+                                        dorm_attendant_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value,
+                                        dorm_attendant_email: document.getElementById("email").value,
+                                        dorm_attendant_contact_number: document.getElementById("contact_number").value
+                                    })
+                                })
+                                .then(response => {return response.json()})
+                                .then(
+                                    fetch(apiUrl("/user/change-completed-profile"), {
                                         method: "PUT",
                                         credentials:'include',
                                         headers:{
                                             'Content-Type':'application/json'
                                         },
                                         body: JSON.stringify({
-                                            dorm_name: currentDorm.dorm_name,
-                                            dorm_details: currentDorm.dorm_details,
-                                            dorm_manager_id: currentDorm.dorm_manager_id,
-                                            dorm_manager_name: currentDorm.dorm_manager_name,
-                                            dorm_manager_email: currentDorm.dorm_manager_email,
-                                            dorm_manager_contact_number: currentDorm.dorm_manager_contact_number,
-                                            office_hours_start: currentDorm.office_hours_start,
-                                            office_hours_end: currentDorm.office_hours_end,
-                                            late_permit_start: currentDorm.late_permit_start,
-                                            late_permit_end: currentDorm.late_permit_end,
-                                            overnight_permit_start: currentDorm.overnight_permit_start,
-                                            overnight_permit_end: currentDorm.overnight_permit_end,
-                                            stayover_permit_start: currentDorm.stayover_permit_start,
-                                            dorm_attendant_id: currentPerson._id,
-                                            dorm_attendant_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value,
-                                            dorm_attendant_email: document.getElementById("email").value,
-                                            dorm_attendant_contact_number: document.getElementById("contact_number").value
+                                            email: person.email,
+                                            completed_profile: true,
+                                            profile_id: person._id
                                         })
                                     })
                                     .then(response => {return response.json()})
-                                    .then(updatePictureData)
+                                    .then(
+                                        alert("Successfully completed attendant profile."),
+                                        setTimeout(function(){
+                                            window.location.reload();
+                                        }, 1000)
+                                    )
+                                )
                                 }
                             })
                     }
@@ -139,64 +156,6 @@ function CompleteAttendantProfile () {
         }
     }
 
-    const updatePictureData = () => {
-        const getPictures = axios.get(apiUrl("/picture"), { withCredentials: true });
-        axios.all([getPictures]).then(
-            axios.spread((...allData) => {
-                const allPicturesData = allData[0].data
-                updatePicture(allPicturesData)
-            })
-        )
-    }
-
-    const updatePicture = (picture) => {
-        if (picture !== undefined && attendant !== undefined) {
-            attendant.map((person, i) => {
-                picture.map((pic, i) => {
-                    if (person.base64_string === pic.base64_string) {
-                        const currentPerson = person
-                        const currentPicture = pic
-
-                        console.log(currentPicture._id)
-
-                        fetch(apiUrl("/picture/"+currentPicture._id),{
-                            method: "PUT",
-                            credentials:'include',
-                            headers:{
-                                'Content-Type':'application/json'
-                            },
-                            body: JSON.stringify({
-                                base64_string: currentPicture.base64_string,
-                                profile_id: currentPerson._id
-                                })
-                        })
-                        .then(response => {return response.json()})
-                        .then(
-                            fetch(apiUrl("/user/change-completed-profile"), {
-                                method: "PUT",
-                                credentials:'include',
-                                headers:{
-                                    'Content-Type':'application/json'
-                                },
-                                body: JSON.stringify({
-                                    email: person.email,
-                                    completed_profile: true,
-                                    profile_id: person._id
-                                })
-                            })
-                            .then(response => {return response.json()})
-                            .then(
-                                alert("Successfully completed attendant profile."),
-                                setTimeout(function(){
-                                    window.location.reload();
-                                }, 1000)
-                            )
-                        )
-                    }
-                })
-            })
-        }
-    }
 
     const convertToBase64 = (e) => {
         var reader = new FileReader();
@@ -227,14 +186,12 @@ function CompleteAttendantProfile () {
                     'Content-Type':'application/json'
                 },
                 body: JSON.stringify({
-                    base64_string: picture,
-                    profile_id: ""
+                    base64_string: picture
                 })
             })
             .then(response => {return response.json()})
             .then((data) => console.log(data))
             .then(alert("Successfully uploaded image."))
-            // .then(renderImage)
         }
     };
 

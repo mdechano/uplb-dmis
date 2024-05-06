@@ -23,8 +23,8 @@ exports.uploadImage = async (req, res) => {
     const body = req.body;
 
     const newPicture = {
-        base64_string: body.base64_string,
-        profile_id: body.profile_id
+        base64_string: body.base64_string
+        // profile_id: body.profile_id
     }
 
     try{   
@@ -95,8 +95,8 @@ exports.renderImage = async (req,res) => {
 
     const picture = {
         id: req.params.id,
-        base64_string: body.base64_string,
-        profile_id: body.profile_id
+        base64_string: body.base64_string
+        // profile_id: body.profile_id
     }
 
     try{

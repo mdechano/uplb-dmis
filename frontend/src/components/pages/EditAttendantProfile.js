@@ -12,9 +12,20 @@ function EditAttendantProfile () {
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
 
-    const [fileData, setFileData] = useState();
-    const [fileId, setFileId] = useState();
+    const [picture, setPicture] = useState();
     const [dorm, setDorm] = useState();
+    const [attendant, setAttendant] = useState();
+
+    const fetchData = () => {
+        const getDorm = axios.get(apiUrl("/dorm"), { withCredentials: true });
+        const getAttendant = axios.get(apiUrl("/attendant"), { withCredentials: true });
+        axios.all([getDorm, getAttendant]).then(
+            axios.spread((...allData) => {
+                setDorm(allData[0].data)
+                setAttendant(allData[1].data)
+            })
+        )
+    }
 
     const editAttendant = () => {
         fetch(apiUrl("/attendant/"+user.profile_id),{
@@ -36,28 +47,15 @@ function EditAttendantProfile () {
                 contact_number: document.getElementById("contact_number").value,
                 email: document.getElementById("email").value,
                 home_address: document.getElementById("home_address").value,
-                picture_id: fileId
+                base64_string: picture
             })
         })
         .then(response => {return response.json()})
-        .then(editDorm)
+        .then(editDormInfo)
 
     }
 
-    const editDorm = () => {
-        const getDorm = axios.get(apiUrl("/dorm"), { withCredentials: true });
-        const getAttendant = axios.get(apiUrl("/attendant"), { withCredentials: true });
-        axios.all([getDorm, getAttendant]).then(
-            axios.spread((...allData) => {
-                const allDormData = allData[0].data
-                const allAttendantData = allData[1].data
-                setDorm(allDormData)
-                editDormInfo(allAttendantData)
-            })
-        )
-    }
-
-    const editDormInfo = (attendant) => {
+    const editDormInfo = () => {
 
         if (attendant !== undefined) {
             attendant.map((person, i) => {
@@ -107,28 +105,41 @@ function EditAttendantProfile () {
         }
     }
 
-    const fileChangeHandler = (e) => {
-        console.log(e.target.files[0]);
-        setFileData(e.target.files[0]);
-    };
+    const convertToBase64 = (e) => {
+        var reader = new FileReader();
+        reader.readAsDataURL(e.target.files[0]);
+        reader.onload = () => {
+            console.log(reader.result);
+            setPicture(reader.result);
+        };
+        reader.onerror = error => {
+            console.log("Error: ", error);
+        }
 
+    }
     const onSubmitHandler = (e) => {
         e.preventDefault();
-    
-        // Handle File Data from the state Before Sending
-        const data = new FormData();
-        data.append("image", fileData);
 
-        console.log(data);
-    
-        fetch(apiUrl("/picture"), {
-          method: "POST",
-          body: data,
-        }).then((response) => response.json())
-        .then((result) => {
-            setFileId(result.id);
-            console.log(result.id);
-        });
+        var width = document.getElementById('image-upload').naturalWidth;
+        var height = document.getElementById('image-upload').naturalHeight;
+
+        if (width != height) {
+            alert("Image must be 1x1 or 2x2. Please try another")
+        } else {
+            fetch(apiUrl("/picture"),{
+                method: "POST",
+                credentials:'include',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify({
+                    base64_string: picture
+                })
+            })
+            .then(response => {return response.json()})
+            .then((data) => console.log(data))
+            .then(alert("Successfully uploaded image."))
+        }
     };
 
     useEffect(()=>{
@@ -136,7 +147,7 @@ function EditAttendantProfile () {
             navigate("/")
         } 
         else {
-            // fetchData()
+            fetchData()
         }
     },[]);
 
@@ -154,7 +165,8 @@ function EditAttendantProfile () {
                     <div className='left-div'>
                         <form className='upload-div'>
                             <div className='upload-body'>
-                                <input className='upload-img-file' type="file" onChange={fileChangeHandler} ></input>
+                            {picture === "" || picture === null ? "" : <img id='image-upload' width={100} src={picture}></img>}
+                                <input className='upload-img-file'  type="file" accept="image/png, image/jpeg, image/jpg" onChange={convertToBase64} ></input>
                                 <br></br>
                                 <br></br>
                                 <br></br>

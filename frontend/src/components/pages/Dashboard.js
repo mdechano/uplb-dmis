@@ -99,6 +99,13 @@ const Dashboard = () => {
                     :
                     ""
                     }
+                    { role === 'dorm assistant' && user.completed_profile === true ?
+                    <div>
+                    <p className='paragraph'>As a dorm assistant, you have elevated resident permissions.</p>
+                    </div>
+                    :
+                    ""
+                    }
                     
                 </div>
 

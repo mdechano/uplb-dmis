@@ -15,7 +15,7 @@ const ManagerSchema = new mongoose.Schema(
         contact_number: {type: String, required: true},
         email: {type: String, required: true},
         home_address: {type: String, required: true},
-        picture_id: {type: String}
+        base64_string: {type: String}
     }
 )
  

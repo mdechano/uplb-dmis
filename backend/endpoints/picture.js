@@ -7,7 +7,7 @@ const Picture = Router();
 // access controllers
 
 Picture.post('/', PictureController.uploadImage);
-Picture.get('/render-image', PictureController.renderImage);
-
+Picture.get('/', PictureController.renderImages);
+Picture.put('/:id', PictureController.renderImage);
 
 module.exports = Picture;

@@ -15,6 +15,7 @@ function ManagerProfile () {
     const [ currentUser, setUser] = useState();
     const [tempManager, setTempManager] = useState();
     const [ currentManager, setManager] = useState();
+    const [allPicture, setAllPictures] = useState();
 
     const fetchData = () => {
         const link = window.location.href;
@@ -24,14 +25,20 @@ function ManagerProfile () {
                 axios.spread((...allData) => {
                     const allManagerData = allData[0].data
                     setManager(allManagerData)
-                    // var picture_id = allData[0].data.picture_id.split(".")[0]
-                    // fetch(apiUrl("/picture/" + picture_id), {
-                    //     method: "GET",
-                    // }).then((response) => response.json())
                 })
             )
     }
 
+    const renderImage = () => {
+        fetch(apiUrl("/picture"),{
+            method: "GET",
+        })
+        .then(response => {return response.json()})
+        .then((data) => {
+            console.log(data)
+            setAllPictures(data)
+        })
+    }
 
     useEffect(()=>{
         if(isAuthenticated === false){
@@ -39,6 +46,7 @@ function ManagerProfile () {
         } 
         else {
             fetchData()
+            renderImage()
         }
     },[]);
 
@@ -58,7 +66,14 @@ function ManagerProfile () {
                 { currentManager !== undefined ?
                     <div className='body-div'>
                         <div className='profile-div-left'>
-                            <img className='profile-pic' src={require(`../pictures/${currentManager.picture_id}`)}></img>
+                            {allPicture !== undefined ?
+                                allPicture.map(data => {
+                                    if (currentManager.base64_string === data.base64_string) {
+                                        return(
+                                        <img width={250} src={data.base64_string}></img>
+                                        )
+                                    }
+                            }) : ""}
                             <br></br>
                             <p className='profile-info'>{currentManager.first_name + " "  + currentManager.last_name}</p>
                             <p className='profile-info'><b>Dorm Manager</b></p>

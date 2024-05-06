@@ -60,7 +60,7 @@ exports.addResident = async (req,res) => {
         appliances_information: body.appliances_information,
         emergency_details: body.emergency_details,
         slas: body.slas,
-        picture_id: body.picture_id,
+        base64_string: body.base64_string,
         payment_details: body.payment_details,
         violation_details: body.violation_details
     };
@@ -147,7 +147,7 @@ exports.editResident = async (req,res) => {
         appliances_information: body.appliances_information,
         emergency_details: body.emergency_details,
         slas: body.slas,
-        picture_id: body.picture_id,
+        base64_string: body.base64_string,
         payment_details: body.payment_details,
         violation_details: body.violation_details
         

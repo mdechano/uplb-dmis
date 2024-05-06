@@ -11,6 +11,7 @@ function StudentInfoSheetPersonal () {
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
     const [ currentResident, setResident] = useState();
+    const [allPicture, setAllPictures] = useState();
 
     const fetchData = () => {
         const link = window.location.href;
@@ -20,12 +21,19 @@ function StudentInfoSheetPersonal () {
                 axios.spread((...allData) => {
                     const allResidentData = allData[0].data
                     setResident(allResidentData)
-                    // var picture_id = allData[0].data.picture_id.split(".")[0]
-                    // fetch(apiUrl("/picture/" + picture_id), {
-                    //     method: "GET",
-                    // }).then((response) => response.json())
                 })
             )
+    }
+
+    const renderImage = () => {
+        fetch(apiUrl("/picture"),{
+            method: "GET",
+        })
+        .then(response => {return response.json()})
+        .then((data) => {
+            console.log(data)
+            setAllPictures(data)
+        })
     }
     
 
@@ -35,6 +43,7 @@ function StudentInfoSheetPersonal () {
         } 
         else {
             fetchData()
+            renderImage()
         }
     },[]);
 
@@ -53,8 +62,16 @@ function StudentInfoSheetPersonal () {
                 
                     <div className='body-div'>
                         <div className='profile-div-left'>
-                           
-                            <img className='profile-pic' src={require(`../pictures/${currentResident.picture_id}`)}></img>
+
+                            {allPicture !== undefined ?
+                                allPicture.map(data => {
+                                    if (currentResident.base64_string === data.base64_string) {
+                                        return(
+                                        <img width={250} src={data.base64_string}></img>
+                                        )
+                                    }
+                            }) : ""}
+
                             <br></br>
                             <p className='profile-info'>{currentResident.first_name + " "  + currentResident.last_name}</p>
                             <p className='profile-info'>{currentResident.student_no}</p>

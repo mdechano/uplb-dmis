@@ -12,6 +12,7 @@ function StudentInfoSheetViolation () {
 
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
     const [ currentResident, setResident] = useState();
+    const [allPicture, setAllPictures] = useState();
 
     const fetchData = () => {
         const link = window.location.href;
@@ -21,12 +22,19 @@ function StudentInfoSheetViolation () {
                 axios.spread((...allData) => {
                     const allResidentData = allData[0].data
                     setResident(allResidentData)
-                    // var picture_id = allData[0].data.picture_id.split(".")[0]
-                    // fetch(apiUrl("/picture/" + picture_id), {
-                    //     method: "GET",
-                    // }).then((response) => response.json())
                 })
             )
+    }
+
+    const renderImage = () => {
+        fetch(apiUrl("/picture"),{
+            method: "GET",
+        })
+        .then(response => {return response.json()})
+        .then((data) => {
+            console.log(data)
+            setAllPictures(data)
+        })
     }
     
     useEffect(()=>{
@@ -35,6 +43,7 @@ function StudentInfoSheetViolation () {
         } 
         else {
             fetchData()
+            renderImage()
         }
     },[]);
 
@@ -52,7 +61,14 @@ function StudentInfoSheetViolation () {
                 { currentResident !== undefined ?
                 <div className='body-div'>
                     <div className='profile-div-left'>
-                        <img className='profile-pic' src={require(`../pictures/${currentResident.picture_id}`)}></img>
+                        {allPicture !== undefined ?
+                            allPicture.map(data => {
+                                if (currentResident.base64_string === data.base64_string) {
+                                    return(
+                                    <img width={250} src={data.base64_string}></img>
+                                    )
+                                }
+                        }) : ""}
                         <br></br>
                         <p className='profile-info'>{currentResident.first_name + " " + currentResident.last_name}</p>
                         <p className='profile-info'>{currentResident.student_no}</p>
@@ -69,7 +85,7 @@ function StudentInfoSheetViolation () {
 
                     <div className='profile-div-right'>
                         
-                            <p className='payment-note'><i>Your recorded violations will appear here. Only authorized personal can edit this page. Kindly contact them for concerns.</i></p>
+                            <p className='payment-note'><i>Your recorded violations will appear here. Only authorized personel can edit this page. Kindly contact them for concerns.</i></p>
                             <br></br>
                             
                             <table className='table-display'>

@@ -1,27 +1,64 @@
-const { Buffer } = require('node:buffer');
-const crypto = require('crypto');
-const fs = require('fs');
 const Picture = require('../handlers/picture');
-const decode = require('node-base64-image').decode;
+const mongoose = require('mongoose');
+const UserLog = require('../handlers/userlog');
+const utils = require('./utils');
+const Delete = require('../handlers/deleted');
 
 exports.uploadImage = async (req, res) => {
-    const {base64} = req.body;
+
+    if (!req.cookies || !req.cookies.authToken) {
+        res.status(401).send({message: "Unauthorized access"});
+        return;
+      }
+      
+      // validate token
+    const token = await utils.verifyToken(req);
+    
+      // error validating token
+    if(!token.status){
+        res.status(token.code).send({ message: token.message });
+        return;
+    }
+
+    const body = req.body;
+
+    const newPicture = {
+        base64_string: body.base64_string,
+        profile_id: body.profile_id
+    }
 
     try{   
         
-        await Picture.create( {base64_string: base64} );
-
-        return res.status(200).send({success: true, status: "success"})
+        const picture = await Picture.create(newPicture);
+        await UserLog.create(token.user, 'create', `picture ${picture._id}`)
+        console.log(`New picture: \n ${picture}`);
+        return res.status(201).send({success: true, message: "Successfully added picture."})
 
     }
     catch(err){
-        console.log(err)
-        return res.status(500).send({message: "Server side error"})
+        console.log(`Unable to upload new picture. Error: ${err}`);
+        return res.status(500).send({ message: "Error uploading new picture." })
     }
 }
 
-exports.renderImage = async (req,res) => {
+exports.renderImages = async (req,res) => {
+
+    // if (!req.cookies || !req.cookies.authToken) {
+    //     res.status(401).send({message: "Unauthorized access"});
+    //     return;
+    //   }
+      
+    //   // validate token
+    // const token = await utils.verifyToken(req);
+    
+    //   // error validating token
+    // if(!token.status){
+    //     res.status(token.code).send({ message: token.message });
+    //     return;
+    // }
+
     let picture;
+
     try{
         picture = await Picture.getAll()
         if (!picture) {
@@ -36,4 +73,62 @@ exports.renderImage = async (req,res) => {
         console.log(`Error searching for picture in the DB ${err}` );
         return res.status(500).send({message: 'Error searching for pictures'})
     }
+}
+
+exports.renderImage = async (req,res) => {
+    if (!req.cookies || !req.cookies.authToken) {
+        res.status(401).send({message: "Unauthorized access"});
+        return;
+      }
+      
+      // validate token
+    const token = await utils.verifyToken(req);
+    
+      // error validating token
+    if(!token.status){
+        res.status(token.code).send({ message: token.message });
+        return;
+    }
+   
+    const body = req.body;
+    console.log(`picture id: ${req.params.id}`)
+
+    const picture = {
+        id: req.params.id,
+        base64_string: body.base64_string,
+        profile_id: body.profile_id
+    }
+
+    try{
+        mongoose.Types.ObjectId(picture.id)
+    }
+    catch (err) {
+        console.log('Invalid id')
+        return res.status(400).send({ message: 'Invalid id' })
+    }
+
+    var existing = null
+    try{
+        existing = await Picture.getOne({_id: picture.id});
+        if (!existing) {
+            console.log("Picture not found")
+            return res.status(404).send({ message: 'Picture not found' });
+        }
+    }
+    catch(err){
+        console.log(`Error looking for picture in DB. Error: ${err}`);
+        return res.status(500).send({ message: 'Error searching for picture in database' })
+    }
+
+    try{
+        const edit = await Picture.edit(picture)
+        await UserLog.create(token.user, 'edit', `picture ${edit._id}`)
+        console.log(`Edited picture ${edit}`)
+        return res.status(200).send({ message: 'Picture successfully edited' })
+    }
+    catch{
+        console.log(`Unable to edit picture. Error: ${err}`);
+        return res.status(500).send({ message: 'Error editing picture' })
+    }
+
 }

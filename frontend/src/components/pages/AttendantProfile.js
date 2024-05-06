@@ -16,8 +16,8 @@ function AttendantProfile () {
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
     const [role, setRole] = useState();
-    // const [tempAttendant, setTempAttendant] = useState();
     const [ currentAttendant, setAttendant] = useState();
+    const [allPicture, setAllPictures] = useState();
 
     const fetchData = () => {
         const link = window.location.href;
@@ -27,14 +27,20 @@ function AttendantProfile () {
                 axios.spread((...allData) => {
                     const allAttendantData = allData[0].data
                     setAttendant(allAttendantData)
-                    // var picture_id = allData[0].data.picture_id.split(".")[0]
-                    // fetch(apiUrl("/picture/" + picture_id), {
-                    //     method: "GET",
-                    // }).then((response) => response.json())
                 })
             )
     }
 
+    const renderImage = () => {
+        fetch(apiUrl("/picture"),{
+            method: "GET",
+        })
+        .then(response => {return response.json()})
+        .then((data) => {
+            console.log(data)
+            setAllPictures(data)
+        })
+    }
 
     useEffect(()=>{
         if(isAuthenticated === false){
@@ -42,6 +48,7 @@ function AttendantProfile () {
         } 
         else {
             fetchData()
+            renderImage()
         }
     },[]);
 
@@ -69,7 +76,14 @@ function AttendantProfile () {
                 { currentAttendant !== undefined ?
                     <div className='body-div'>
                         <div className='profile-div-left'>
-                            <img className='profile-pic' src={require(`../pictures/${currentAttendant.picture_id}`)}></img>
+                            {allPicture !== undefined ?
+                                allPicture.map(data => {
+                                    if (currentAttendant.base64_string === data.base64_string) {
+                                        return(
+                                        <img width={250} src={data.base64_string}></img>
+                                        )
+                                    }
+                            }) : ""}
                             <br></br>
                             <p className='profile-info'>{currentAttendant.first_name + " "  + currentAttendant.last_name}</p>
                             <p className='profile-info'><b>Dorm Attendant</b></p>

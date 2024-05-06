@@ -11,10 +11,8 @@ function CompleteResidentProfile () {
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
 
-    const [fileData, setFileData] = useState();
-    const [fileId, setFileId] = useState();
-    // const [profileID, setProfileID] = useState();
-    const [resident, setResident]= useState();
+    const [picture, setPicture] = useState();
+    // const [resident, setResident]= useState();
     let allEmails = []
  
     const fetchData = () => {
@@ -41,10 +39,6 @@ function CompleteResidentProfile () {
         e.preventDefault();
         var tempEmail = document.getElementById("email").value;
         var notuniqueEmail = checkEmailExists(tempEmail); // boolean
-
-        const user_id = user._id;
-        const dorm = user.dorm;
-        const role = user.role;
 
         const father_details = {
             father_name: document.getElementById("fathername").value,
@@ -86,7 +80,7 @@ function CompleteResidentProfile () {
             printer: document.getElementById("printer").value,
             rice_cooker: document.getElementById("rice-cooker").value,
             electric_fan: document.getElementById("electric-fan").value,
-            refrigerator: document.getElementById("refrigerator").vaule
+            refrigerator: document.getElementById("refrigerator").value
         }
 
         const appliances_information = {
@@ -210,79 +204,119 @@ function CompleteResidentProfile () {
                     appliances_information: appliances_information,
                     emergency_details: emergency_details,
                     slas: "None",
-                    picture_id: fileId
+                    base64_string: picture
                 })
             })
             .then(response => {return response.json()})
             .then(getResidents)
-        } else {
-            alert("Inputted email address already exists!")
-            setTimeout(() => {
-                window.location.reload()
-            })
         }
+        // else {
+        //     alert("Inputted email address already exists!")
+        //     setTimeout(() => {
+        //         window.location.reload()
+        //     })
+        // }
     }
 
     const getResidents = () => {
         const getResident = axios.get(apiUrl("/resident"), { withCredentials: true });
-        axios.all([getResident]).then(
+        const getPictures = axios.get(apiUrl("/picture"), { withCredentials: true });
+        axios.all([getResident, getPictures]).then(
             axios.spread((...allData) => {
-                setResidentInfo(allData[0].data)
+                setResidentInfo(allData[0].data, allData[1].data)
             })
         )
     }
 
-    const setResidentInfo = (resident) =>  {
-        if (resident !== undefined) {
+    const setResidentInfo = (resident, picture) =>  {
+        if (resident !== undefined && picture !== undefined) {
             resident.map((person, i) => {
                 if(i === (resident.length - 1)){
-                    fetch(apiUrl("/user/change-completed-profile"), {
-                        method: "PUT",
-                        credentials:'include',
-                        headers:{
-                            'Content-Type':'application/json'
-                        },
-                        body: JSON.stringify({
-                            email: person.email,
-                            completed_profile: true,
-                            profile_id: person._id
-                        })
+                    picture.map((pic, i) => {
+                        if (person.base64_string === pic.base64_string) {
+                            const currentPicture = pic;
+
+                            console.log(currentPicture._id)
+
+                            fetch(apiUrl("/picture/"+currentPicture._id),{
+                                method: "PUT",
+                                credentials:'include',
+                                headers:{
+                                    'Content-Type':'application/json'
+                                },
+                                body: JSON.stringify({
+                                    base64_string: currentPicture.base64_string,
+                                    profile_id: person._id
+                                    })
+                                })
+                            .then(
+                                fetch(apiUrl("/user/change-completed-profile"), {
+                                    method: "PUT",
+                                    credentials:'include',
+                                    headers:{
+                                        'Content-Type':'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        email: person.email,
+                                        completed_profile: true,
+                                        profile_id: person._id
+                                    })
+                                })
+                                .then(response => {return response.json()})
+                                .then(
+                                    alert("Successfully completed resident profile."),
+                                    setTimeout(function(){
+                                        window.location.reload();
+                                    }, 1000)
+                                )
+                            )
+                        }
                     })
-                    .then(response => {return response.json()})
-                    .then(
-                        alert("Successfully completed resident profile."),
-                        setTimeout(function(){
-                            window.location.reload();
-                         }, 1000)
-                    )
+                    
                 }
             }) 
         }
     }
 
-    const fileChangeHandler = (e) => {
-        console.log(e.target.files[0]);
-        setFileData(e.target.files[0]);
-    };
+    const convertToBase64 = (e) => {
+        var reader = new FileReader();
+        reader.readAsDataURL(e.target.files[0]);
+        reader.onload = () => {
+            console.log(reader.result);
+            setPicture(reader.result);
+        };
+        reader.onerror = error => {
+            console.log("Error: ", error);
+        }
+
+    }
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
-    
-        // Handle File Data from the state Before Sending
-        const data = new FormData();
-        data.append("image", fileData);
 
-        console.log(data);
-    
-        fetch(apiUrl("/picture"), {
-          method: "POST",
-          body: data,
-        }).then((response) => response.json())
-        .then((result) => {
-            setFileId(result.id);
-            console.log(result.id);
-        });
-    };
+        var width = document.getElementById('image-upload').naturalWidth;
+        var height = document.getElementById('image-upload').naturalHeight;
+
+        if (width != height) {
+            alert("Image must be 1x1 or 2x2. Please try another")
+        } else {
+            fetch(apiUrl("/picture"),{
+                method: "POST",
+                credentials:'include',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify({
+                    base64_string: picture,
+                    profile_id: ""
+                })
+            })
+            .then(response => {return response.json()})
+            .then((data) => console.log(data))
+            .then(alert("Successfully uploaded image."))
+            // .then(renderImage)
+        }
+    }
 
     useEffect(()=>{
         if(isAuthenticated === false){
@@ -306,7 +340,8 @@ function CompleteResidentProfile () {
                     <div className='left-div'>
                     <form className='upload-div'>
                             <div className='upload-body'>
-                                <input className='upload-img-file' type="file" onChange={fileChangeHandler} ></input>
+                                {picture === "" || picture === null ? "" : <img id='image-upload' width={100} src={picture}></img>}
+                                <input className='upload-img-file'  type="file" accept="image/png, image/jpeg, image/jpg" onChange={convertToBase64} ></input>
                                 <br></br>
                                 <br></br>
                                 <br></br>

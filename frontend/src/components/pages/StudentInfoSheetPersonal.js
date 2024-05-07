@@ -55,9 +55,12 @@ function StudentInfoSheetPersonal () {
                 <div className='upper-div'>
                     <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
                     <p className='page-title'>STUDENT INFORMATION SHEET</p>
-                    <button className='edit-profile-button'>EDIT PROFILE</button>
+                    { user.role === 'resident' || user.role === 'dorm assistant' ?
+                        <button className='edit-profile-button' onClick = {()=> navigate("/edit-resident-personal/"+user.profile_id)}>EDIT PROFILE</button>
+                    : <div className='extra-space'></div>}
+                    
                 </div>
-
+                <hr className='divider'></hr>
                 { currentResident !== undefined ?
                 
                     <div className='body-div'>
@@ -70,7 +73,7 @@ function StudentInfoSheetPersonal () {
                                         <img width={250} src={data.base64_string}></img>
                                         )
                                     }
-                            }) : ""}
+                            }) : <p className='pic-note'><i>Loading picture...</i></p>}
 
                             <br></br>
                             <p className='profile-info'>{currentResident.first_name + " "  + currentResident.last_name}</p>
@@ -264,7 +267,7 @@ function StudentInfoSheetPersonal () {
                         </div>
                         
                     </div>
-                : "" }
+                : <p className='profile-note'><i>Loading profile...</i></p> }
                 
             </div>
         </div>

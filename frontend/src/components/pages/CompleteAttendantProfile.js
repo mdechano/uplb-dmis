@@ -214,6 +214,7 @@ function CompleteAttendantProfile () {
                     <p className='page-title'>COMPLETE PROFILE</p>
                     <button className='save-button' onClick={sendData}>SAVE</button>
                 </div>
+                <hr className='divider'></hr>
                 <div className="body-div">
                     <div className='left-div'>
                     <form className='upload-div'>

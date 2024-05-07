@@ -10,9 +10,13 @@ import ManagerProfile from './components/pages/ManagerProfile';
 import EditManagerProfile from './components/pages/EditManagerProfile';
 import EditAttendantProfile from './components/pages/EditAttendantProfile';
 import StudentInfoSheetCheckIn from './components/pages/StudentInfoSheetCheckIn';
+import EditStudentCheckIn from './components/pages/EditStudentCheckIn';
 import StudentInfoSheetPayment from './components/pages/StudentInfoSheetPayment';
+import EditStudentPayment from './components/pages/EditStudentPayment';
 import StudentInfoSheetPersonal from './components/pages/StudentInfoSheetPersonal';
+import EditStudentPersonal from './components/pages/EditStudentPersonal';
 import StudentInfoSheetViolation from './components/pages/StudentInfoSheetViolation';
+import EditStudentViolation from './components/pages/EditStudentViolation';
 import GenerateSOA from './components/pages/GenerateSOA';
 import UploadReceipt from './components/pages/UploadReceipt';
 import DormInformation from './components/pages/DormInformation';
@@ -37,6 +41,10 @@ function App() {
             <Route exact={true} path="/resident-payment/:id" element={<StudentInfoSheetPayment />} />
             <Route exact={true} path="/resident-personal/:id" element={<StudentInfoSheetPersonal />} />
             <Route exact={true} path="/resident-violation/:id" element={<StudentInfoSheetViolation />} />
+            <Route exact={true} path="/edit-resident-check-in/:id" element={<EditStudentCheckIn />} />
+            <Route exact={true} path="/edit-resident-payment/:id" element={<EditStudentPayment />} />
+            <Route exact={true} path="/edit-resident-personal/:id" element={<EditStudentPersonal />} />
+            <Route exact={true} path="/editresident-violation/:id" element={<EditStudentViolation />} />
             <Route exact={true} path="/generate-soa" element={<GenerateSOA />} />
             <Route exact={true} path="/upload-receipt" element={<UploadReceipt />} />
             <Route exact={true} path="/dorm-information" element={<DormInformation />} />

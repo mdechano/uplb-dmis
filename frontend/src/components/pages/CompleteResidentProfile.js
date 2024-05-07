@@ -282,13 +282,11 @@ function CompleteResidentProfile () {
                 },
                 body: JSON.stringify({
                     base64_string: picture
-                    // profile_id: ""
                 })
             })
             .then(response => {return response.json()})
             .then((data) => console.log(data))
             .then(alert("Successfully uploaded image."))
-            // .then(renderImage)
         }
     }
 
@@ -310,6 +308,7 @@ function CompleteResidentProfile () {
                     <p className='page-title'>COMPLETE PROFILE</p>
                     <button className='save-button' onClick={sendData}>SAVE</button>
                 </div>
+                <hr className='divider'></hr>
                 <div className="body-div">
                     <div className='left-div'>
                     <form className='upload-div'>

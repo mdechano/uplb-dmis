@@ -12,7 +12,7 @@
     border: 0px solid grey;
     background-color: white;
     border-radius: 10px;
-    box-shadow: 2px 2px 2px 2px #8888888f;
+    box-shadow: 0px 2px 0px #555;
     width: 20%;
     height: auto;
     padding-top: 20px;
@@ -40,7 +40,7 @@
     border: 0px solid grey;
     background-color: white;
     border-radius: 10px;
-    box-shadow: 2px 2px 2px 2px #8888888f;
+    box-shadow: 0px 2px 0px #555;
     padding-top: 10px;
     padding-bottom: 30px;
     padding-left: 30px;

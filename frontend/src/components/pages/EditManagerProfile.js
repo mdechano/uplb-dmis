@@ -14,20 +14,22 @@ function EditManagerProfile () {
 
     const [picture, setPicture] = useState();
     const [dorm, setDorm] = useState();
-    const [manager, setManager] = useState();
+    const [managers, setManagers] = useState();
+    let allEmails = []
 
     const fetchData = () => {
         const getDorm = axios.get(apiUrl("/dorm"), { withCredentials: true });
-        const getManager = axios.get(apiUrl("/manager"), { withCredentials: true });
-        axios.all([getDorm, getManager]).then(
+        const getManagers = axios.get(apiUrl("/manager"), { withCredentials: true });
+        axios.all([getDorm, getManagers]).then(
             axios.spread((...allData) => {
                 setDorm(allData[0].data)
-                setManager(allData[1].data)
+                setManagers(allData[1].data)
             })
         )
     }
 
     const editManager = () => {
+
         fetch(apiUrl("/manager/"+user.profile_id),{
             method: "PUT",
             credentials:'include',
@@ -57,8 +59,8 @@ function EditManagerProfile () {
 
     const editDormInfo = () => {
 
-        if (manager !== undefined) {
-            manager.map((person, i) => {
+        if (managers !== undefined) {
+            managers.map((person, i) => {
                     if (dorm !== undefined) {
                         dorm.map((dorm, i) => {
                             if (person.dorm === dorm.dorm_name) {
@@ -106,16 +108,27 @@ function EditManagerProfile () {
     }
 
     const convertToBase64 = (e) => {
+  
         var reader = new FileReader();
         reader.readAsDataURL(e.target.files[0]);
-        reader.onload = () => {
-            console.log(reader.result);
-            setPicture(reader.result);
-        };
+        reader.onload = () => { 
+            if (managers !== undefined) {
+                managers.map((person, i) => {
+                    if (person._id === user.profile_id) {
+                        const currentManager = person;
+                        if (currentManager.base64_string === reader.result) {
+                            alert("Uploaded picture same as before. Please upload a new one.")
+                        } else {
+                            setPicture(reader.result);  
+                        }
+                    }
+                })
+            }
+             
+        }
         reader.onerror = error => {
             console.log("Error: ", error);
-        }
-
+        }   
     }
 
     const onSubmitHandler = (e) => {
@@ -171,7 +184,7 @@ function EditManagerProfile () {
                                 <br></br>
                                 <br></br>
                                 <br></br>
-                                <button className='upload-img-submit' type="submit" onClick={onSubmitHandler} >SUBMIT</button>
+                                <button className='upload-img-submit' id="submit-btn" type="submit" onClick={onSubmitHandler} >SUBMIT</button>
                             </div>
                             <div className='upload-note'>
                                 Upload Picture Here<br></br>(1x1 or 2x2)

@@ -95,6 +95,8 @@
     padding: 12px 16px;
     text-decoration: none;
     display: block;
+    cursor: pointer;
+    text-align: center;
   }
   
   .dropdown-content a:hover {background-color: #f1f1f1;}
@@ -103,9 +105,9 @@
     display: block;
   }
   
-  .dropdown:hover .dropbtn {
+  /* .dropdown:hover .dropbtn {
     background-color: #3e8e41;
-  }
+  } */
 
   .profile-div {
     flex: 1;

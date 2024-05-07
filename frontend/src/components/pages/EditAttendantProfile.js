@@ -108,13 +108,24 @@ function EditAttendantProfile () {
     const convertToBase64 = (e) => {
         var reader = new FileReader();
         reader.readAsDataURL(e.target.files[0]);
-        reader.onload = () => {
-            console.log(reader.result);
-            setPicture(reader.result);
-        };
+        reader.onload = () => { 
+            if (attendant !== undefined) {
+                attendant.map((person, i) => {
+                    if (person._id === user.profile_id) {
+                        const currentManager = person;
+                        if (currentManager.base64_string === reader.result) {
+                            alert("Uploaded picture same as before. Please upload a new one.")
+                        } else {
+                            setPicture(reader.result);  
+                        }
+                    }
+                })
+            }
+             
+        }
         reader.onerror = error => {
             console.log("Error: ", error);
-        }
+        }   
 
     }
     const onSubmitHandler = (e) => {

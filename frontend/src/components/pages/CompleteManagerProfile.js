@@ -12,6 +12,7 @@ function CompleteManagerProfile () {
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
 
     const [picture, setPicture] = useState();
+    const [picture_id, setPictureID] = useState();
 
     let allEmails = []
  
@@ -164,15 +165,18 @@ function CompleteManagerProfile () {
                 },
                 body: JSON.stringify({
                     base64_string: picture
-                    // profile_id: ""
                 })
             })
             .then(response => {return response.json()})
-            .then((data) => console.log(data))
+            // .then((data) => setpic(data.id))
             .then(alert("Successfully uploaded image."))
-            // .then(renderImage)
         }
     };
+
+    // const setpic = (id) => {
+    //     setPictureID(id)
+    //     console.log("picture id: "+picture_id)
+    // }
 
     useEffect(()=>{
         if(isAuthenticated === false){
@@ -181,7 +185,7 @@ function CompleteManagerProfile () {
         else {
             fetchData()
         }
-    },[]);
+    },[picture_id]);
 
     return (
         <div>
@@ -207,13 +211,6 @@ function CompleteManagerProfile () {
                             <div className='upload-note'>
                                 Upload Picture Here<br></br>(1x1 or 2x2)
                             </div>
-
-                            {/* {allPicture !== undefined ?
-                                allPicture.map(data => {
-                                    return(
-                                    <img width={100} src={data.base64_string}></img>
-                                    )
-                            }) : ""} */}
                         </form>
                     </div>
 

@@ -1,4 +1,4 @@
-import {Link} from 'react-router-dom'
+import {Link, redirect} from 'react-router-dom'
 import {React, useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import useStore from '../utilities/authHook';
@@ -12,10 +12,9 @@ function ManagerProfile () {
 
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
-    const [ currentUser, setUser] = useState();
-    const [tempManager, setTempManager] = useState();
     const [ currentManager, setManager] = useState();
     const [allPicture, setAllPictures] = useState();
+    const [profile_picture, setProfilePicture] =useState();
 
     const fetchData = () => {
         const link = window.location.href;
@@ -23,8 +22,7 @@ function ManagerProfile () {
         const getManager = axios.get(apiUrl("/manager/") + id, { withCredentials: true });
             axios.all([getManager]).then(
                 axios.spread((...allData) => {
-                    const allManagerData = allData[0].data
-                    setManager(allManagerData)
+                    setManager(allData[0].data)
                 })
             )
     }
@@ -62,18 +60,20 @@ function ManagerProfile () {
                     <button className='edit-profile-button' onClick={()=> navigate('/edit-manager')}>EDIT PROFILE</button>
                 </div>
 
-                
+                <hr className='divider'></hr>
                 { currentManager !== undefined ?
                     <div className='body-div'>
                         <div className='profile-div-left'>
-                            {allPicture !== undefined ?
-                                allPicture.map(data => {
-                                    if (currentManager.base64_string === data.base64_string) {
-                                        return(
-                                        <img width={250} src={data.base64_string}></img>
+                            { allPicture !== undefined ?
+                                allPicture.map((pic, i) => {
+                                    if (currentManager.base64_string === pic.base64_string) {
+                                        return (
+                                            <img width={250} src={pic.base64_string}></img>
                                         )
                                     }
-                            }) : ""}
+                                })
+                                
+                            : <p className='pic-note'><i>Loading picture...</i></p>}
                             <br></br>
                             <p className='profile-info'>{currentManager.first_name + " "  + currentManager.last_name}</p>
                             <p className='profile-info'><b>Dorm Manager</b></p>
@@ -124,7 +124,7 @@ function ManagerProfile () {
                     </div>
 
                 :
-                ""
+                <p className='profile-note'><i>Loading profile...</i></p>
                 // fetchData()
                 }
                 

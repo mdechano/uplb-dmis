@@ -58,6 +58,7 @@ function StudentInfoSheetViolation () {
                     <p className='page-title'>STUDENT INFORMATION SHEET</p>
                     <div className='extra-space'></div>
                 </div>
+                <hr className='divider'></hr>
                 { currentResident !== undefined ?
                 <div className='body-div'>
                     <div className='profile-div-left'>
@@ -68,7 +69,7 @@ function StudentInfoSheetViolation () {
                                     <img width={250} src={data.base64_string}></img>
                                     )
                                 }
-                        }) : ""}
+                        }) : <p className='pic-note'><i>Loading picture...</i></p>}
                         <br></br>
                         <p className='profile-info'>{currentResident.first_name + " " + currentResident.last_name}</p>
                         <p className='profile-info'>{currentResident.student_no}</p>
@@ -108,7 +109,7 @@ function StudentInfoSheetViolation () {
                             
                     </div>
                 </div>
-                : "" }
+                : <p className='profile-note'><i>Loading profile...</i></p> }
             </div>
         </div>
     )

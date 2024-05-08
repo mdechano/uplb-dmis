@@ -57,7 +57,7 @@ function ManagerProfile () {
                 <div className='upper-div'>
                     <button className='back-button' onClick = {()=> navigate('/dashboard')}>BACK</button>
                     <p className='page-title'>MANAGER PROFILE</p>
-                    <button className='edit-profile-button' onClick={()=> navigate('/edit-manager')}>EDIT PROFILE</button>
+                    <button className='edit-profile-button' onClick={()=> navigate('/edit-manager/'+user.profile_id)}>EDIT PROFILE</button>
                 </div>
 
                 <hr className='divider'></hr>
@@ -68,7 +68,7 @@ function ManagerProfile () {
                                 allPicture.map((pic, i) => {
                                     if (currentManager.base64_string === pic.base64_string) {
                                         return (
-                                            <img width={250} src={pic.base64_string}></img>
+                                            <img width={250} className='profile-pic' src={currentManager.base64_string}></img>
                                         )
                                     }
                                 })

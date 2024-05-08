@@ -12,32 +12,36 @@ function EditAttendantProfile () {
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
 
-    const [picture, setPicture] = useState();
+    const [newpicture, setNewPicture] = useState();
     const [dorm, setDorm] = useState();
     const [attendant, setAttendant] = useState();
+    const [allPicture, setAllPictures] = useState();
+    const [changePic, setChangePic] = useState(false);
 
     const fetchData = () => {
+        const link = window.location.href;
+        const id = link.slice(link.lastIndexOf('/')+1,link.length);
+        const getAttendant = axios.get(apiUrl("/attendant/" + id), { withCredentials: true });
         const getDorm = axios.get(apiUrl("/dorm"), { withCredentials: true });
-        const getAttendant = axios.get(apiUrl("/attendant"), { withCredentials: true });
-        axios.all([getDorm, getAttendant]).then(
+        axios.all([getAttendant, getDorm ]).then(
             axios.spread((...allData) => {
-                setDorm(allData[0].data)
-                setAttendant(allData[1].data)
+                setAttendant(allData[0].data)
+                setDorm(allData[1].data)
             })
         )
     }
 
     const editAttendant = () => {
-        fetch(apiUrl("/attendant/"+user.profile_id),{
+        fetch(apiUrl("/attendant/"+attendant._id),{
             method: "PUT",
             credentials:'include',
             headers:{
                 'Content-Type':'application/json'
             },
             body: JSON.stringify({
-                user_id: user._id,
-                dorm: user.dorm,
-                role: user.role,
+                user_id: attendant.user_id,
+                dorm: attendant.dorm,
+                role: attendant.role,
                 first_name: document.getElementById("first_name").value,
                 last_name: document.getElementById("last_name").value,
                 middle_name: document.getElementById("middle_name").value,
@@ -47,7 +51,7 @@ function EditAttendantProfile () {
                 contact_number: document.getElementById("contact_number").value,
                 email: document.getElementById("email").value,
                 home_address: document.getElementById("home_address").value,
-                base64_string: picture
+                base64_string: attendant.base64_string
             })
         })
         .then(response => {return response.json()})
@@ -58,10 +62,10 @@ function EditAttendantProfile () {
     const editDormInfo = () => {
 
         if (attendant !== undefined) {
-            attendant.map((person, i) => {
+            
                     if (dorm !== undefined) {
                         dorm.map((dorm, i) => {
-                            if (person.dorm === dorm.dorm_name) {
+                            if (attendant.dorm === dorm.dorm_name) {
                                 const currentDorm = dorm
 
                                 fetch(apiUrl("/dorm/"+currentDorm._id),{
@@ -101,7 +105,7 @@ function EditAttendantProfile () {
                         })
                     }
                 
-            }) 
+        
         }
     }
 
@@ -110,18 +114,12 @@ function EditAttendantProfile () {
         reader.readAsDataURL(e.target.files[0]);
         reader.onload = () => { 
             if (attendant !== undefined) {
-                attendant.map((person, i) => {
-                    if (person._id === user.profile_id) {
-                        const currentManager = person;
-                        if (currentManager.base64_string === reader.result) {
-                            alert("Uploaded picture same as before. Please upload a new one.")
-                        } else {
-                            setPicture(reader.result);  
-                        }
-                    }
-                })
+                if (attendant.base64_string === reader.result) {
+                    alert("Uploaded picture same as before. Please upload a new one.")
+                } else {
+                    setNewPicture(reader.result);  
+                }
             }
-             
         }
         reader.onerror = error => {
             console.log("Error: ", error);
@@ -144,14 +142,60 @@ function EditAttendantProfile () {
                     'Content-Type':'application/json'
                 },
                 body: JSON.stringify({
-                    base64_string: picture
+                    base64_string: newpicture
                 })
             })
             .then(response => {return response.json()})
             .then((data) => console.log(data))
-            .then(alert("Successfully uploaded image."))
+            .then(updateUserBase64)
         }
     };
+
+    const updateUserBase64 = () => {
+        fetch(apiUrl("/attendant/"+attendant._id),{
+            method: "PUT",
+            credentials:'include',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                user_id: attendant.user_id,
+                dorm: attendant.dorm,
+                role: attendant.role,
+                first_name: attendant.first_name,
+                last_name: attendant.last_name,
+                middle_name: attendant.middle_name,
+                suffix: attendant.suffix,
+                sex: attendant.sex,
+                birthday: attendant.birthday,
+                contact_number: attendant.contact_number,
+                email: attendant.email,
+                home_address: attendant.home_address,
+                base64_string: newpicture
+            })
+        })
+        .then(response => {return response.json()})
+        .then(alert("Successfully changed picture."),
+                    setTimeout(function(){
+                    window.location.reload();
+                    }, 1000)
+                )
+    }
+
+    const renderImage = () => {
+        fetch(apiUrl("/picture"),{
+            method: "GET",
+        })
+        .then(response => {return response.json()})
+        .then((data) => {
+            console.log(data)
+            setAllPictures(data)
+        })
+    }
+
+    const flag_change_pic = () => {
+        setChangePic(true)
+    }
 
     useEffect(()=>{
         if(isAuthenticated === false){
@@ -159,6 +203,7 @@ function EditAttendantProfile () {
         } 
         else {
             fetchData()
+            renderImage()
         }
     },[]);
 
@@ -167,7 +212,7 @@ function EditAttendantProfile () {
             <NavBar></NavBar>
             <div classname = 'complete-manager-profile-div'>
                 <div className='upper-div'>
-                    <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
+                    <button className='back-button' onClick = {()=> navigate("/attendant/"+user.profile_id)}>BACK</button>
                     <p className='page-title'>EDIT ATTENDANT PROFILE</p>
                     <button className='save-button' onClick={editAttendant}>SAVE</button>
                 </div>
@@ -175,17 +220,35 @@ function EditAttendantProfile () {
                 <div className="body-div">
                     <div className='left-div'>
                         <form className='upload-div'>
-                            <div className='upload-body'>
-                            {picture === "" || picture === null ? "" : <img id='image-upload' width={100} src={picture}></img>}
-                                <input className='upload-img-file'  type="file" accept="image/png, image/jpeg, image/jpg" onChange={convertToBase64} ></input>
-                                <br></br>
-                                <br></br>
-                                <br></br>
-                                <button className='upload-img-submit' type="submit" onClick={onSubmitHandler} >SUBMIT</button>
-                            </div>
-                            <div className='upload-note'>
-                                Upload Picture Here<br></br>(1x1 or 2x2)
-                            </div>
+                        { changePic === true ? 
+                                <div>
+                                    <div className='upload-body'>
+                                        {newpicture === "" || newpicture === null ? "" : <img id='image-upload' width={100} src={newpicture}></img>}
+                                        <input className='upload-img-file'  type="file" accept="image/png, image/jpeg, image/jpg" onChange={convertToBase64} ></input>
+                                        <br></br>
+                                        <br></br>
+                                        <br></br>
+                                        <button className='upload-img-submit' type="submit" onClick={onSubmitHandler} >SUBMIT</button>
+                                    </div>
+                                    <div className='upload-note'>
+                                        Upload Picture Here<br></br>(1x1 or 2x2)
+                                    </div>
+                                </div>
+                           
+                            :
+                                <div>
+                                    {allPicture !== undefined ?
+                                        allPicture.map(data => {
+                                            if (attendant.base64_string === data.base64_string) {
+                                                return(
+                                                    <img className='profile-pic' width={250} src={attendant.base64_string}></img>
+                                                )
+                                            }
+                                    }) : <p className='pic-note'><i>Loading picture...</i></p>}
+                                    <br></br>
+                                    <button className='change-picture' onClick={flag_change_pic}>CHANGE PICTURE</button>
+                                </div>
+                            }
                         </form>
                     </div>
 

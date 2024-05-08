@@ -68,7 +68,7 @@ function AttendantProfile () {
                     <p className='page-title'>ATTENDANT PROFILE</p>
                     
                     <div>
-                        <button className='edit-profile-button' onClick = {()=> navigate("/edit-attendant")}>EDIT PROFILE</button>
+                        <button className='edit-profile-button' onClick = {()=> navigate("/edit-attendant/"+user.profile_id)}>EDIT PROFILE</button>
                     </div>
                 </div>
                 <hr className='divider'></hr>
@@ -80,7 +80,7 @@ function AttendantProfile () {
                                 allPicture.map((pic, i) => {
                                     if (currentAttendant.base64_string === pic.base64_string) {
                                         return (
-                                            <img width={250} src={pic.base64_string}></img>
+                                            <img width={250} className='profile-pic' src={currentAttendant.base64_string}></img>
                                         )
                                     }
                                 })

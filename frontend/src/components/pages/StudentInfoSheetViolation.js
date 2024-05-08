@@ -66,7 +66,7 @@ function StudentInfoSheetViolation () {
                             allPicture.map(data => {
                                 if (currentResident.base64_string === data.base64_string) {
                                     return(
-                                    <img width={250} src={data.base64_string}></img>
+                                    <img width={250} className='profile-pic' src={currentResident.base64_string}></img>
                                     )
                                 }
                         }) : <p className='pic-note'><i>Loading picture...</i></p>}

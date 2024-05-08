@@ -12,6 +12,8 @@ function EditStudentCheckIn () {
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
     const [ currentResident, setResident] = useState();
     const [allPicture, setAllPictures] = useState();
+    const [newpicture, setNewPicture] = useState();
+    const [changePic, setChangePic] = useState(false);
 
     const fetchData = () => {
         const link = window.location.href;
@@ -169,6 +171,106 @@ function EditStudentCheckIn () {
         }
     }
 
+    const convertToBase64 = (e) => {
+        var reader = new FileReader();
+        reader.readAsDataURL(e.target.files[0]);
+        reader.onload = () => { 
+            if (currentResident !== undefined) {
+                if (currentResident.base64_string === reader.result) {
+                    alert("Uploaded picture same as before. Please upload a new one.")
+                } else {
+                    setNewPicture(reader.result);  
+                }
+            }
+        }
+        reader.onerror = error => {
+            console.log("Error: ", error);
+        }   
+
+    }
+
+    const onSubmitHandler = (e) => {
+        e.preventDefault();
+
+        var width = document.getElementById('image-upload').naturalWidth;
+        var height = document.getElementById('image-upload').naturalHeight;
+
+        if (width != height) {
+            alert("Image must be 1x1 or 2x2. Please try another")
+        } else {
+            fetch(apiUrl("/picture"),{
+                method: "POST",
+                credentials:'include',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify({
+                    base64_string: newpicture
+                })
+            })
+            .then(response => {return response.json()})
+            .then((data) => console.log(data))
+            .then(updateUserBase64)
+        }
+    };
+
+    const updateUserBase64 = () => {
+        fetch(apiUrl("/resident/"+currentResident._id),{
+            method: "PUT",
+            credentials:'include',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                user_id: currentResident.user_id, 
+                    dorm: currentResident.dorm,
+                    role: currentResident.role,
+                    first_name: currentResident.first_name,
+                    last_name: currentResident.last_name,
+                    middle_name: currentResident.middle_name,
+                    suffix: currentResident.suffix,
+                    sex: currentResident.sex,
+                    student_no: currentResident.student_no,
+                    civil_status: currentResident.civil_status,
+                    birthday: currentResident.birthday,
+                    contact_number: currentResident.contact_number,
+                    email: currentResident.email,
+                    home_address: currentResident.home_address,
+                    region: currentResident.region,
+                    college: currentResident.college,
+                    degree_program: currentResident.degree_program,
+                    last_school_attended: currentResident.last_school_attended,
+                    classification: currentResident.classification,
+                    honors_received: currentResident.honors_received,
+                    talents: currentResident.talents,
+                    hobbies: currentResident.hobbies,
+                    organizations: currentResident.organizations,
+                    ailments: currentResident.ailments,
+                    medications: currentResident.medications,
+                    scholarships: currentResident.scholarships,
+                    monthly_stipend: currentResident.monthly_stipend,
+                    parents_status: currentResident.parents_status,
+                    father_details: currentResident.father_details,
+                    mother_details: currentResident.mother_details,
+                    number_of_brothers: currentResident.number_of_brothers,
+                    number_of_sisters: currentResident.number_of_sisters,
+                    birth_order: currentResident.birth_order,
+                    check_in_out_details: currentResident.check_in_out_details,
+                    appliances: currentResident.appliances,
+                    appliances_information: currentResident.appliances_information,
+                    emergency_details: currentResident.emergency_details,
+                    slas: "None",
+                    base64_string: newpicture
+            })
+        })
+        .then(response => {return response.json()})
+        .then(alert("Successfully changed picture."),
+                    setTimeout(function(){
+                    window.location.reload();
+                    }, 1000)
+                )
+    }
+
     const renderImage = () => {
         fetch(apiUrl("/picture"),{
             method: "GET",
@@ -180,6 +282,9 @@ function EditStudentCheckIn () {
         })
     }
     
+    const flag_change_pic = () => {
+        setChangePic(true)
+    }
 
     useEffect(()=>{
         if(isAuthenticated === false){
@@ -197,22 +302,43 @@ function EditStudentCheckIn () {
 
             <div classname = 'stud-info-sheet-div'>
                 <div className='upper-div'>
-                    <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
-                    <p className='page-title'>COMPLETE PROFILE</p>
+                    <button className='back-button' onClick = {()=> navigate("/resident-check-in/"+user.profile_id)}>BACK</button>
+                    <p className='page-title'>EDIT RESIDENT PROFILE</p>
                     <button className='save-button' onClick={editStudent}>SAVE</button>
                 </div>
                 <hr className='divider'></hr>
                 <div className="body-div">
                     <div className='left-div'>
                     <form className='upload-div'>
-                            {allPicture !== undefined ?
-                                allPicture.map(data => {
-                                    if (currentResident.base64_string === data.base64_string) {
-                                        return(
-                                        <img width={250} src={data.base64_string}></img>
-                                        )
-                                    }
-                            }) : <p className='pic-note'><i>Loading picture...</i></p>}
+                        { changePic === true ? 
+                                <div>
+                                    <div className='upload-body'>
+                                        {newpicture === "" || newpicture === null ? "" : <img id='image-upload' width={100} src={newpicture}></img>}
+                                        <input className='upload-img-file'  type="file" accept="image/png, image/jpeg, image/jpg" onChange={convertToBase64} ></input>
+                                        <br></br>
+                                        <br></br>
+                                        <br></br>
+                                        <button className='upload-img-submit' type="submit" onClick={onSubmitHandler} >SUBMIT</button>
+                                    </div>
+                                    <div className='upload-note'>
+                                        Upload Picture Here<br></br>(1x1 or 2x2)
+                                    </div>
+                                </div>
+                           
+                            :
+                                <div>
+                                    {allPicture !== undefined ?
+                                        allPicture.map(data => {
+                                            if (currentResident.base64_string === data.base64_string) {
+                                                return(
+                                                    <img className='profile-pic' width={250} src={currentResident.base64_string}></img>
+                                                )
+                                            }
+                                    }) : <p className='pic-note'><i>Loading picture...</i></p>}
+                                    <br></br>
+                                    <button className='change-picture' onClick={flag_change_pic}>CHANGE PICTURE</button>
+                                </div>
+                            }
                         </form>
                     </div>
                     <div className="right-div">

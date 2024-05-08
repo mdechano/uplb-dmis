@@ -23,8 +23,8 @@ exports.uploadImage = async (req, res) => {
     const body = req.body;
 
     const newPicture = {
-        base64_string: body.base64_string,
-        profile_id: body.profile_id
+        base64_string: body.base64_string
+        // profile_id: body.profile_id
     }
 
     try{   
@@ -32,7 +32,7 @@ exports.uploadImage = async (req, res) => {
         const picture = await Picture.create(newPicture);
         await UserLog.create(token.user, 'create', `picture ${picture._id}`)
         console.log(`New picture: \n ${picture}`);
-        return res.status(201).send({success: true, message: "Successfully added picture."})
+        return res.status(201).send({success: true, message: "Successfully added picture.", id: picture.id})
 
     }
     catch(err){
@@ -95,8 +95,8 @@ exports.renderImage = async (req,res) => {
 
     const picture = {
         id: req.params.id,
-        base64_string: body.base64_string,
-        profile_id: body.profile_id
+        base64_string: body.base64_string
+        // profile_id: body.profile_id
     }
 
     try{

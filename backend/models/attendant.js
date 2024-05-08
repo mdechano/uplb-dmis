@@ -15,7 +15,7 @@ const AttendantSchema = new mongoose.Schema(
         contact_number: {type: String, required: true},
         email: {type: String, required: true},
         home_address: {type: String, required: true},
-        base64_string: {type: String}
+        picture_url: {type: String}
     }
 )
 

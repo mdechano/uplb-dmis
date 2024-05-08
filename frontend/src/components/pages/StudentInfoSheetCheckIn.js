@@ -56,21 +56,16 @@ function StudentInfoSheetCheckIn () {
                 <div className='upper-div'>
                     <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
                     <p className='page-title'>STUDENT INFORMATION SHEET</p>
-                    <button className='edit-profile-button'>EDIT PROFILE</button>
+                    { user.role === 'resident' || user.role === 'dorm assistant' ?
+                        <button className='edit-profile-button' onClick = {()=> navigate("/edit-resident-check-in/"+user.profile_id)}>EDIT PROFILE</button>
+                    : <div className='extra-space'></div>}
                 </div>
-                
+                <hr className='divider'></hr>
                 { currentResident !== undefined ?
                 
                 <div className='body-div'>
                     <div className='profile-div-left'>
-                        {allPicture !== undefined ?
-                            allPicture.map(data => {
-                                if (currentResident.base64_string === data.base64_string) {
-                                    return(
-                                    <img width={250} src={data.base64_string}></img>
-                                    )
-                                }
-                        }) : ""}
+                        <img width={250} className='profile-pic' src={currentResident.picture_url}></img>
                         <br></br>
                         <p className='profile-info'>{currentResident.first_name + " "  + currentResident.last_name}</p>
                         <p className='profile-info'>{currentResident.student_no}</p>
@@ -252,7 +247,7 @@ function StudentInfoSheetCheckIn () {
                     </div>
                     
                 </div>
-            : "" }
+            : <p className='profile-note'><i>Loading profile...</i></p> }
 
             </div>
         </div>

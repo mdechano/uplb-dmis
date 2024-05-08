@@ -5,25 +5,31 @@ import useStore from '../utilities/authHook';
 import axios, { all } from "axios";
 import '../css/CompleteAttendantProfile.css';
 import NavBar from './NavBar';
+import { v4 as uuidv4 } from "uuid";
+import { supabase } from "../../lib/supabase";
 
 function CompleteAttendantProfile () {
 
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
 
+    const [file, setfile] = useState();
+    const [finalpicture, setFinalPicture] = useState();
     const [picture, setPicture] = useState();
     const [dorm, setDorm] = useState();
-    const [attendant, setAttendant] = useState();
 
     let allEmails = []
  
     const fetchData = () => {
         const getAttendants = axios.get(apiUrl("/attendant"), { withCredentials: true });
-        axios.all([getAttendants]).then(
+        const getDorm = axios.get(apiUrl("/dorm"), { withCredentials: true });
+        axios.all([getAttendants, getDorm]).then(
             axios.spread((...allData) => {
                 for (let i = 0; i < allData[0].data.length; i++) {
                     allEmails.push(allData[0].data[i].email)
                 }
+                const allDormData = allData[1].data
+                setDorm(allDormData)
             })
         )
         console.log(allEmails);
@@ -66,27 +72,22 @@ function CompleteAttendantProfile () {
                     contact_number: document.getElementById("contact_number").value,
                     email: document.getElementById("email").value,
                     home_address: document.getElementById("home_address").value,
-                    base64_string: picture
+                    picture_url: finalpicture
                 })
             })
             .then(response => {return response.json()})
             .then(editDorm)
         }
-        // else {
-        //     alert("Inputted email address already exists!");
-        // }
+        else {
+            alert("Inputted email address already exists!")
+        }
     }
 
     const editDorm = () => {
-        const getDorm = axios.get(apiUrl("/dorm"), { withCredentials: true });
         const getAttendant = axios.get(apiUrl("/attendant"), { withCredentials: true });
-        axios.all([getDorm, getAttendant]).then(
+        axios.all([getAttendant]).then(
             axios.spread((...allData) => {
-                const allDormData = allData[0].data
-                const allAttendantData = allData[1].data
-                setDorm(allDormData)
-                setAttendant(allAttendantData)
-                editDormInfo(attendant)
+                editDormInfo(allData[0].data)
             })
         )
     }
@@ -97,40 +98,60 @@ function CompleteAttendantProfile () {
             attendant.map((person, i) => {
                 if(i === (attendant.length - 1)) {
                     if (dorm !== undefined) {
-                            dorm.map((dorm, i) => {
-                                if (person.dorm === dorm.dorm_name) {
+                        dorm.map((dorm, i) => {
+                            if (person.dorm === dorm.dorm_name) {
 
-                                    const currentPerson = person
-                                    const currentDorm = dorm
+                                const currentPerson = person
+                                const currentDorm = dorm
                                     
-                                    fetch(apiUrl("/dorm/"+currentDorm._id),{
+                                fetch(apiUrl("/dorm/"+currentDorm._id),{
+                                    method: "PUT",
+                                    credentials:'include',
+                                    headers:{
+                                        'Content-Type':'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        dorm_name: currentDorm.dorm_name,
+                                        dorm_details: currentDorm.dorm_details,
+                                        dorm_manager_id: currentDorm.dorm_manager_id,
+                                        dorm_manager_name: currentDorm.dorm_manager_name,
+                                        dorm_manager_email: currentDorm.dorm_manager_email,
+                                        dorm_manager_contact_number: currentDorm.dorm_manager_contact_number,
+                                        office_hours_start: currentDorm.office_hours_start,
+                                        office_hours_end: currentDorm.office_hours_end,
+                                        late_permit_start: currentDorm.late_permit_start,
+                                        late_permit_end: currentDorm.late_permit_end,
+                                        overnight_permit_start: currentDorm.overnight_permit_start,
+                                        overnight_permit_end: currentDorm.overnight_permit_end,
+                                        stayover_permit_start: currentDorm.stayover_permit_start,
+                                        dorm_attendant_id: currentPerson._id,
+                                        dorm_attendant_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value,
+                                        dorm_attendant_email: document.getElementById("email").value,
+                                        dorm_attendant_contact_number: document.getElementById("contact_number").value
+                                    })
+                                })
+                                .then(response => {return response.json()})
+                                .then(
+                                    fetch(apiUrl("/user/change-completed-profile"), {
                                         method: "PUT",
                                         credentials:'include',
                                         headers:{
                                             'Content-Type':'application/json'
                                         },
                                         body: JSON.stringify({
-                                            dorm_name: currentDorm.dorm_name,
-                                            dorm_details: currentDorm.dorm_details,
-                                            dorm_manager_id: currentDorm.dorm_manager_id,
-                                            dorm_manager_name: currentDorm.dorm_manager_name,
-                                            dorm_manager_email: currentDorm.dorm_manager_email,
-                                            dorm_manager_contact_number: currentDorm.dorm_manager_contact_number,
-                                            office_hours_start: currentDorm.office_hours_start,
-                                            office_hours_end: currentDorm.office_hours_end,
-                                            late_permit_start: currentDorm.late_permit_start,
-                                            late_permit_end: currentDorm.late_permit_end,
-                                            overnight_permit_start: currentDorm.overnight_permit_start,
-                                            overnight_permit_end: currentDorm.overnight_permit_end,
-                                            stayover_permit_start: currentDorm.stayover_permit_start,
-                                            dorm_attendant_id: currentPerson._id,
-                                            dorm_attendant_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value,
-                                            dorm_attendant_email: document.getElementById("email").value,
-                                            dorm_attendant_contact_number: document.getElementById("contact_number").value
+                                            email: person.email,
+                                            completed_profile: true,
+                                            profile_id: person._id
                                         })
                                     })
                                     .then(response => {return response.json()})
-                                    .then(updatePictureData)
+                                    .then(
+                                        alert("Successfully completed attendant profile."),
+                                        setTimeout(function(){
+                                            window.location.reload();
+                                        }, 1000)
+                                    )
+                                )
                                 }
                             })
                     }
@@ -139,68 +160,10 @@ function CompleteAttendantProfile () {
         }
     }
 
-    const updatePictureData = () => {
-        const getPictures = axios.get(apiUrl("/picture"), { withCredentials: true });
-        axios.all([getPictures]).then(
-            axios.spread((...allData) => {
-                const allPicturesData = allData[0].data
-                updatePicture(allPicturesData)
-            })
-        )
-    }
-
-    const updatePicture = (picture) => {
-        if (picture !== undefined && attendant !== undefined) {
-            attendant.map((person, i) => {
-                picture.map((pic, i) => {
-                    if (person.base64_string === pic.base64_string) {
-                        const currentPerson = person
-                        const currentPicture = pic
-
-                        console.log(currentPicture._id)
-
-                        fetch(apiUrl("/picture/"+currentPicture._id),{
-                            method: "PUT",
-                            credentials:'include',
-                            headers:{
-                                'Content-Type':'application/json'
-                            },
-                            body: JSON.stringify({
-                                base64_string: currentPicture.base64_string,
-                                profile_id: currentPerson._id
-                                })
-                        })
-                        .then(response => {return response.json()})
-                        .then(
-                            fetch(apiUrl("/user/change-completed-profile"), {
-                                method: "PUT",
-                                credentials:'include',
-                                headers:{
-                                    'Content-Type':'application/json'
-                                },
-                                body: JSON.stringify({
-                                    email: person.email,
-                                    completed_profile: true,
-                                    profile_id: person._id
-                                })
-                            })
-                            .then(response => {return response.json()})
-                            .then(
-                                alert("Successfully completed attendant profile."),
-                                setTimeout(function(){
-                                    window.location.reload();
-                                }, 1000)
-                            )
-                        )
-                    }
-                })
-            })
-        }
-    }
-
-    const convertToBase64 = (e) => {
+    const handleFileSelected = (e) => {
+        // base64 assignment for UI viewing
         var reader = new FileReader();
-        reader.readAsDataURL(e.target.files[0]);
+        reader.readAsDataURL(e.target.files[0]); 
         reader.onload = () => {
             console.log(reader.result);
             setPicture(reader.result);
@@ -208,36 +171,33 @@ function CompleteAttendantProfile () {
         reader.onerror = error => {
             console.log("Error: ", error);
         }
+        // supabase assignment
+        setfile(e.target.files[0]);
+    };
 
-    }
-
-    const onSubmitHandler = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         var width = document.getElementById('image-upload').naturalWidth;
         var height = document.getElementById('image-upload').naturalHeight;
 
-        if (width != height) {
-            alert("Image must be 1x1 or 2x2. Please try another")
+        if (width !== height) {
+            alert("Image must be 1x1 or 2x2. Please try another");
         } else {
-            fetch(apiUrl("/picture"),{
-                method: "POST",
-                credentials:'include',
-                headers:{
-                    'Content-Type':'application/json'
-                },
-                body: JSON.stringify({
-                    base64_string: picture,
-                    profile_id: ""
-                })
-            })
-            .then(response => {return response.json()})
-            .then((data) => console.log(data))
-            .then(alert("Successfully uploaded image."))
-            // .then(renderImage)
+            // upload image
+            const filename = `${uuidv4()}-${file.name}`;
+            const { data, error } = await supabase.storage.from("profile-pictures").upload(filename, file, {
+                cacheControl: "3600",
+                upsert: false,
+            });
+            // get generated data path
+            const filepath = data.path;
+            // get and save public URL in picture_url
+            const { data: image } = supabase.storage.from('profile-pictures').getPublicUrl(`${filepath}`);
+            setFinalPicture(image.publicUrl);
+            alert("Successfully uploaded image.")
         }
     };
-
 
     useEffect(()=>{
         if(isAuthenticated === false){
@@ -257,16 +217,18 @@ function CompleteAttendantProfile () {
                     <p className='page-title'>COMPLETE PROFILE</p>
                     <button className='save-button' onClick={sendData}>SAVE</button>
                 </div>
+                <hr className='divider'></hr>
                 <div className="body-div">
                     <div className='left-div'>
                     <form className='upload-div'>
                             <div className='upload-body'>
                                 {picture === "" || picture === null ? "" : <img id='image-upload' width={100} src={picture}></img>}
-                                <input className='upload-img-file'  type="file" accept="image/png, image/jpeg, image/jpg" onChange={convertToBase64} ></input>
                                 <br></br>
                                 <br></br>
+                                <input className='custom-file-upload'  type="file" accept="image/png, image/jpeg, image/jpg" onChange={handleFileSelected} ></input>
                                 <br></br>
-                                <button className='upload-img-submit' id='submit-btn' type="submit" onClick={onSubmitHandler}>SUBMIT</button>
+                                <br></br>
+                                <button className='upload-img-submit' id='submit-btn' type="submit" onClick={handleSubmit}>UPLOAD IMAGE</button>
                             </div>
                             <div className='upload-note'>
                                 Upload Picture Here<br></br>(1x1 or 2x2)

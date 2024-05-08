@@ -1,4 +1,4 @@
-import {Link} from 'react-router-dom'
+import {Link, redirect} from 'react-router-dom'
 import {React, useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import useStore from '../utilities/authHook';
@@ -12,10 +12,7 @@ function ManagerProfile () {
 
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
-    const [ currentUser, setUser] = useState();
-    const [tempManager, setTempManager] = useState();
     const [ currentManager, setManager] = useState();
-    const [allPicture, setAllPictures] = useState();
 
     const fetchData = () => {
         const link = window.location.href;
@@ -23,21 +20,9 @@ function ManagerProfile () {
         const getManager = axios.get(apiUrl("/manager/") + id, { withCredentials: true });
             axios.all([getManager]).then(
                 axios.spread((...allData) => {
-                    const allManagerData = allData[0].data
-                    setManager(allManagerData)
+                    setManager(allData[0].data)
                 })
             )
-    }
-
-    const renderImage = () => {
-        fetch(apiUrl("/picture"),{
-            method: "GET",
-        })
-        .then(response => {return response.json()})
-        .then((data) => {
-            console.log(data)
-            setAllPictures(data)
-        })
     }
 
     useEffect(()=>{
@@ -46,7 +31,6 @@ function ManagerProfile () {
         } 
         else {
             fetchData()
-            renderImage()
         }
     },[]);
 
@@ -59,21 +43,14 @@ function ManagerProfile () {
                 <div className='upper-div'>
                     <button className='back-button' onClick = {()=> navigate('/dashboard')}>BACK</button>
                     <p className='page-title'>MANAGER PROFILE</p>
-                    <button className='edit-profile-button' onClick={()=> navigate('/edit-manager')}>EDIT PROFILE</button>
+                    <button className='edit-profile-button' onClick={()=> navigate('/edit-manager/'+user.profile_id)}>EDIT PROFILE</button>
                 </div>
 
-                
+                <hr className='divider'></hr>
                 { currentManager !== undefined ?
                     <div className='body-div'>
                         <div className='profile-div-left'>
-                            {allPicture !== undefined ?
-                                allPicture.map(data => {
-                                    if (currentManager.base64_string === data.base64_string) {
-                                        return(
-                                        <img width={250} src={data.base64_string}></img>
-                                        )
-                                    }
-                            }) : ""}
+                            <img width={250} className='profile-pic' src={currentManager.picture_url}></img>
                             <br></br>
                             <p className='profile-info'>{currentManager.first_name + " "  + currentManager.last_name}</p>
                             <p className='profile-info'><b>Dorm Manager</b></p>
@@ -124,7 +101,7 @@ function ManagerProfile () {
                     </div>
 
                 :
-                ""
+                <p className='profile-note'><i>Loading profile...</i></p>
                 // fetchData()
                 }
                 

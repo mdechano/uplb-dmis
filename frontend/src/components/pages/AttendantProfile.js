@@ -15,7 +15,6 @@ function AttendantProfile () {
 
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
-    const [role, setRole] = useState();
     const [ currentAttendant, setAttendant] = useState();
     const [allPicture, setAllPictures] = useState();
 
@@ -23,23 +22,11 @@ function AttendantProfile () {
         const link = window.location.href;
         const id = link.slice(link.lastIndexOf('/')+1,link.length);
         const getAttendant = axios.get(apiUrl("/attendant/") + id, { withCredentials: true });
-            axios.all([getAttendant]).then(
-                axios.spread((...allData) => {
-                    const allAttendantData = allData[0].data
-                    setAttendant(allAttendantData)
-                })
-            )
-    }
-
-    const renderImage = () => {
-        fetch(apiUrl("/picture"),{
-            method: "GET",
-        })
-        .then(response => {return response.json()})
-        .then((data) => {
-            console.log(data)
-            setAllPictures(data)
-        })
+        axios.all([getAttendant]).then(
+            axios.spread((...allData) => {
+                setAttendant(allData[0].data)
+            })
+        )
     }
 
     useEffect(()=>{
@@ -48,7 +35,6 @@ function AttendantProfile () {
         } 
         else {
             fetchData()
-            renderImage()
         }
     },[]);
 
@@ -67,23 +53,17 @@ function AttendantProfile () {
                     </div>
                     
                     <p className='page-title'>ATTENDANT PROFILE</p>
-
+                    
                     <div>
-                        <button className='edit-profile-button' onClick = {()=> navigate("/edit-attendant")}>EDIT PROFILE</button>
+                        <button className='edit-profile-button' onClick = {()=> navigate("/edit-attendant/"+user.profile_id)}>EDIT PROFILE</button>
                     </div>
                 </div>
+                <hr className='divider'></hr>
 
                 { currentAttendant !== undefined ?
                     <div className='body-div'>
                         <div className='profile-div-left'>
-                            {allPicture !== undefined ?
-                                allPicture.map(data => {
-                                    if (currentAttendant.base64_string === data.base64_string) {
-                                        return(
-                                        <img width={250} src={data.base64_string}></img>
-                                        )
-                                    }
-                            }) : ""}
+                            <img width={250} className='profile-pic' src={currentAttendant.picture_url}></img>
                             <br></br>
                             <p className='profile-info'>{currentAttendant.first_name + " "  + currentAttendant.last_name}</p>
                             <p className='profile-info'><b>Dorm Attendant</b></p>
@@ -135,7 +115,7 @@ function AttendantProfile () {
 
                 :
 
-                fetchData()
+                <p className='profile-note'><i>Loading profile...</i></p>
                 }
 
                 

@@ -16,7 +16,7 @@
     border: 0px solid grey;
     background-color: white;
     border-radius: 10px;
-    box-shadow: 2px 2px 2px 2px #8888888f;
+    box-shadow: 0px 2px 0px #555;
     width: 20%;
     height: auto;
     padding-top: 20px;
@@ -125,7 +125,7 @@
     border: 0px solid grey;
     background-color: white;
     border-radius: 10px;
-    box-shadow: 2px 2px 2px 2px #8888888f;
+    box-shadow: 0px 2px 0px #555;
     padding-top: 20px;
     padding-bottom: 30px;
     padding-left: 30px;
@@ -182,3 +182,8 @@ hr.horizontal-line {
 .payment-note {
     font-size: 13px;
 }
+
+
+.profile-pic {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }

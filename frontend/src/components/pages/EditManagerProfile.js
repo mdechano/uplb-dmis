@@ -4,29 +4,48 @@ import {useNavigate} from 'react-router-dom';
 import useStore from '../utilities/authHook';
 import axios, { all } from "axios";
 import {apiUrl} from '../utilities/apiUrl';
-// import '../css/EditDormInformation.css'
+import '../css/EditManagerProfile.css'
 import NavBar from '../pages/NavBar';
+import { v4 as uuidv4 } from "uuid";
+import { supabase } from "../../lib/supabase";
 
 function EditManagerProfile () {
 
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
 
-    const [fileData, setFileData] = useState();
-    const [fileId, setFileId] = useState();
+    
     const [dorm, setDorm] = useState();
+    const [manager, setManager] = useState();
+    const [changePic, setChangePic] = useState(false);
+    const [file, setfile] = useState();
+    const [picture, setPicture] = useState();
+   
+    const fetchData = () => {
+        const link = window.location.href;
+        // getLink(link);
+        const id = link.slice(link.lastIndexOf('/')+1,link.length);
+        const getManager = axios.get(apiUrl("/manager/" + id), { withCredentials: true });
+        const getDorm = axios.get(apiUrl("/dorm"), { withCredentials: true });
+        axios.all([getManager, getDorm]).then(
+            axios.spread((...allData) => {
+                setManager(allData[0].data)
+                setDorm(allData[1].data)
+            })
+        )
+    }
 
     const editManager = () => {
-        fetch(apiUrl("/manager/"+user.profile_id),{
+        fetch(apiUrl("/manager/"+manager._id),{
             method: "PUT",
             credentials:'include',
             headers:{
                 'Content-Type':'application/json'
             },
             body: JSON.stringify({
-                user_id: user._id,
-                dorm: user.dorm,
-                role: user.role,
+                user_id: manager.user_id,
+                dorm: manager.dorm,
+                role: manager.role,
                 first_name: document.getElementById("first_name").value,
                 last_name: document.getElementById("last_name").value,
                 middle_name: document.getElementById("middle_name").value,
@@ -36,107 +55,140 @@ function EditManagerProfile () {
                 contact_number: document.getElementById("contact_number").value,
                 email: document.getElementById("email").value,
                 home_address: document.getElementById("home_address").value,
-                picture_id: fileId
+                picture_url: manager.picture_url
             })
         })
         .then(response => {return response.json()})
-        .then(editDorm)
-
+        .then(editDormInfo)
     }
 
-    const editDorm = () => {
-        const getDorm = axios.get(apiUrl("/dorm"), { withCredentials: true });
-        const getManager = axios.get(apiUrl("/manager"), { withCredentials: true });
-        axios.all([getDorm, getManager]).then(
-            axios.spread((...allData) => {
-                const allDormData = allData[0].data
-                const allManagerData = allData[1].data
-                setDorm(allDormData)
-                editDormInfo(allManagerData)
-            })
-        )
-    }
-
-    const editDormInfo = (manager) => {
-
+    const editDormInfo = () => {
         if (manager !== undefined) {
-            manager.map((person, i) => {
-                    if (dorm !== undefined) {
-                        dorm.map((dorm, i) => {
-                            if (person.dorm === dorm.dorm_name) {
-                                const currentDorm = dorm
+            if (dorm !== undefined) {
+                dorm.map((dorm, i) => {
+                    if (manager.dorm === dorm.dorm_name) {
+                        const currentDorm = dorm
 
-                                fetch(apiUrl("/dorm/"+currentDorm._id),{
-                                    method: "PUT",
-                                    credentials:'include',
-                                    headers:{
-                                        'Content-Type':'application/json'
-                                    },
-                                    body: JSON.stringify({
-                                        dorm_name: currentDorm.dorm_name,
-                                        dorm_details: currentDorm.dorm_details,
-                                        dorm_manager_id: currentDorm.dorm_manager_id,
-                                        dorm_manager_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value,
-                                        dorm_manager_email: document.getElementById("email").value,
-                                        dorm_manager_contact_number: document.getElementById("contact_number").value,
-                                        office_hours_start: currentDorm.office_hours_start,
-                                        office_hours_end: currentDorm.office_hours_end,
-                                        late_permit_start: currentDorm.late_permit_start,
-                                        late_permit_end: currentDorm.late_permit_end,
-                                        overnight_permit_start: currentDorm.overnight_permit_start,
-                                        overnight_permit_end: currentDorm.overnight_permit_end,
-                                        stayover_permit_start: currentDorm.stayover_permit_start,
-                                        dorm_attendant_id: currentDorm.dorm_attendant_id,
-                                        dorm_attendant_name: currentDorm.dorm_attendant_name,
-                                        dorm_attendant_email: currentDorm.dorm_attendant_email,
-                                        dorm_attendant_contact_number: currentDorm.dorm_attendant_contact_number
-                                    })
-                                })
-                                .then(response => {return response.json()})
-                                .then(
-                                    alert("Successfully editted manager profile."),
-                                        setTimeout(function(){
-                                            window.location.reload();
-                                         }, 1000)
-                                )
-                            }
-                        })
+                        fetch(apiUrl("/dorm/"+currentDorm._id),{
+                            method: "PUT",
+                            credentials:'include',
+                            headers:{
+                                'Content-Type':'application/json'
+                            },
+                            body: JSON.stringify({
+                                dorm_name: currentDorm.dorm_name,
+                                dorm_details: currentDorm.dorm_details,
+                                dorm_manager_id: currentDorm.dorm_manager_id,
+                                dorm_manager_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value,
+                                dorm_manager_email: document.getElementById("email").value,
+                                dorm_manager_contact_number: document.getElementById("contact_number").value,
+                                office_hours_start: currentDorm.office_hours_start,
+                                office_hours_end: currentDorm.office_hours_end,
+                                late_permit_start: currentDorm.late_permit_start,
+                                late_permit_end: currentDorm.late_permit_end,
+                                overnight_permit_start: currentDorm.overnight_permit_start,
+                                overnight_permit_end: currentDorm.overnight_permit_end,
+                                stayover_permit_start: currentDorm.stayover_permit_start,
+                                dorm_attendant_id: currentDorm.dorm_attendant_id,
+                                dorm_attendant_name: currentDorm.dorm_attendant_name,
+                                dorm_attendant_email: currentDorm.dorm_attendant_email,
+                                dorm_attendant_contact_number: currentDorm.dorm_attendant_contact_number
+                            })
+                        })       
+                        .then(response => {return response.json()})
+                        .then(
+                            alert("Successfully editted manager profile."),
+                            setTimeout(function(){
+                                window.location.reload();
+                            }, 1000)
+                        )
                     }
-                
-            }) 
+                })
+            }                                
         }
     }
 
-    const fileChangeHandler = (e) => {
-        console.log(e.target.files[0]);
-        setFileData(e.target.files[0]);
+    const handleFileSelected = (e) => {
+        // base64 assignment for UI viewing
+        var reader = new FileReader();
+        reader.readAsDataURL(e.target.files[0]); 
+        reader.onload = () => {
+            console.log(reader.result);
+            setPicture(reader.result);
+        };
+        reader.onerror = error => {
+            console.log("Error: ", error);
+        }
+        // supabase assignment
+        setfile(e.target.files[0]);
     };
 
-    const onSubmitHandler = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-    
-        // Handle File Data from the state Before Sending
-        const data = new FormData();
-        data.append("image", fileData);
 
-        console.log(data);
-    
-        fetch(apiUrl("/picture"), {
-          method: "POST",
-          body: data,
-        }).then((response) => response.json())
-        .then((result) => {
-            setFileId(result.id);
-            console.log(result.id);
-        });
+        var width = document.getElementById('image-upload').naturalWidth;
+        var height = document.getElementById('image-upload').naturalHeight;
+
+        if (width !== height) {
+            alert("Image must be 1x1 or 2x2. Please try another");
+        } else {
+            // upload image
+            const filename = `${uuidv4()}-${file.name}`;
+            const { data, error } = await supabase.storage.from("profile-pictures").upload(filename, file, {
+                cacheControl: "3600",
+                upsert: false,
+            });
+            // get generated data path
+            const filepath = data.path;
+            // get and save public URL in picture_url
+            const { data: image } = supabase.storage.from('profile-pictures').getPublicUrl(`${filepath}`);
+            // setFinalPicture(image.publicUrl);
+            updatePictureUrl(image.publicUrl)
+        }
     };
+
+    const updatePictureUrl = (url) => {
+        fetch(apiUrl("/manager/"+manager._id),{
+            method: "PUT",
+            credentials:'include',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                user_id: manager.user_id,
+                dorm: manager.dorm,
+                role: manager.role,
+                first_name: manager.first_name,
+                last_name: manager.last_name,
+                middle_name: manager.middle_name,
+                suffix: manager.suffix,
+                sex: manager.sex,
+                birthday: manager.birthday,
+                contact_number: manager.contact_number,
+                email: manager.email,
+                home_address: manager.home_address,
+                picture_url: url
+            })
+        })
+        .then(response => {return response.json()})
+        .then(
+            alert("Successfully changed picture."),
+            setTimeout(function(){
+                window.location.reload();
+            }, 1000)
+        )
+    }
+
+    const flag_change_pic = () => {
+        setChangePic(true)
+    }
 
     useEffect(()=>{
         if(isAuthenticated === false){
             navigate("/")
         } 
         else {
-            // fetchData()
+            fetchData()
         }
     },[]);
 
@@ -145,24 +197,37 @@ function EditManagerProfile () {
             <NavBar></NavBar>
             <div classname = 'complete-manager-profile-div'>
                 <div className='upper-div'>
-                    <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
+                    <button className='back-button' onClick = {()=> navigate("/manager/"+user.profile_id)}>BACK</button>
                     <p className='page-title'>EDIT MANAGER PROFILE</p>
                     <button className='save-button' onClick={editManager}>SAVE</button>
                 </div>
                 <hr className='divider'></hr>
+                { manager !== undefined ?
                 <div className="body-div">
                     <div className='left-div'>
                         <form className='upload-div'>
-                            <div className='upload-body'>
-                                <input className='upload-img-file' type="file" onChange={fileChangeHandler} ></input>
-                                <br></br>
-                                <br></br>
-                                <br></br>
-                                <button className='upload-img-submit' type="submit" onClick={onSubmitHandler} >SUBMIT</button>
-                            </div>
-                            <div className='upload-note'>
-                                Upload Picture Here<br></br>(1x1 or 2x2)
-                            </div>
+                            { changePic === true ? 
+                                <div>
+                                    <div className='upload-body'>
+                                        {picture === "" || picture === null ? "" : <img id='image-upload' width={100} src={picture}></img>}
+                                        <input className='upload-img-file'  type="file" accept="image/png, image/jpeg, image/jpg" onChange={handleFileSelected} ></input>
+                                        <br></br>
+                                        <br></br>
+                                        <br></br>
+                                        <button className='upload-img-submit' type="submit" onClick={handleSubmit} >UPLOAD IMAGE</button>
+                                    </div>
+                                    <div className='upload-note'>
+                                        Upload Picture Here<br></br>(1x1 or 2x2)
+                                    </div>
+                                </div>
+                            :
+                                <div>
+                                    <img className='profile-pic' width={200} src={manager.picture_url}></img>
+                                    <br></br>
+                                    <br></br>
+                                    <button className='change-picture' onClick={flag_change_pic}>CHANGE PICTURE</button>
+                                </div>
+                            }
                         </form>
                     </div>
 
@@ -274,6 +339,7 @@ function EditManagerProfile () {
                         
                     </div>
                 </div>
+                : ""}
             </div>
         </div>
     )

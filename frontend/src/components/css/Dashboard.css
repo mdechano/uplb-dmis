@@ -8,7 +8,7 @@
     border: 0px solid grey;
     background-color: white;
     border-radius: 10px;
-    box-shadow: 2px 2px 2px 2px #8888888f;
+    box-shadow: 0px 2px 0px #555;
     width: 70%;
     margin-top: 50px;
     /* margin-left: 5%;
@@ -25,7 +25,7 @@
     border: 0px solid grey;
     background-color: white;
     border-radius: 10px;
-    box-shadow: 2px 2px 2px 2px #8888888f;
+    box-shadow: 0px 2px 0px #555;
     width: 50%;
     margin-top: 30px;
     /* margin-left: 5%; */

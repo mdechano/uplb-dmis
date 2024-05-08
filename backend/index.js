@@ -1,9 +1,9 @@
-
+require("dotenv").config();
 const mongoose = require("mongoose");
 const App = require('./app.js');
 
 mongoose.connect(
-    "mongodb+srv://mdechano:mdechanoatlas@uplbdmiscluster.5xxnerf.mongodb.net/",
+    process.env.DB,
     { useNewUrlParser: true, useUnifiedTopology: true },
     async (err) => {
         if (err) {

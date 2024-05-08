@@ -5,14 +5,17 @@ import useStore from '../utilities/authHook';
 import axios from "axios";
 import '../css/CompleteManagerProfile.css';
 import NavBar from './NavBar';
+import { v4 as uuidv4 } from "uuid";
+import { supabase } from "../../lib/supabase";
 
 function CompleteManagerProfile () {
 
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
 
+    const [file, setfile] = useState();
+    const [finalpicture, setFinalPicture] = useState();
     const [picture, setPicture] = useState();
-    // const [allPicture, setAllPicture] = useState();
 
     let allEmails = []
  
@@ -63,141 +66,115 @@ function CompleteManagerProfile () {
                     contact_number: document.getElementById("contact_number").value,
                     email: document.getElementById("email").value,
                     home_address: document.getElementById("home_address").value,
-                    base64_string: picture
+                    picture_url: finalpicture
                 })
             })
             .then(response => {return response.json()})
-            .then(getManagersandPictures)
+            .then(getManagers)
         } 
+        else {
+            alert("Inputted email address already exists!")
+        }
     }
 
-    const getManagersandPictures = () => {
+    const getManagers = () => {
         const getManagers = axios.get(apiUrl("/manager"), { withCredentials: true });
-        const getPictures = axios.get(apiUrl("/picture"), { withCredentials: true });
-        axios.all([getManagers, getPictures]).then(
+        axios.all([getManagers]).then(
             axios.spread((...allData) => {
-                sendDormInfo(allData[0].data, allData[1].data)
+                sendDormInfo(allData[0].data)
             })
         )
     }
 
-    const sendDormInfo = (manager, picture) => {
+    const sendDormInfo = (manager) => {
         
         if (manager !== undefined) {
             manager.map((person, i) => {
                 if(i === (manager.length - 1)){
 
-                    if (picture !== undefined) {
-
-                        picture.map((pic, i) => {
-                            if (person.base64_string === pic.base64_string) {
-                                // const currentPerson = person;
-                                const currentPicture = pic;
-
-                                console.log(currentPicture._id)
-
-                                fetch(apiUrl("/picture/"+currentPicture._id),{
-                                    method: "PUT",
-                                    credentials:'include',
-                                    headers:{
-                                        'Content-Type':'application/json'
-                                    },
-                                    body: JSON.stringify({
-                                       base64_string: currentPicture.base64_string,
-                                       profile_id: person._id
-                                    })
-                                })
-                                .then(response => {return response.json()})
-                                .then(
-                                    fetch(apiUrl("/dorm/"),{
-                                        method: "POST",
-                                        credentials:'include',
-                                        headers:{
-                                            'Content-Type':'application/json'
-                                        },
-                                        body: JSON.stringify({
-                                            dorm_name: user.dorm,
-                                            dorm_manager_id: person._id,
-                                            dorm_manager_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value,
-                                            dorm_manager_email: document.getElementById("email").value,
-                                            dorm_manager_contact_number: document.getElementById("contact_number").value,
-                                            office_hours_start: document.getElementById("office_hours_start").value,
-                                            office_hours_end: document.getElementById("office_hours_end").value,
-                                            late_permit_start: document.getElementById("late_permit_start").value,
-                                            late_permit_end: document.getElementById("late_permit_end").value,
-                                            overnight_permit_start: document.getElementById("overnight_permit_start").value,
-                                            overnight_permit_end: document.getElementById("overnight_permit_end").value,
-                                            stayover_permit_start: document.getElementById("stayover_permit_start").value
-                                        })
-                                    })
-                                .then(response => {return response.json()}))
-                                .then(
-                                    fetch(apiUrl("/user/change-completed-profile"), {
-                                        method: "PUT",
-                                        credentials:'include',
-                                        headers:{
-                                            'Content-Type':'application/json'
-                                        },
-                                        body: JSON.stringify({
-                                            email: person.email,
-                                            completed_profile: true,
-                                            profile_id: person._id
-                                        })
-                                    })
-                                    .then(response => {return response.json()})
-                                    .then(
-                                        alert("Successfully completed manager profile and submitted dorm information."),
-                                        setTimeout(function(){
-                                            window.location.reload();
-                                        }, 1000)
-                                    )
-                                )
-                            }
+                    fetch(apiUrl("/dorm/"),{
+                        method: "POST",
+                        credentials:'include',
+                        headers:{
+                            'Content-Type':'application/json'
+                        },
+                        body: JSON.stringify({
+                            dorm_name: user.dorm,
+                            dorm_manager_id: person._id,
+                            dorm_manager_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value,
+                            dorm_manager_email: document.getElementById("email").value,
+                            dorm_manager_contact_number: document.getElementById("contact_number").value,
+                            office_hours_start: document.getElementById("office_hours_start").value,
+                            office_hours_end: document.getElementById("office_hours_end").value,
+                            late_permit_start: document.getElementById("late_permit_start").value,
+                            late_permit_end: document.getElementById("late_permit_end").value,
+                            overnight_permit_start: document.getElementById("overnight_permit_start").value,
+                            overnight_permit_end: document.getElementById("overnight_permit_end").value,
+                            stayover_permit_start: document.getElementById("stayover_permit_start").value
                         })
-                        
-                        
-                    }
+                    })
+                    .then(response => {return response.json()})
+                    .then(
+                        fetch(apiUrl("/user/change-completed-profile"), {
+                            method: "PUT",
+                            credentials:'include',
+                            headers:{
+                                'Content-Type':'application/json'
+                            },
+                            body: JSON.stringify({
+                                email: person.email,
+                                completed_profile: true,
+                                profile_id: person._id
+                            })
+                    }))
+                    .then(response => {return response.json()})
+                    .then(
+                        alert("Successfully completed manager profile and submitted dorm information."),
+                        setTimeout(function(){
+                            window.location.reload();
+                        }, 1000)
+                    )
                 }
             }) 
         }
     }
 
-    const convertToBase64 = (e) => {
-            var reader = new FileReader();
-            reader.readAsDataURL(e.target.files[0]);
-            reader.onload = () => {
-                console.log(reader.result);
-                setPicture(reader.result);
-            };
-            reader.onerror = error => {
-                console.log("Error: ", error);
-            }
-    }
+    const handleFileSelected = (e) => {
+        // base64 assignment for UI viewing
+        var reader = new FileReader();
+        reader.readAsDataURL(e.target.files[0]); 
+        reader.onload = () => {
+            console.log(reader.result);
+            setPicture(reader.result);
+        };
+        reader.onerror = error => {
+            console.log("Error: ", error);
+        }
+        // supabase assignment
+        setfile(e.target.files[0]);
+    };
 
-    const onSubmitHandler = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         var width = document.getElementById('image-upload').naturalWidth;
         var height = document.getElementById('image-upload').naturalHeight;
 
-        if (width != height) {
-            alert("Image must be 1x1 or 2x2. Please try another")
+        if (width !== height) {
+            alert("Image must be 1x1 or 2x2. Please try another");
         } else {
-            fetch(apiUrl("/picture"),{
-                method: "POST",
-                credentials:'include',
-                headers:{
-                    'Content-Type':'application/json'
-                },
-                body: JSON.stringify({
-                    base64_string: picture,
-                    profile_id: ""
-                })
-            })
-            .then(response => {return response.json()})
-            .then((data) => console.log(data))
-            .then(alert("Successfully uploaded image."))
-            // .then(renderImage)
+            // upload image
+            const filename = `${uuidv4()}-${file.name}`;
+            const { data, error } = await supabase.storage.from("profile-pictures").upload(filename, file, {
+                cacheControl: "3600",
+                upsert: false,
+            });
+            // get generated data path
+            const filepath = data.path;
+            // get and save public URL in picture_url
+            const { data: image } = supabase.storage.from('profile-pictures').getPublicUrl(`${filepath}`);
+            setFinalPicture(image.publicUrl);
+            alert("Successfully uploaded image.")
         }
     };
 
@@ -208,7 +185,7 @@ function CompleteManagerProfile () {
         else {
             fetchData()
         }
-    },[]);
+    },[picture]);
 
     return (
         <div>
@@ -224,24 +201,19 @@ function CompleteManagerProfile () {
                     <div className='left-div'>
                         <form className='upload-div'>
                             <div className='upload-body'>
-                                {picture === "" || picture === null ? "" : <img id='image-upload' width={100} src={picture}></img>}
-                                <input className='upload-img-file'  type="file" accept="image/png, image/jpeg, image/jpg" onChange={convertToBase64} ></input>
-                                <br></br>
-                                <br></br>
-                                <br></br>
-                                <button className='upload-img-submit' type="submit" onClick={onSubmitHandler} >SUBMIT</button>
+                            {picture === "" || picture === null ? "" : <img id='image-upload' width={100} src={picture}></img>}
+                            <br></br>
+                            <br></br>
+                            <input type="file" className="custom-file-upload" accept="image/png, image/jpeg, image/jpg" onChange={handleFileSelected} />
+                            <br></br>
+                            <br></br>
+                            <button type="submit" className='upload-img-submit' onClick={handleSubmit}>UPLOAD IMAGE</button>
                             </div>
                             <div className='upload-note'>
                                 Upload Picture Here<br></br>(1x1 or 2x2)
                             </div>
-
-                            {/* {allPicture !== undefined ?
-                                allPicture.map(data => {
-                                    return(
-                                    <img width={100} src={data.base64_string}></img>
-                                    )
-                            }) : ""} */}
                         </form>
+                        
                     </div>
 
                     <div className="right-div">

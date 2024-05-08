@@ -84,6 +84,7 @@ const Dashboard = () => {
                         <p className='paragraph'>To access dorm manager permissions, kindly complete your profile first.</p>
                         <br></br>
                         <button className='dashboard-buttons-complete-profile' onClick={() => navigate("/complete-manager-profile")}>COMPLETE PROFILE HERE</button>
+                    
                     </div>
                     
                     :

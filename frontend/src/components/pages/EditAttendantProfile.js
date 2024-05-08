@@ -126,6 +126,7 @@ function EditAttendantProfile () {
         }   
 
     }
+    
     const onSubmitHandler = (e) => {
         e.preventDefault();
 

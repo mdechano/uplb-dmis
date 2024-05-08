@@ -34,7 +34,7 @@ exports.addManager = async (req, res) => {
         contact_number: body.contact_number,
         email: body.email,
         home_address: body.home_address,
-        base64_string: body.base64_string
+        picture_url: body.picture_url
     };
     
     try{
@@ -92,7 +92,7 @@ exports.editManager = async (req, res) => {
         contact_number: body.contact_number,
         email: body.email,
         home_address: body.home_address,
-        base64_string: body.base64_string
+        picture_url: body.picture_url
     };
 
     try{

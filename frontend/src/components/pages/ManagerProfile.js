@@ -13,8 +13,6 @@ function ManagerProfile () {
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
     const [ currentManager, setManager] = useState();
-    const [allPicture, setAllPictures] = useState();
-    const [profile_picture, setProfilePicture] =useState();
 
     const fetchData = () => {
         const link = window.location.href;
@@ -27,24 +25,12 @@ function ManagerProfile () {
             )
     }
 
-    const renderImage = () => {
-        fetch(apiUrl("/picture"),{
-            method: "GET",
-        })
-        .then(response => {return response.json()})
-        .then((data) => {
-            console.log(data)
-            setAllPictures(data)
-        })
-    }
-
     useEffect(()=>{
         if(isAuthenticated === false){
             navigate("/")
         } 
         else {
             fetchData()
-            renderImage()
         }
     },[]);
 
@@ -64,16 +50,7 @@ function ManagerProfile () {
                 { currentManager !== undefined ?
                     <div className='body-div'>
                         <div className='profile-div-left'>
-                            { allPicture !== undefined ?
-                                allPicture.map((pic, i) => {
-                                    if (currentManager.base64_string === pic.base64_string) {
-                                        return (
-                                            <img width={250} className='profile-pic' src={currentManager.base64_string}></img>
-                                        )
-                                    }
-                                })
-                                
-                            : <p className='pic-note'><i>Loading picture...</i></p>}
+                            <img width={250} className='profile-pic' src={currentManager.picture_url}></img>
                             <br></br>
                             <p className='profile-info'>{currentManager.first_name + " "  + currentManager.last_name}</p>
                             <p className='profile-info'><b>Dorm Manager</b></p>

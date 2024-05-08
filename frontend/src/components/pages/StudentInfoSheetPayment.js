@@ -61,14 +61,7 @@ function StudentInfoSheetPayment () {
                 { currentResident !== undefined ?
                 <div className='body-div'>
                     <div className='profile-div-left'>
-                        {allPicture !== undefined ?
-                            allPicture.map(data => {
-                                if (currentResident.base64_string === data.base64_string) {
-                                    return(
-                                    <img width={250} className='profile-pic' src={currentResident.base64_string}></img>
-                                    )
-                                }
-                        }) : <p className='pic-note'><i>Loading picture...</i></p>}
+                    <img width={250} className='profile-pic' src={currentResident.picture_url}></img>
                         <br></br>
                         <p className='profile-info'>{currentResident.first_name + " " + currentResident.last_name}</p>
                         <p className='profile-info'>{currentResident.student_no}</p>

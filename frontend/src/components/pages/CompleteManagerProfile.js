@@ -5,7 +5,6 @@ import useStore from '../utilities/authHook';
 import axios from "axios";
 import '../css/CompleteManagerProfile.css';
 import NavBar from './NavBar';
-// "use client";
 import { v4 as uuidv4 } from "uuid";
 import { supabase } from "../../lib/supabase";
 
@@ -14,7 +13,8 @@ function CompleteManagerProfile () {
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
 
-    // const [path, setFilePath] = useState();
+    const [file, setfile] = useState();
+    const [finalpicture, setFinalPicture] = useState();
     const [picture, setPicture] = useState();
 
     let allEmails = []
@@ -66,7 +66,7 @@ function CompleteManagerProfile () {
                     contact_number: document.getElementById("contact_number").value,
                     email: document.getElementById("email").value,
                     home_address: document.getElementById("home_address").value,
-                    base64_string: "picture"
+                    picture_url: finalpicture
                 })
             })
             .then(response => {return response.json()})
@@ -139,47 +139,44 @@ function CompleteManagerProfile () {
         }
     }
 
-    // const convertToBase64 = (e) => {
-    //         var reader = new FileReader();
-    //         reader.readAsDataURL(e.target.files[0]);
-    //         reader.onload = () => {
-    //             console.log(reader.result);
-    //             setPicture(reader.result);
-    //         };
-    //         reader.onerror = error => {
-    //             console.log("Error: ", error);
-    //         }
-    // }
+    const handleFileSelected = (e) => {
+        // base64 assignment for UI viewing
+        var reader = new FileReader();
+        reader.readAsDataURL(e.target.files[0]); 
+        reader.onload = () => {
+            console.log(reader.result);
+            setPicture(reader.result);
+        };
+        reader.onerror = error => {
+            console.log("Error: ", error);
+        }
+        // supabase assignment
+        setfile(e.target.files[0]);
+    };
 
-    // const onSubmitHandler = (e) => {
-    //     e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    //     var width = document.getElementById('image-upload').naturalWidth;
-    //     var height = document.getElementById('image-upload').naturalHeight;
+        var width = document.getElementById('image-upload').naturalWidth;
+        var height = document.getElementById('image-upload').naturalHeight;
 
-    //     if (width != height) {
-    //         alert("Image must be 1x1 or 2x2. Please try another")
-    //     } else {
-    //         fetch(apiUrl("/picture"),{
-    //             method: "POST",
-    //             credentials:'include',
-    //             headers:{
-    //                 'Content-Type':'application/json'
-    //             },
-    //             body: JSON.stringify({
-    //                 base64_string: picture
-    //             })
-    //         })
-    //         .then(response => {return response.json()})
-    //         // .then((data) => setpic(data.id))
-    //         .then(alert("Successfully uploaded image."))
-    //     }
-    // };
-
-    // const setpic = (id) => {
-    //     setPictureID(id)
-    //     console.log("picture id: "+picture_id)
-    // }
+        if (width !== height) {
+            alert("Image must be 1x1 or 2x2. Please try another");
+        } else {
+            // upload image
+            const filename = `${uuidv4()}-${file.name}`;
+            const { data, error } = await supabase.storage.from("profile-pictures").upload(filename, file, {
+                cacheControl: "3600",
+                upsert: false,
+            });
+            // get generated data path
+            const filepath = data.path;
+            // get and save public URL in picture_url
+            const { data: image } = supabase.storage.from('profile-pictures').getPublicUrl(`${filepath}`);
+            setFinalPicture(image.publicUrl);
+            alert("Successfully uploaded image.")
+        }
+    };
 
     useEffect(()=>{
         if(isAuthenticated === false){
@@ -189,34 +186,6 @@ function CompleteManagerProfile () {
             fetchData()
         }
     },[picture]);
-
-    const [file, setfile] = useState([]);
-
-    const handleFileSelected = (e) => {
-        setfile(e.target.files[0]);
-    };
-
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        // upload image
-        const filename = `${uuidv4()}-${file.name}`;
-
-        const { data, error } = await supabase.storage.from("profile-pictures").upload(filename, file, {
-            cacheControl: "3600",
-            upsert: false,
-        });
-        console.log(error)
-        const filepath = data.path;
-        // save filepath in database
-        console.log("file path is: "+filepath)
-        // setPicture(filepath)
-        
-        const { data: image } = supabase.storage.from('profile-pictures').getPublicUrl(`${filepath}`)
-        console.log(data);
-        setPicture(image.publicUrl)
-        console.log("public URL "+picture);
-    };
 
     return (
         <div>
@@ -230,11 +199,21 @@ function CompleteManagerProfile () {
                 <hr className='divider'></hr>
                 <div className="body-div">
                     <div className='left-div'>
-                        <form className='upload-div' onSubmit={handleSubmit}>
-                            <input type="file" name="image" onChange={handleFileSelected} />
-                            <button type="submit">Upload image</button>
+                        <form className='upload-div'>
+                            <div className='upload-body'>
+                            {picture === "" || picture === null ? "" : <img id='image-upload' width={100} src={picture}></img>}
+                            <br></br>
+                            <br></br>
+                            <input type="file" className="custom-file-upload" accept="image/png, image/jpeg, image/jpg" onChange={handleFileSelected} />
+                            <br></br>
+                            <br></br>
+                            <button type="submit" className='upload-img-submit' onClick={handleSubmit}>UPLOAD IMAGE</button>
+                            </div>
+                            <div className='upload-note'>
+                                Upload Picture Here<br></br>(1x1 or 2x2)
+                            </div>
                         </form>
-                        <img width={150} src={picture}></img>
+                        
                     </div>
 
                     <div className="right-div">

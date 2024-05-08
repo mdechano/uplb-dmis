@@ -6,6 +6,8 @@ import NavBar from '../pages/NavBar';
 import useStore from '../utilities/authHook';
 import {apiUrl} from '../utilities/apiUrl';
 import axios, { all } from "axios";
+import { v4 as uuidv4 } from "uuid";
+import { supabase } from "../../lib/supabase";
 
 const Dashboard = () => {
 

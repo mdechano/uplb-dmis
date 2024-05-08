@@ -5,15 +5,17 @@ import useStore from '../utilities/authHook';
 import axios from "axios";
 // import '../css/StudentInfoSheetPersonal.css';
 import NavBar from './NavBar';
+import { v4 as uuidv4 } from "uuid";
+import { supabase } from "../../lib/supabase";
 
 function EditStudentCheckIn () {
 
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
     const [ currentResident, setResident] = useState();
-    const [allPicture, setAllPictures] = useState();
-    const [newpicture, setNewPicture] = useState();
     const [changePic, setChangePic] = useState(false);
+    const [file, setfile] = useState();
+    const [picture, setPicture] = useState();
 
     const fetchData = () => {
         const link = window.location.href;
@@ -159,7 +161,7 @@ function EditStudentCheckIn () {
                     appliances_information: appliances_information,
                     emergency_details: currentResident.emergency_details,
                     slas: "None",
-                    base64_string: currentResident.base64_string
+                    picture_url: currentResident.picture_url
                     // soon: pass payment and violation deets from personel edits
                 })
             })
@@ -171,50 +173,46 @@ function EditStudentCheckIn () {
         }
     }
 
-    const convertToBase64 = (e) => {
+    const handleFileSelected = (e) => {
+        // base64 assignment for UI viewing
         var reader = new FileReader();
-        reader.readAsDataURL(e.target.files[0]);
-        reader.onload = () => { 
-            if (currentResident !== undefined) {
-                if (currentResident.base64_string === reader.result) {
-                    alert("Uploaded picture same as before. Please upload a new one.")
-                } else {
-                    setNewPicture(reader.result);  
-                }
-            }
-        }
+        reader.readAsDataURL(e.target.files[0]); 
+        reader.onload = () => {
+            console.log(reader.result);
+            setPicture(reader.result);
+        };
         reader.onerror = error => {
             console.log("Error: ", error);
-        }   
+        }
+        // supabase assignment
+        setfile(e.target.files[0]);
+    };
 
-    }
-
-    const onSubmitHandler = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         var width = document.getElementById('image-upload').naturalWidth;
         var height = document.getElementById('image-upload').naturalHeight;
 
-        if (width != height) {
-            alert("Image must be 1x1 or 2x2. Please try another")
+        if (width !== height) {
+            alert("Image must be 1x1 or 2x2. Please try another");
         } else {
-            fetch(apiUrl("/picture"),{
-                method: "POST",
-                credentials:'include',
-                headers:{
-                    'Content-Type':'application/json'
-                },
-                body: JSON.stringify({
-                    base64_string: newpicture
-                })
-            })
-            .then(response => {return response.json()})
-            .then((data) => console.log(data))
-            .then(updateUserBase64)
+            // upload image
+            const filename = `${uuidv4()}-${file.name}`;
+            const { data, error } = await supabase.storage.from("profile-pictures").upload(filename, file, {
+                cacheControl: "3600",
+                upsert: false,
+            });
+            // get generated data path
+            const filepath = data.path;
+            // get and save public URL in picture_url
+            const { data: image } = supabase.storage.from('profile-pictures').getPublicUrl(`${filepath}`);
+            // setFinalPicture(image.publicUrl);
+            updatePictureUrl(image.publicUrl)
         }
     };
-
-    const updateUserBase64 = () => {
+    
+    const updatePictureUrl = (url) => {
         fetch(apiUrl("/resident/"+currentResident._id),{
             method: "PUT",
             credentials:'include',
@@ -260,7 +258,7 @@ function EditStudentCheckIn () {
                     appliances_information: currentResident.appliances_information,
                     emergency_details: currentResident.emergency_details,
                     slas: "None",
-                    base64_string: newpicture
+                    picture_url: url
             })
         })
         .then(response => {return response.json()})
@@ -271,17 +269,6 @@ function EditStudentCheckIn () {
                 )
     }
 
-    const renderImage = () => {
-        fetch(apiUrl("/picture"),{
-            method: "GET",
-        })
-        .then(response => {return response.json()})
-        .then((data) => {
-            console.log(data)
-            setAllPictures(data)
-        })
-    }
-    
     const flag_change_pic = () => {
         setChangePic(true)
     }
@@ -292,7 +279,6 @@ function EditStudentCheckIn () {
         } 
         else {
             fetchData()
-            renderImage()
         }
     },[]);
 
@@ -307,18 +293,19 @@ function EditStudentCheckIn () {
                     <button className='save-button' onClick={editStudent}>SAVE</button>
                 </div>
                 <hr className='divider'></hr>
+                { currentResident !== undefined ? 
                 <div className="body-div">
                     <div className='left-div'>
                     <form className='upload-div'>
                         { changePic === true ? 
                                 <div>
                                     <div className='upload-body'>
-                                        {newpicture === "" || newpicture === null ? "" : <img id='image-upload' width={100} src={newpicture}></img>}
-                                        <input className='upload-img-file'  type="file" accept="image/png, image/jpeg, image/jpg" onChange={convertToBase64} ></input>
+                                    {picture === "" || picture === null ? "" : <img id='image-upload' width={100} src={picture}></img>}
+                                        <input className='upload-img-file'  type="file" accept="image/png, image/jpeg, image/jpg" onChange={handleFileSelected} ></input>
                                         <br></br>
                                         <br></br>
                                         <br></br>
-                                        <button className='upload-img-submit' type="submit" onClick={onSubmitHandler} >SUBMIT</button>
+                                        <button className='upload-img-submit' type="submit" onClick={handleSubmit} >UPLOAD IMAGE</button>
                                     </div>
                                     <div className='upload-note'>
                                         Upload Picture Here<br></br>(1x1 or 2x2)
@@ -327,14 +314,8 @@ function EditStudentCheckIn () {
                            
                             :
                                 <div>
-                                    {allPicture !== undefined ?
-                                        allPicture.map(data => {
-                                            if (currentResident.base64_string === data.base64_string) {
-                                                return(
-                                                    <img className='profile-pic' width={250} src={currentResident.base64_string}></img>
-                                                )
-                                            }
-                                    }) : <p className='pic-note'><i>Loading picture...</i></p>}
+                                    <img className='profile-pic' width={200} src={currentResident.picture_url}></img>
+                                    <br></br>
                                     <br></br>
                                     <button className='change-picture' onClick={flag_change_pic}>CHANGE PICTURE</button>
                                 </div>
@@ -526,6 +507,7 @@ function EditStudentCheckIn () {
                         </form>
                     </div>
                 </div>
+                : "" }
             </div>
         </div>
     )

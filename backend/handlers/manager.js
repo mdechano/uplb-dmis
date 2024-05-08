@@ -64,7 +64,7 @@ exports.edit = (object) =>{
             manager.contact_number = object.contact_number,
             manager.email = object.email,
             manager.home_address = object.home_address,
-            manager.base64_string = object.base64_string
+            manager.picture_url = object.picture_url
             
             manager.save((err, manager) => {
                 if(err) { reject(err); }

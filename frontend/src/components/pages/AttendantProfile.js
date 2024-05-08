@@ -17,7 +17,6 @@ function AttendantProfile () {
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
     const [ currentAttendant, setAttendant] = useState();
     const [allPicture, setAllPictures] = useState();
-    const [profile_picture, setProfilePicture] =useState();
 
     const fetchData = () => {
         const link = window.location.href;
@@ -30,26 +29,14 @@ function AttendantProfile () {
         )
     }
 
-    const renderImage = () => {
-        fetch(apiUrl("/picture"),{
-            method: "GET",
-        })
-        .then(response => {return response.json()})
-        .then((data) => {
-            console.log(data)
-            setAllPictures(data)
-        })
-    }
-
     useEffect(()=>{
         if(isAuthenticated === false){
             navigate("/")
         } 
         else {
             fetchData()
-            renderImage()
         }
-    },[allPicture]);
+    },[]);
 
     return (
         <div>
@@ -76,16 +63,7 @@ function AttendantProfile () {
                 { currentAttendant !== undefined ?
                     <div className='body-div'>
                         <div className='profile-div-left'>
-                            { allPicture !== undefined ?
-                                allPicture.map((pic, i) => {
-                                    if (currentAttendant.base64_string === pic.base64_string) {
-                                        return (
-                                            <img width={250} className='profile-pic' src={currentAttendant.base64_string}></img>
-                                        )
-                                    }
-                                })
-                                
-                            : <p className='pic-note'><i>Loading picture...</i></p>}
+                            <img width={250} className='profile-pic' src={currentAttendant.picture_url}></img>
                             <br></br>
                             <p className='profile-info'>{currentAttendant.first_name + " "  + currentAttendant.last_name}</p>
                             <p className='profile-info'><b>Dorm Attendant</b></p>

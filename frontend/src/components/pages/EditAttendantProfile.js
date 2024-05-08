@@ -6,17 +6,19 @@ import axios, { all } from "axios";
 import {apiUrl} from '../utilities/apiUrl';
 // import '../css/EditDormInformation.css'
 import NavBar from '../pages/NavBar';
+import { v4 as uuidv4 } from "uuid";
+import { supabase } from "../../lib/supabase";
 
 function EditAttendantProfile () {
 
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
 
-    const [newpicture, setNewPicture] = useState();
     const [dorm, setDorm] = useState();
     const [attendant, setAttendant] = useState();
-    const [allPicture, setAllPictures] = useState();
     const [changePic, setChangePic] = useState(false);
+    const [file, setfile] = useState();
+    const [picture, setPicture] = useState();
 
     const fetchData = () => {
         const link = window.location.href;
@@ -51,7 +53,7 @@ function EditAttendantProfile () {
                 contact_number: document.getElementById("contact_number").value,
                 email: document.getElementById("email").value,
                 home_address: document.getElementById("home_address").value,
-                base64_string: attendant.base64_string
+                picture_url: attendant.picture_url
             })
         })
         .then(response => {return response.json()})
@@ -62,97 +64,90 @@ function EditAttendantProfile () {
     const editDormInfo = () => {
 
         if (attendant !== undefined) {
-            
-                    if (dorm !== undefined) {
-                        dorm.map((dorm, i) => {
-                            if (attendant.dorm === dorm.dorm_name) {
-                                const currentDorm = dorm
+            if (dorm !== undefined) {
+                dorm.map((dorm, i) => {
+                    if (attendant.dorm === dorm.dorm_name) {
+                        const currentDorm = dorm
 
-                                fetch(apiUrl("/dorm/"+currentDorm._id),{
-                                    method: "PUT",
-                                    credentials:'include',
-                                    headers:{
-                                        'Content-Type':'application/json'
-                                    },
-                                    body: JSON.stringify({
-                                        dorm_name: currentDorm.dorm_name,
-                                        dorm_details: currentDorm.dorm_details,
-                                        dorm_manager_id: currentDorm.dorm_manager_id,
-                                        dorm_manager_name: currentDorm.dorm_manager_name,
-                                        dorm_manager_email: currentDorm.dorm_manager_email,
-                                        dorm_manager_contact_number: currentDorm.dorm_manager_contact_number,
-                                        office_hours_start: currentDorm.office_hours_start,
-                                        office_hours_end: currentDorm.office_hours_end,
-                                        late_permit_start: currentDorm.late_permit_start,
-                                        late_permit_end: currentDorm.late_permit_end,
-                                        overnight_permit_start: currentDorm.overnight_permit_start,
-                                        overnight_permit_end: currentDorm.overnight_permit_end,
-                                        stayover_permit_start: currentDorm.stayover_permit_start,
-                                        dorm_attendant_id: currentDorm.dorm_attendant_id,
-                                        dorm_attendant_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value,
-                                        dorm_attendant_email: document.getElementById("email").value,
-                                        dorm_attendant_contact_number: document.getElementById("contact_number").value
-                                    })
-                                })
-                                .then(response => {return response.json()})
-                                .then(
-                                    alert("Successfully editted attendant profile."),
-                                        setTimeout(function(){
-                                            window.location.reload();
-                                         }, 1000)
-                                )
-                            }
+                        fetch(apiUrl("/dorm/"+currentDorm._id),{
+                            method: "PUT",
+                            credentials:'include',
+                            headers:{
+                                'Content-Type':'application/json'
+                            },
+                            body: JSON.stringify({
+                                dorm_name: currentDorm.dorm_name,
+                                dorm_details: currentDorm.dorm_details,
+                                dorm_manager_id: currentDorm.dorm_manager_id,
+                                dorm_manager_name: currentDorm.dorm_manager_name,
+                                dorm_manager_email: currentDorm.dorm_manager_email,
+                                dorm_manager_contact_number: currentDorm.dorm_manager_contact_number,
+                                office_hours_start: currentDorm.office_hours_start,
+                                office_hours_end: currentDorm.office_hours_end,
+                                late_permit_start: currentDorm.late_permit_start,
+                                late_permit_end: currentDorm.late_permit_end,
+                                overnight_permit_start: currentDorm.overnight_permit_start,
+                                overnight_permit_end: currentDorm.overnight_permit_end,
+                                stayover_permit_start: currentDorm.stayover_permit_start,
+                                dorm_attendant_id: currentDorm.dorm_attendant_id,
+                                dorm_attendant_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value,
+                                dorm_attendant_email: document.getElementById("email").value,
+                                dorm_attendant_contact_number: document.getElementById("contact_number").value
+                            })
                         })
+                        .then(response => {return response.json()})
+                        .then(
+                            alert("Successfully editted attendant profile."),
+                                setTimeout(function(){
+                                    window.location.reload();
+                                 }, 1000)
+                        )
                     }
-                
-        
-        }
-    }
-
-    const convertToBase64 = (e) => {
-        var reader = new FileReader();
-        reader.readAsDataURL(e.target.files[0]);
-        reader.onload = () => { 
-            if (attendant !== undefined) {
-                if (attendant.base64_string === reader.result) {
-                    alert("Uploaded picture same as before. Please upload a new one.")
-                } else {
-                    setNewPicture(reader.result);  
-                }
+                })
             }
         }
+    }
+
+    const handleFileSelected = (e) => {
+        // base64 assignment for UI viewing
+        var reader = new FileReader();
+        reader.readAsDataURL(e.target.files[0]); 
+        reader.onload = () => {
+            console.log(reader.result);
+            setPicture(reader.result);
+        };
         reader.onerror = error => {
             console.log("Error: ", error);
-        }   
+        }
+        // supabase assignment
+        setfile(e.target.files[0]);
+    };
 
-    }
-    
-    const onSubmitHandler = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         var width = document.getElementById('image-upload').naturalWidth;
         var height = document.getElementById('image-upload').naturalHeight;
 
-        if (width != height) {
-            alert("Image must be 1x1 or 2x2. Please try another")
+        if (width !== height) {
+            alert("Image must be 1x1 or 2x2. Please try another");
         } else {
-            fetch(apiUrl("/picture"),{
-                method: "POST",
-                credentials:'include',
-                headers:{
-                    'Content-Type':'application/json'
-                },
-                body: JSON.stringify({
-                    base64_string: newpicture
-                })
-            })
-            .then(response => {return response.json()})
-            .then((data) => console.log(data))
-            .then(updateUserBase64)
+            // upload image
+            const filename = `${uuidv4()}-${file.name}`;
+            const { data, error } = await supabase.storage.from("profile-pictures").upload(filename, file, {
+                cacheControl: "3600",
+                upsert: false,
+            });
+            // get generated data path
+            const filepath = data.path;
+            // get and save public URL in picture_url
+            const { data: image } = supabase.storage.from('profile-pictures').getPublicUrl(`${filepath}`);
+            // setFinalPicture(image.publicUrl);
+            updatePictureUrl(image.publicUrl)
         }
     };
 
-    const updateUserBase64 = () => {
+    const updatePictureUrl = (url) => {
         fetch(apiUrl("/attendant/"+attendant._id),{
             method: "PUT",
             credentials:'include',
@@ -172,7 +167,7 @@ function EditAttendantProfile () {
                 contact_number: attendant.contact_number,
                 email: attendant.email,
                 home_address: attendant.home_address,
-                base64_string: newpicture
+                picture_url: url
             })
         })
         .then(response => {return response.json()})
@@ -181,17 +176,6 @@ function EditAttendantProfile () {
                     window.location.reload();
                     }, 1000)
                 )
-    }
-
-    const renderImage = () => {
-        fetch(apiUrl("/picture"),{
-            method: "GET",
-        })
-        .then(response => {return response.json()})
-        .then((data) => {
-            console.log(data)
-            setAllPictures(data)
-        })
     }
 
     const flag_change_pic = () => {
@@ -204,7 +188,6 @@ function EditAttendantProfile () {
         } 
         else {
             fetchData()
-            renderImage()
         }
     },[]);
 
@@ -218,18 +201,19 @@ function EditAttendantProfile () {
                     <button className='save-button' onClick={editAttendant}>SAVE</button>
                 </div>
                 <hr className='divider'></hr>
+                { attendant !== undefined ?
                 <div className="body-div">
                     <div className='left-div'>
                         <form className='upload-div'>
                         { changePic === true ? 
                                 <div>
                                     <div className='upload-body'>
-                                        {newpicture === "" || newpicture === null ? "" : <img id='image-upload' width={100} src={newpicture}></img>}
-                                        <input className='upload-img-file'  type="file" accept="image/png, image/jpeg, image/jpg" onChange={convertToBase64} ></input>
+                                        {picture === "" || picture === null ? "" : <img id='image-upload' width={100} src={picture}></img>}
+                                        <input className='upload-img-file'  type="file" accept="image/png, image/jpeg, image/jpg" onChange={handleFileSelected} ></input>
                                         <br></br>
                                         <br></br>
                                         <br></br>
-                                        <button className='upload-img-submit' type="submit" onClick={onSubmitHandler} >SUBMIT</button>
+                                        <button className='upload-img-submit' type="submit" onClick={handleSubmit} >UPLOAD IMAGE</button>
                                     </div>
                                     <div className='upload-note'>
                                         Upload Picture Here<br></br>(1x1 or 2x2)
@@ -238,14 +222,8 @@ function EditAttendantProfile () {
                            
                             :
                                 <div>
-                                    {allPicture !== undefined ?
-                                        allPicture.map(data => {
-                                            if (attendant.base64_string === data.base64_string) {
-                                                return(
-                                                    <img className='profile-pic' width={250} src={attendant.base64_string}></img>
-                                                )
-                                            }
-                                    }) : <p className='pic-note'><i>Loading picture...</i></p>}
+                                    <img className='profile-pic' width={200} src={attendant.picture_url}></img>
+                                    <br></br>
                                     <br></br>
                                     <button className='change-picture' onClick={flag_change_pic}>CHANGE PICTURE</button>
                                 </div>
@@ -361,6 +339,7 @@ function EditAttendantProfile () {
                         
                     </div>
                 </div>
+                : ""}
             </div>
         </div>
     )

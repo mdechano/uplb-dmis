@@ -23,7 +23,6 @@ function EditManagerProfile () {
    
     const fetchData = () => {
         const link = window.location.href;
-        // getLink(link);
         const id = link.slice(link.lastIndexOf('/')+1,link.length);
         const getManager = axios.get(apiUrl("/manager/" + id), { withCredentials: true });
         const getDorm = axios.get(apiUrl("/dorm"), { withCredentials: true });
@@ -171,12 +170,7 @@ function EditManagerProfile () {
             })
         })
         .then(response => {return response.json()})
-        .then(
-            alert("Successfully changed picture."),
-            setTimeout(function(){
-                window.location.reload();
-            }, 1000)
-        )
+        .then(alert("Successfully changed picture."))
     }
 
     const flag_change_pic = () => {

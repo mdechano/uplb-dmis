@@ -55,6 +55,20 @@ exports.editCompletedProfile = (object) => {
     });
 }
 
+exports.editResidentRole = (object) => {
+    return new Promise((resolve, reject) => {
+        // findone then edit
+        User.findOne({ _id: object.id }, (err, user) => {
+            if (err) { reject(err); }
+            user.role = object.role
+            user.save((err, user) => {
+                if(err) { reject(err); }
+                resolve(user);
+            });
+        });
+    });
+}
+
 exports.getAll = () => {
     return new Promise((resolve, reject) => {
         User.find((err,user) => {

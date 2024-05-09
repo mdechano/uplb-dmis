@@ -7,6 +7,7 @@ const User = Router();
 // access controller
 User.post('/', UserController.login); 
 User.put('/', UserController.changeRoleandDorm);
+User.put('/change-resident-role/:id', UserController.changeResidentRole);
 User.put('/change-completed-profile', UserController.changeCompletedProfile);
 User.get('/check-if-logged-in', UserController.checkifloggedin);
 User.get('/', UserController.findAll);

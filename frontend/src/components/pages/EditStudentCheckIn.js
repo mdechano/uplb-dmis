@@ -262,11 +262,7 @@ function EditStudentCheckIn () {
             })
         })
         .then(response => {return response.json()})
-        .then(alert("Successfully changed picture."),
-                    setTimeout(function(){
-                    window.location.reload();
-                    }, 1000)
-                )
+        .then(alert("Successfully changed picture."))
     }
 
     const flag_change_pic = () => {

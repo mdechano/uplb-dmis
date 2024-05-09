@@ -4,17 +4,10 @@ const {jwtDecode} = require('jwt-decode');
 const jwt = require('jsonwebtoken');
 const utils = require('./utils');
 require('dotenv').config()
+const mongoose = require('mongoose');
 
 exports.login = async (req, res) => {
-    //check if user email alrdy in database
-    //if not, check if user is using up.edu.ph email
-        //if yes, add user to database with elevated guest perms
-        //if no, add user to database with guest perms
-    //if yes, check the user's role
-    //return user's role
-    //console.log(req.body)
     const userobject = jwtDecode(req.body.token);
-
 
     const newUser = {
         email: userobject.email,
@@ -152,6 +145,63 @@ exports.changeRoleandDorm = async(req,res) => {
     }
 }
 
+exports.changeResidentRole = async(req, res) => {
+    if (!req.cookies || !req.cookies.authToken) {
+        res.status(401).send({message: "Unauthorized access"});
+        return;
+      }
+      
+      // validate token
+    const token = await utils.verifyToken(req);
+    
+      // error validating token
+    if(!token.status){
+        res.status(token.code).send({ message: token.message });
+        return;
+    }
+
+    if(token.user.role == 'dorm manager'){
+        // const body = req.body;
+        const newRole = req.body.role
+        const user_id = req.params.id
+        console.log(`user id: `+user_id) // /.../:id -> value
+
+        try{
+            mongoose.Types.ObjectId(user_id)
+        }
+        catch (err) {
+            console.log('Invalid id')
+            return res.status(400).send({ message: 'Invalid id' })
+        }
+
+        try{
+            const existing = await User.getOne({_id: user_id});
+            if(existing){
+                const user = {
+                    email: existing.email,
+                    first_name: existing.first_name,
+                    last_name: existing.last_name,
+                    picture: existing.picture,
+                    role: newRole,
+                    dorm: existing.dorm,
+                    completed_profile: existing.completed_profile
+                }
+                const edit = await User.editResidentRole(user)
+                console.log(`User role changed: ${edit}`)
+                return res.status(200).send({ message: 'User role updated' })
+            }
+        }
+        catch(err){
+            console.log(err)
+            return res.status(500).send({ message: `Error changing user's role` })
+        }
+
+    } else{
+        console.log("Unauthorized Access")
+        return res.status(401).send({message: "Unauthorized access"});
+    }
+}
+
 exports.changeCompletedProfile = async(req,res) => {
     if (!req.cookies || !req.cookies.authToken) {
         res.status(401).send({message: "Unauthorized access"});
@@ -169,7 +219,6 @@ exports.changeCompletedProfile = async(req,res) => {
 
     console.log(token.user.role);
 
-    // if(token.user.role == 'dorm manager'){
         const email = req.body.email
         const newCompletedProfile = req.body.completed_profile
         const newProfileID = req.body.profile_id
@@ -195,11 +244,6 @@ exports.changeCompletedProfile = async(req,res) => {
             console.log(err)
             return res.status(500).send({ message: `Error changing user's completed_profile` })
         }
-    // }
-    // else{
-    //     console.log("Unauthorized Access")
-    //     return res.status(401).send({message: "Unauthorized access"});
-    // }
 }
 
 exports.findAll = async (req, res) => {

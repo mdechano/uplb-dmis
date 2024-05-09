@@ -1,0 +1,42 @@
+.scrollable-table {
+    margin: 10px 10px 10px 10px;
+    height: 400px;
+    overflow-y:auto;
+    width: 50%;
+    scroll-snap-type: y mandatory;
+}
+
+
+.scrollable-table > .blue {
+    width: 100%;
+}
+
+.blue {
+    font-family: 'Inter', sans-serif;
+    border-collapse: collapse;
+    font-size: 14px;
+    /* width: 100%; */
+    /* height: 100px; */
+}
+
+.blue th {
+    background-color: #d52727;
+    color: white;
+    text-align: left;
+    position: sticky;
+    top: 0;
+}
+
+.blue th,
+.blue td {
+    padding: 8px 10px;
+    font-weight: normal;
+}
+
+.blue tr {
+ scroll-snap-align: start;
+}
+
+.blue tbody tr:nth-of-type(even) {
+    background-color: grey;
+}

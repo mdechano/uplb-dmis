@@ -230,8 +230,8 @@ function EditAttendantProfile () {
                     <div className="right-div">
                         <form className="form-div">
                             <div className="form-div-personal">
-                                <h2 className='section-label'>PERSONAL INFORMATION</h2>
-                                <table className='info-table'>
+                                <h2>PERSONAL STUFF</h2>
+                                <table>
                                     <tr className='table-row'>
                                         <td className='cell-title'>First Name</td>
                                         <td className='cell-title'>Middle Name</td>
@@ -239,10 +239,10 @@ function EditAttendantProfile () {
                                         <td className='cell-title'>Suffix</td>
                                     </tr>
                                     <tr className='table-row'>
-                                        <td className='cell-input'><input type="text" id="first_name" required></input></td>
-                                        <td className='cell-input'><input type="text" id="middle_name" ></input></td>
-                                        <td className='cell-input'><input type="text" id="last_name" required></input></td>
-                                        <td className='cell-input'><input type="text" id="suffix" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="first_name" required></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="middle_name" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="last_name" required></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="suffix" ></input></td>
                                         
                                     </tr>
                                     <tr className='table-row'>
@@ -260,7 +260,7 @@ function EditAttendantProfile () {
                                             </select>
                                         </td>
                                         {/* <td className='cell-input'> */}
-                                            <select className='custom-select-birthday-month' id="birth-month" >
+                                        <select className='custom-select-birthday-month' id="birth-month">
                                                 <option value="January">January</option>
                                                 <option value="February">February</option>
                                                 <option value="February">March</option>
@@ -310,7 +310,8 @@ function EditAttendantProfile () {
                                                 <option value="31">31</option>
                                             </select>
                                         {/* </td> */}
-                                        <td className='cell-input'><input type="text" className='year' id="birth-year" placeholder='year'></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="birth-year" placeholder='year'></input></td>
+                                        
                                     </tr>
                                     <tr className='table-row'>
                                         <td className='cell-title'>Contact Number</td>
@@ -319,9 +320,9 @@ function EditAttendantProfile () {
                                         
                                     </tr>
                                     <tr className='table-row'>
-                                        <td className='cell-input'><input type='text' id='contact_number' required></input></td>
-                                        <td className='cell-input'><input type='text' id='email' required></input></td>
-                                        <td className='cell-input'><input type='text' id='home_address' required></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='contact_number' required></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='email' required></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='home_address' required></input></td>
                                         
                                         
                                     </tr>
@@ -332,7 +333,6 @@ function EditAttendantProfile () {
                             </div>
                             
                         </form>
-                        
                     </div>
                 </div>
                 : ""}

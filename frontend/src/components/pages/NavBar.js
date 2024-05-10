@@ -86,7 +86,7 @@ function NavBar () {
                         { role === 'dorm assistant' && user.completed_profile === true  ?
                         <div className='dropdown-content'>
                         <a onClick={() => navigate('/residents-list')}>Resident List</a>
-                        <a><Link to='/student-personal'>Student Information Sheet</Link></a>
+                        <a onClick={() => navigate('/resident-personal/'+user.profile_id)}>Student Information Sheet</a>
                         <a><Link to='/generate-soa'>Generate SOA</Link></a>
                         <a><Link to='/upload-receipt'>Upload Receipt</Link></a>
                         <a onClick={() => navigate('/dorm-information')}>Dorm Information</a>

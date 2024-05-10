@@ -248,10 +248,10 @@ function CompleteAttendantProfile () {
                                         <td className='cell-title'>Suffix</td>
                                     </tr>
                                     <tr className='table-row'>
-                                        <td className='cell-input'><input type="text" id="first_name" required></input></td>
-                                        <td className='cell-input'><input type="text" id="middle_name" ></input></td>
-                                        <td className='cell-input'><input type="text" id="last_name" required></input></td>
-                                        <td className='cell-input'><input type="text" id="suffix" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="first_name" required></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="middle_name" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="last_name" required></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="suffix" ></input></td>
                                         
                                     </tr>
                                     <tr className='table-row'>
@@ -319,7 +319,7 @@ function CompleteAttendantProfile () {
                                                 <option value="31">31</option>
                                             </select>
                                         {/* </td> */}
-                                        <td className='cell-input'><input type="text" id="birth-year" placeholder='year'></input></td>
+                                        <td className='cell-input'><input type="text" className='year' id="birth-year" placeholder='year'></input></td>
                                         
                                     </tr>
                                     <tr className='table-row'>
@@ -329,9 +329,9 @@ function CompleteAttendantProfile () {
                                         
                                     </tr>
                                     <tr className='table-row'>
-                                        <td className='cell-input'><input type='text' id='contact_number' required></input></td>
-                                        <td className='cell-input'><input type='text' id='email' required></input></td>
-                                        <td className='cell-input'><input type='text' id='home_address' required></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='contact_number' required></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='email' required></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='home_address' required></input></td>
                                         
                                         
                                     </tr>

@@ -57,6 +57,8 @@ function StudentInfoSheetPersonal () {
                     <p className='page-title'>STUDENT INFORMATION SHEET</p>
                     { user.role === 'resident' || user.role === 'dorm assistant' ?
                         <button className='edit-profile-button' onClick = {()=> navigate("/edit-resident-personal/"+user.profile_id)}>EDIT PROFILE</button>
+                    : user.role === 'dorm manager' ?
+                        <button className='hire-button' onClick = {()=> navigate()}>HIRE AS ASSISTANT</button>
                     : <div className='extra-space'></div>}
                     
                 </div>

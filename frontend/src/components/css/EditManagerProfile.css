@@ -179,15 +179,15 @@ body {
     padding-bottom: 5px;
 }
 
-input[type=text] {
+.complete-input {
     width: 100%;
     padding: 10px 10px;
     
-    border: 1px dashed #555;
+    border: thin solid #555;
     border-radius: 5px;
 }
 
-input[type=text]:focus {
+.complete-input:focus {
     background-color: lightblue;
 }
 

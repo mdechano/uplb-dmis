@@ -8,6 +8,15 @@
     font-family: "Montserrat", sans-serif;
 }
 
+.hire-button {
+    width: 160px;
+    height: 40px;
+    border-radius: 35px;
+    background-color: #0A4424;
+    color: white;
+    font-weight: bold;
+    font-family: "Montserrat", sans-serif;
+}
 
 .profile-div-left {
     border: 0px solid grey;

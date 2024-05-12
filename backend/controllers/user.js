@@ -1,20 +1,14 @@
 const User = require('../handlers/user');
 const UserLog = require('../handlers/userlog');
+const Delete = require('../handlers/deleted');
 const {jwtDecode} = require('jwt-decode');
 const jwt = require('jsonwebtoken');
 const utils = require('./utils');
 require('dotenv').config()
+const mongoose = require('mongoose');
 
 exports.login = async (req, res) => {
-    //check if user email alrdy in database
-    //if not, check if user is using up.edu.ph email
-        //if yes, add user to database with elevated guest perms
-        //if no, add user to database with guest perms
-    //if yes, check the user's role
-    //return user's role
-    //console.log(req.body)
     const userobject = jwtDecode(req.body.token);
-
 
     const newUser = {
         email: userobject.email,
@@ -152,6 +146,71 @@ exports.changeRoleandDorm = async(req,res) => {
     }
 }
 
+exports.changeResidentRole = async(req, res) => {
+    if (!req.cookies || !req.cookies.authToken) {
+        res.status(401).send({message: "Unauthorized access"});
+        return;
+      }
+      
+      // validate token
+    const token = await utils.verifyToken(req);
+    
+      // error validating token
+    if(!token.status){
+        res.status(token.code).send({ message: token.message });
+        return;
+    }
+    
+        const body = req.body;
+        console.log(`resident user id: ${req.params.id}`) // /.../:id -> value
+
+        const user = {
+            id: req.params.id,
+            email: body.email,
+            first_name: body.first_name,
+            last_name: body.last_name,
+            picture: body.picture,
+            role: body.role,
+            dorm: body.dorm,
+            completed_profile: body.completed_profile,
+            profile_id: body.profile_id
+        }
+        
+        try{
+            mongoose.Types.ObjectId(user.id)
+        }
+        catch (err) {
+            console.log('Invalid id')
+            return res.status(400).send({ message: 'Invalid id' })
+        }
+
+        var existing = null
+        try{
+            existing = await User.getOne({_id: user.id});
+            if(!existing){
+                console.log("User not found")
+                return res.status(404).send({ message: 'User not found' });
+            }
+        }
+        catch(err){
+            console.log(`Error looking for manager in DB. Error: ${err}`);
+            return res.status(500).send({ message: 'Error searching for manager in database' })
+        }
+
+        try{
+            const edit = await User.editResidentRole(user)
+            await UserLog.create(token.user, 'edit', `user ${edit._id}`)
+            console.log(`Edited user ${edit}`)
+            return res.status(200).send({ message: 'User successfully edited' })
+        }
+        catch{
+            console.log(`Unable to edit user. Error: ${err}`);
+            return res.status(500).send({ message: 'Error editing user' })
+        }
+
+   
+}
+
 exports.changeCompletedProfile = async(req,res) => {
     if (!req.cookies || !req.cookies.authToken) {
         res.status(401).send({message: "Unauthorized access"});
@@ -169,7 +228,6 @@ exports.changeCompletedProfile = async(req,res) => {
 
     console.log(token.user.role);
 
-    // if(token.user.role == 'dorm manager'){
         const email = req.body.email
         const newCompletedProfile = req.body.completed_profile
         const newProfileID = req.body.profile_id
@@ -195,11 +253,6 @@ exports.changeCompletedProfile = async(req,res) => {
             console.log(err)
             return res.status(500).send({ message: `Error changing user's completed_profile` })
         }
-    // }
-    // else{
-    //     console.log("Unauthorized Access")
-    //     return res.status(401).send({message: "Unauthorized access"});
-    // }
 }
 
 exports.findAll = async (req, res) => {
@@ -239,3 +292,86 @@ exports.logout = (req, res) => {
     console.log("logged out")
     res.clearCookie('authToken').send({isAuthenticated: false})
   }
+
+exports.deleteUser = async (req, res) => {
+    if (!req.cookies || !req.cookies.authToken) {
+        res.status(401).send({message: "Unauthorized access"});
+        return;
+      }
+      
+      // validate token
+    const token = await utils.verifyToken(req);
+    
+      // error validating token
+    if(!token.status){
+        res.status(token.code).send({ message: token.message });
+        return;
+    }
+
+
+    const idList = req.body.ids;
+    let deleted = 0, failed = 0;
+    let invalidId = new Array;
+    let validId = new Array;
+
+    try{
+        var reqLength = idList.length;
+    }
+    catch{
+    console.log('Invalid property');
+    res.status(501).send({ message: 'Invalid property'});
+    }
+
+    try{
+        for(let i = 0; i < reqLength; i++){
+            try{
+                mongoose.Types.ObjectId(idList[i]);
+            }
+            catch(err){
+                console.log('Wrong format:', idList[i]);
+                invalidId[failed] = idList[i];
+                failed++;
+                continue;
+            }
+        
+    
+            let user = null;
+            try{
+                user = await User.getOne({_id: idList[i]});  //call to handler here
+                //console.log(manager);
+                if(user){
+                    await Delete.create("user", user);
+                    await UserLog.create(token.user, 'delete', `user ${user._id}`)
+                    await User.delete({_id: idList[i]});
+                    console.log('Successfully deleted user with id:', idList[i]);
+                    validId[deleted] = idList[i];
+                    deleted++;
+                }
+                else{
+                    console.log('Invalid user id:', idList[i]);
+                    invalidId[failed] = idList[i];
+                    failed++;
+                }
+            }catch(err){
+                console.log(`Error searching for user in the DB ${err}` );
+                return res.status(500).send({message: 'Error searching for user'});
+            }
+        }
+
+        if(reqLength == failed){
+            res.status(404).send({body: invalidId, message: "ids not found" })
+            return;
+        }else if(failed == 0){
+            res.status(200).send({message: `Successfully deleted ${deleted} user`});
+            return;
+        }else{
+            res.status(201).send({body: invalidId ,message: `Successfully deleted ${deleted} user/s but failed to delete ${failed} user/s`});
+            return;
+        }
+        
+    }catch(err){
+        console.log(`Error deleting users ${err}`);
+        res.status(500).send({ message: 'Error deleting users'});
+        return;
+    }
+}

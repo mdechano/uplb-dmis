@@ -5,6 +5,7 @@ exports.handlers = {
     AttendantHandler: require('./attendant'),
     ResidentHandler: require('./resident'),
     DeletedHandler: require('./deleted'),
-    PictureHandler: require('./picture')
+    PictureHandler: require('./picture'),
+    ViolationHandler: require('./violation')
     
 }

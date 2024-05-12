@@ -105,7 +105,7 @@ exports.editResident = async (req,res) => {
     }
 
     const body = req.body;
-    console.log(`resident id: ${req.params.id}`)
+    console.log(`resident id: ${req.params.id}`) // /.../:id -> value
 
     const resident = {
         id: req.params.id,

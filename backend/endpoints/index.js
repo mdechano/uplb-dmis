@@ -4,5 +4,6 @@ exports.endpoints = {
     Manager: require('./manager'),
     Attendant: require('./attendant'),
     Resident: require('./resident'),
-    Picture: require('./picture')
+    Picture: require('./picture'),
+    Violation: require('./violation')
 }

@@ -91,7 +91,7 @@ function EditDormInformation () {
 
                             <div>
                                 <div className='upper-div'>
-                                    <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
+                                    <button className='back-button' onClick = {()=> navigate("/dorm-information")}>BACK</button>
                                     <button className='back-button' onClick={editDorm}>SAVE</button>
                                     
                                 </div>

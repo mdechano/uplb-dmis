@@ -210,11 +210,7 @@ function EditStudentPersonal () {
             })
         })
         .then(response => {return response.json()})
-        .then(alert("Successfully changed picture."),
-                    setTimeout(function(){
-                    window.location.reload();
-                    }, 1000)
-                )
+        .then(alert("Successfully changed picture."))
     }
 
     const flag_change_pic = () => {
@@ -283,10 +279,10 @@ function EditStudentPersonal () {
                                         <td className='cell-title'>Suffix</td>
                                     </tr>
                                     <tr className='table-row'>
-                                        <td className='cell-input'><input type="text" id="first_name"  required></input></td>
-                                        <td className='cell-input'><input type="text" id="middle_name"  ></input></td>
-                                        <td className='cell-input'><input type="text" id="last_name"  required></input></td>
-                                        <td className='cell-input'><input type="text" id="suffix" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="first_name" name="firstname" required></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="middle_name" name="middlename" required></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="last_name" name="lastname" required></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="suffix" name="suffix"></input></td>
                                         
                                     </tr>
                                     <tr className='table-row'>
@@ -305,8 +301,8 @@ function EditStudentPersonal () {
                                                 <option value="intersex">Intersex</option>
                                             </select>
                                         </td>
-                                        <td className='cell-input'><input type="text" id="student_no" required ></input></td>
-                                        <td className='cell-input'><input type="text" id="civil_status"  required></input></td>
+                                        <td className='cell-input'><input type="text" id="student_no" required placeholder='format: 20XX-XXXXX'></input></td>
+                                        <td className='cell-input'><input type="text" id="civil_status" required></input></td>
                                         {/* <td className='cell-input'> */}
                                         <select className='custom-select-birthday-month' id="birth-month">
                                                 <option value="January">January</option>
@@ -358,7 +354,7 @@ function EditStudentPersonal () {
                                                 <option value="31">31</option>
                                             </select>
                                         {/* </td> */}
-                                        <td className='cell-input'><input type="text" className='year' id="birth-year" placeholder='year'></input></td>
+                                        <td className='cell-input'><input type="text" className='year'  id="birth-year" placeholder='year'></input></td>
                                         
                                     </tr>
                                     <tr className='table-row'>
@@ -368,9 +364,9 @@ function EditStudentPersonal () {
                                         <td className='cell-title'>Region</td>
                                     </tr>
                                     <tr className='table-row'>
-                                        <td className='cell-input'><input type='text' id='contact_number' required></input></td>
-                                        <td className='cell-input'><input type='text' id='email' required></input></td>
-                                        <td className='cell-input'><input type='text' id='home_address' required></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='contact_number' name='contactnumber' required></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='email' name='email' required></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='home_address' name='address' required></input></td>
                                         <td className='cell-input'>
                                             <select className='custom-select-sex' id='region' name='region'>
                                                 <option>Select Region</option>
@@ -418,9 +414,9 @@ function EditStudentPersonal () {
                                                 <option value="GS">Graduate School</option>
                                             </select>
                                         </td>
-                                        <td className='cell-input'><input type='text' id='degree_program' required></input></td>
-                                        <td className='cell-input'><input type='text' id='last_school_attended'  required></input></td>
-                                        <td className='cell-input'><input type='text' id='classification'  ></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='degree_program' placeholder='format: BS Computer Science' required></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='last_school_attended' required></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='classification' ></input></td>
                                         
                                     </tr>
 
@@ -431,10 +427,10 @@ function EditStudentPersonal () {
                                         <td className='cell-title'>Organizations</td>
                                     </tr>
                                     <tr className='table-row'>
-                                        <td className='cell-input'><input type='text' id='honors_received' ></input></td>
-                                        <td className='cell-input'><input type='text' id='talents' ></input></td>
-                                        <td className='cell-input'><input type='text' id='hobbies' ></input></td>
-                                        <td className='cell-input'><input type='text' id='organizations' ></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='honors_received'></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='talents' ></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='hobbies' ></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='organizations' ></input></td>
                                     </tr>
 
                                     <tr className='table-row'>
@@ -444,10 +440,10 @@ function EditStudentPersonal () {
                                         <td className='cell-title'>Monthly Stipend</td>
                                     </tr>
                                     <tr className='table-row'>
-                                        <td className='cell-input'><input type='text' id='ailments' ></input></td>
-                                        <td className='cell-input'><input type='text' id='medications' ></input></td>
-                                        <td className='cell-input'><input type='text' id='scholarships' ></input></td>
-                                        <td className='cell-input'><input type='text' id='monthly_stipend' ></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='ailments' ></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='medications' ></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='scholarships' ></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='monthly_stipend' ></input></td>
                                     </tr>
                                 </table>
                             </div>
@@ -475,9 +471,9 @@ function EditStudentPersonal () {
                                         <td className='cell-title'>Father's Monthly Income</td>
                                     </tr>
                                     <tr>
-                                        <td className='cell-input'><input type="text" id="fathername" ></input></td>
-                                        <td className='cell-input'><input type="text" id="fatheroccupation" ></input></td>
-                                        <td className='cell-input'><input type="text" id="fatherincome" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="fathername" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="fatheroccupation" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="fatherincome" ></input></td>
                                     </tr>
 
                                     <tr>
@@ -486,9 +482,9 @@ function EditStudentPersonal () {
                                         <td className='cell-title'>Father's Cellphone/Telephone no.</td>
                                     </tr>
                                     <tr>
-                                        <td className='cell-input'><input type="text" id="fatheremployer" ></input></td>
-                                        <td className='cell-input'><input type="text" id="fatheroffice" ></input></td>
-                                        <td className='cell-input'><input type="text" id="fatherphone" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="fatheremployer" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="fatheroffice" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="fatherphone" ></input></td>
                                     </tr>
                                     <br></br>
                                     <tr>
@@ -497,9 +493,9 @@ function EditStudentPersonal () {
                                         <td className='cell-title'>Mother's Monthly Income</td>
                                     </tr>
                                     <tr>
-                                        <td className='cell-input'><input type="text" id="mothername" ></input></td>
-                                        <td className='cell-input'><input type="text" id="motheroccupation" ></input></td>
-                                        <td className='cell-input'><input type="text" id="motherincome" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="mothername" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="motheroccupation" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="motherincome" ></input></td>
                                     </tr>
 
                                     <tr>
@@ -508,9 +504,9 @@ function EditStudentPersonal () {
                                         <td className='cell-title'>Mother's Cellphone/Telephone no.</td>
                                     </tr>
                                     <tr>
-                                        <td className='cell-input'><input type="text" id="motheremployer" ></input></td>
-                                        <td className='cell-input'><input type="text" id="motheroffice" ></input></td>
-                                        <td className='cell-input'><input type="text" id="motherphone" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="motheremployer" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="motheroffice" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="motherphone" ></input></td>
                                     </tr>
                                     <br></br>
                                     <tr>
@@ -519,9 +515,9 @@ function EditStudentPersonal () {
                                         <td className='cell-title'>Birth Order</td>
                                     </tr>
                                     <tr>
-                                        <td className='cell-input'><input type="text" id="numberbrothers" ></input></td>
-                                        <td className='cell-input'><input type="text" id="numbersisters" ></input></td>
-                                        <td className='cell-input'><input type="text" id="birthorder" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="numberbrothers" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="numbersisters" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="birthorder" ></input></td>
                                     </tr>
 
                                 </table>
@@ -538,14 +534,14 @@ function EditStudentPersonal () {
                                         <td className='cell-title'>Cellphone/Telephone No.</td>
                                     </tr>
                                     <tr>
-                                        <td className='cell-input'><input type = "text" id = "emergency-contact-name-1" required></input></td>
-                                        <td className='cell-input'><input type = "text" id = "emergency-contact-address-1"  required></input></td>
-                                        <td className='cell-input'><input type = "text" id = "emergency-contact-phone-1"  required></input></td>
+                                        <td className='cell-input'><input type = "text" className='complete-input' id = "emergency-contact-name-1" required></input></td>
+                                        <td className='cell-input'><input type = "text" className='complete-input' id = "emergency-contact-address-1" required></input></td>
+                                        <td className='cell-input'><input type = "text" className='complete-input' id = "emergency-contact-phone-1" required></input></td>
                                     </tr>
                                     <tr>
-                                        <td className='cell-input'><input type = "text" id = "emergency-contact-name-2" ></input></td>
-                                        <td className='cell-input'><input type = "text" id = "emergency-contact-address-2" ></input></td>
-                                        <td className='cell-input'><input type = "text" id = "emergency-contact-phone-2" ></input></td>
+                                        <td className='cell-input'><input type = "text" className='complete-input' id = "emergency-contact-name-2" ></input></td>
+                                        <td className='cell-input'><input type = "text" className='complete-input' id = "emergency-contact-address-2" ></input></td>
+                                        <td className='cell-input'><input type = "text" className='complete-input' id = "emergency-contact-phone-2" ></input></td>
                                     </tr>
                                 </table>
                             </div>

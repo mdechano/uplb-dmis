@@ -58,7 +58,6 @@ function NavBar () {
                         <img className="user-image" alt="profile" src={user.picture}/>
                         { role === 'resident' && user.completed_profile === true ?
                         <div className='dropdown-content'>
-                            {/* <a><Link to='/student-personal'>Student Information Sheet</Link></a> */}
                             <a onClick={() => navigate('/resident-personal/'+user.profile_id)}>Student Information Sheet</a>
                             <a><Link to='/generate-soa'>Generate SOA</Link></a>
                             <a><Link to='/upload-receipt'>Upload Receipt</Link></a>
@@ -70,8 +69,6 @@ function NavBar () {
                         <div className='dropdown-content'>
                             <a onClick={() => navigate('/residents-list')}>Resident List</a>
                             <a onClick={() => navigate('/manager/'+user.profile_id)}>Dorm Manager Profile</a>
-                            {/* <a><Link to='/manager-profile'>Dorm Manager Profile</Link></a> */}
-                            <a><Link>Dorm Assistants</Link></a>
                             <a onClick={() => navigate('/dorm-information')}>Dorm Information</a>
                         </div>
                         : "" }
@@ -79,7 +76,6 @@ function NavBar () {
                         <div className='dropdown-content'>
                         <a onClick={() => navigate('/residents-list')}>Resident List</a>
                         <a onClick={() => navigate('/attendant/'+user.profile_id)}>Dorm Attendant Profile</a>
-                        <a><Link>Dorm Assistants</Link></a>
                         <a onClick={() => navigate('/dorm-information')}>Dorm Information</a>
                         </div>
                         : "" }

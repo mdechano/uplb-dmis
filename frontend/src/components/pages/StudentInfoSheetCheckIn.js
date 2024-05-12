@@ -11,30 +11,200 @@ function StudentInfoSheetCheckIn () {
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
     const [ currentResident, setResident] = useState();
-    const [allPicture, setAllPictures] = useState();
-
+    const [ resident_users, setResidentUsers] = useState();
 
     const fetchData = () => {
         const link = window.location.href;
         const id = link.slice(link.lastIndexOf('/')+1,link.length);
         const getResident = axios.get(apiUrl("/resident/") + id, { withCredentials: true });
-            axios.all([getResident]).then(
+        const getResidentUsers = axios.get(apiUrl("/user") , { withCredentials: true });
+            axios.all([getResident, getResidentUsers]).then(
                 axios.spread((...allData) => {
                     const allResidentData = allData[0].data
+                    const allResidentUserData = allData[1].data
                     setResident(allResidentData)
+                    setResidentUsers(allResidentUserData)
                 })
             )
     }
 
-    const renderImage = () => {
-        fetch(apiUrl("/picture"),{
-            method: "GET",
+    const editResidentRole = () => {
+
+        fetch(apiUrl("/resident/"+currentResident._id),{
+            method: "PUT",
+            credentials:'include',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                    user_id: currentResident.user_id, 
+                    dorm: currentResident.dorm,
+                    role: "dorm assistant",
+                    first_name: currentResident.first_name,
+                    last_name: currentResident.last_name,
+                    middle_name: currentResident.middle_name,
+                    suffix: currentResident.suffix,
+                    sex: currentResident.sex,
+                    student_no: currentResident.student_no,
+                    civil_status: currentResident.civil_status,
+                    birthday: currentResident.birthday,
+                    contact_number: currentResident.contact_number,
+                    email: currentResident.email,
+                    home_address: currentResident.home_address,
+                    region: currentResident.region,
+                    college: currentResident.college,
+                    degree_program: currentResident.degree_program,
+                    last_school_attended: currentResident.last_school_attended,
+                    classification: currentResident.classification,
+                    honors_received: currentResident.honors_received,
+                    talents: currentResident.talents,
+                    hobbies: currentResident.hobbies,
+                    organizations: currentResident.organizations,
+                    ailments: currentResident.ailments,
+                    medications: currentResident.medications,
+                    scholarships: currentResident.scholarships,
+                    monthly_stipend: currentResident.monthly_stipend,
+                    parents_status: currentResident.parents_status,
+                    father_details: currentResident.father_details,
+                    mother_details: currentResident.mother_details,
+                    number_of_brothers: currentResident.number_of_brothers,
+                    number_of_sisters: currentResident.number_of_sisters,
+                    birth_order: currentResident.birth_order,
+                    check_in_out_details: currentResident.check_in_out_details,
+                    appliances: currentResident.appliances,
+                    appliances_information: currentResident.appliances_information,
+                    emergency_details: currentResident.emergency_details,
+                    slas: currentResident.slas,
+                    picture_url: currentResident.picture_url
+            })
         })
         .then(response => {return response.json()})
-        .then((data) => {
-            console.log(data)
-            setAllPictures(data)
+        .then(editResidentUserRole)
+    }
+
+    const editResidentUserRole = () => {
+        // console.log(currentResident.user_id);
+        if (currentResident !== undefined) {
+            if (resident_users !== undefined) {
+            resident_users.map((person, i) => {
+                if (currentResident.user_id === person._id) {
+                    const currentPerson = person
+                    console.log(currentPerson)
+                    fetch(apiUrl("/user/change-resident-role/"+currentPerson._id), {
+                        method: "PUT",
+                        credentials:'include',
+                        headers:{
+                            'Content-Type':'application/json'
+                        },
+                        body: JSON.stringify({
+                            email: currentPerson.email,
+                            first_name: currentPerson.first_name,
+                            last_name: currentPerson.last_name,
+                            picture: currentPerson.picture,
+                            role: "dorm assistant",
+                            dorm: currentPerson.dorm,
+                            completed_profile: currentPerson.completed_profile,
+                            profile_id: currentPerson.profile_id
+                        })
+                    })
+                    .then(response => {return response.json()})
+                    .then(
+                        alert("Successfully hired a dorm assistant."),
+                        navigate("/residents-list")
+                    )
+                }
+            })
+            }   
+        }
+    }
+
+    const editResidentRole1 = () => {
+        fetch(apiUrl("/resident/"+currentResident._id),{
+            method: "PUT",
+            credentials:'include',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                    user_id: currentResident.user_id, 
+                    dorm: currentResident.dorm,
+                    role: "resident",
+                    first_name: currentResident.first_name,
+                    last_name: currentResident.last_name,
+                    middle_name: currentResident.middle_name,
+                    suffix: currentResident.suffix,
+                    sex: currentResident.sex,
+                    student_no: currentResident.student_no,
+                    civil_status: currentResident.civil_status,
+                    birthday: currentResident.birthday,
+                    contact_number: currentResident.contact_number,
+                    email: currentResident.email,
+                    home_address: currentResident.home_address,
+                    region: currentResident.region,
+                    college: currentResident.college,
+                    degree_program: currentResident.degree_program,
+                    last_school_attended: currentResident.last_school_attended,
+                    classification: currentResident.classification,
+                    honors_received: currentResident.honors_received,
+                    talents: currentResident.talents,
+                    hobbies: currentResident.hobbies,
+                    organizations: currentResident.organizations,
+                    ailments: currentResident.ailments,
+                    medications: currentResident.medications,
+                    scholarships: currentResident.scholarships,
+                    monthly_stipend: currentResident.monthly_stipend,
+                    parents_status: currentResident.parents_status,
+                    father_details: currentResident.father_details,
+                    mother_details: currentResident.mother_details,
+                    number_of_brothers: currentResident.number_of_brothers,
+                    number_of_sisters: currentResident.number_of_sisters,
+                    birth_order: currentResident.birth_order,
+                    check_in_out_details: currentResident.check_in_out_details,
+                    appliances: currentResident.appliances,
+                    appliances_information: currentResident.appliances_information,
+                    emergency_details: currentResident.emergency_details,
+                    slas: currentResident.slas,
+                    picture_url: currentResident.picture_url
+            })
         })
+        .then(response => {return response.json()})
+        .then(editResidentUserRole1)
+    }
+
+    const editResidentUserRole1 = () => {
+        // console.log(currentResident.user_id);
+        if (currentResident !== undefined) {
+            if (resident_users !== undefined) {
+            resident_users.map((person, i) => {
+                if (currentResident.user_id === person._id) {
+                    const currentPerson = person
+                    console.log(currentPerson)
+                    fetch(apiUrl("/user/change-resident-role/"+currentPerson._id), {
+                        method: "PUT",
+                        credentials:'include',
+                        headers:{
+                            'Content-Type':'application/json'
+                        },
+                        body: JSON.stringify({
+                            email: currentPerson.email,
+                            first_name: currentPerson.first_name,
+                            last_name: currentPerson.last_name,
+                            picture: currentPerson.picture,
+                            role: "resident",
+                            dorm: currentPerson.dorm,
+                            completed_profile: currentPerson.completed_profile,
+                            profile_id: currentPerson.profile_id
+                        })
+                    })
+                    .then(response => {return response.json()})
+                    .then(
+                        alert("Successfully removed a dorm assistant."),
+                        navigate("/residents-list")
+                    )
+                }
+            })
+            }   
+        }
     }
     
     useEffect(()=>{
@@ -43,7 +213,6 @@ function StudentInfoSheetCheckIn () {
         } 
         else {
             fetchData()
-            renderImage()
         }
     },[]);
 
@@ -78,6 +247,12 @@ function StudentInfoSheetCheckIn () {
                             <button className='profile-nav-btn' onClick={() => navigate('/resident-payment/'+currentResident._id)}>PAYMENT DETAILS</button>
                             <button className='profile-nav-btn' onClick={() => navigate('/resident-violation/'+currentResident._id)}>VIOLATION DETAILS</button>
                         </div>
+                        { user.role === 'dorm manager' && currentResident.role === 'resident' ?
+                            <button className='profile-nav-btn' onClick = {editResidentRole}>HIRE AS ASSISTANT</button>
+                            : user.role === 'dorm manager' ?
+                            <button className='profile-nav-btn' onClick={editResidentRole1}>REMOVE AS ASSISTANT</button>
+                            : ""}
+                        <br></br>
                     </div>
 
                     <div className='profile-div-right'>

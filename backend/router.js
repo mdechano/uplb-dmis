@@ -3,7 +3,8 @@ const Resident = require('./endpoints/resident');
 const Manager = require('./endpoints/manager');
 const Attendant = require('./endpoints/attendant');
 const Dorm = require('./endpoints/dorm');
-const Picture = require('./endpoints/picture')
+const Picture = require('./endpoints/picture');
+const Violation = require('./endpoints/violation');
 const Router = require('express').Router;
 
 const router = Router();
@@ -14,5 +15,6 @@ router.use('/manager', Manager);
 router.use('/attendant', Attendant);
 router.use('/dorm', Dorm);
 router.use('/picture', Picture);
+router.use('/violation', Violation);
 
 module.exports = router;

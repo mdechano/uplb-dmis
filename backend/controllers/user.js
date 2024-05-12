@@ -159,47 +159,55 @@ exports.changeResidentRole = async(req, res) => {
         res.status(token.code).send({ message: token.message });
         return;
     }
+    
+        const body = req.body;
+        console.log(`resident user id: ${req.params.id}`) // /.../:id -> value
 
-    if(token.user.role == 'dorm manager'){
-        // const body = req.body;
-        const newRole = req.body.role
-        const user_id = req.params.id
-        console.log(`user id: `+user_id) // /.../:id -> value
-
+        const user = {
+            id: req.params.id,
+            email: body.email,
+            first_name: body.first_name,
+            last_name: body.last_name,
+            picture: body.picture,
+            role: body.role,
+            dorm: body.dorm,
+            completed_profile: body.completed_profile,
+            profile_id: body.profile_id
+        }
+        
         try{
-            mongoose.Types.ObjectId(user_id)
+            mongoose.Types.ObjectId(user.id)
         }
         catch (err) {
             console.log('Invalid id')
             return res.status(400).send({ message: 'Invalid id' })
         }
 
+        var existing = null
         try{
-            const existing = await User.getOne({_id: user_id});
-            if(existing){
-                const user = {
-                    email: existing.email,
-                    first_name: existing.first_name,
-                    last_name: existing.last_name,
-                    picture: existing.picture,
-                    role: newRole,
-                    dorm: existing.dorm,
-                    completed_profile: existing.completed_profile
-                }
-                const edit = await User.editResidentRole(user)
-                console.log(`User role changed: ${edit}`)
-                return res.status(200).send({ message: 'User role updated' })
+            existing = await User.getOne({_id: user.id});
+            if(!existing){
+                console.log("User not found")
+                return res.status(404).send({ message: 'User not found' });
             }
         }
         catch(err){
-            console.log(err)
-            return res.status(500).send({ message: `Error changing user's role` })
+            console.log(`Error looking for manager in DB. Error: ${err}`);
+            return res.status(500).send({ message: 'Error searching for manager in database' })
         }
 
-    } else{
-        console.log("Unauthorized Access")
-        return res.status(401).send({message: "Unauthorized access"});
-    }
+        try{
+            const edit = await User.editResidentRole(user)
+            await UserLog.create(token.user, 'edit', `user ${edit._id}`)
+            console.log(`Edited user ${edit}`)
+            return res.status(200).send({ message: 'User successfully edited' })
+        }
+        catch{
+            console.log(`Unable to edit user. Error: ${err}`);
+            return res.status(500).send({ message: 'Error editing user' })
+        }
+
+   
 }
 
 exports.changeCompletedProfile = async(req,res) => {

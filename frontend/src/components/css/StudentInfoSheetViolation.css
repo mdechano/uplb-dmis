@@ -187,3 +187,40 @@ hr.horizontal-line {
 .profile-pic {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   }
+
+  .add-violation-btn {
+    align-items: center;
+  background-clip: padding-box;
+  background-color: #0A4424;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  justify-content: center;
+  line-height: 1.25;
+  min-height: 40px;
+  position: relative;
+  text-decoration: none;
+  transition: all 250ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  width: 155px;
+  margin-top: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  }
+
+  
+.add-violation-btn:hover,
+.add-violation-btn:focus {
+    background-color: #068b42;
+  
+}

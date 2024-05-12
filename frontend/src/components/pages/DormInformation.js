@@ -12,12 +12,16 @@ function DormInformation () {
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
     const [dorm, setDorm] = useState();
+    const [ assistants, setAssistants] = useState();
 
     const fetchData = () => {
         const getDorms = axios.get(apiUrl("/dorm"), { withCredentials: true });
-        axios.all([getDorms]).then(
+        const getResidents = axios.get(apiUrl("/resident"), { withCredentials: true });
+        axios.all([getDorms, getResidents]).then(
             axios.spread((...allData) => {
                 setDorm(allData[0].data)
+                setAssistants(allData[1].data)
+                console.log(assistants)
             })
         )
     }
@@ -56,9 +60,9 @@ function DormInformation () {
                                         <table className='personel-table'>
                                             <tr>
                                                 <td><b>Dorm Manager</b></td>
-                                                <td>{dorm.dorm_manager_name}</td>
+                                                <td className='name-click' onClick={()=> navigate("/manager/"+dorm.dorm_manager_id)}>{dorm.dorm_manager_name}</td>
                                                 <td><b>Dorm Attendant</b></td>
-                                                <td>{dorm.dorm_attendant_name}</td>
+                                                <td className='name-click' onClick={()=> navigate("/attendant/"+dorm.dorm_attendant_id)}>{dorm.dorm_attendant_name}</td>
                                             </tr>
                                             <tr>
                                                 <td><b>Email</b></td>
@@ -102,6 +106,40 @@ function DormInformation () {
                                                 <td>{dorm.stayover_permit_start}</td>
                                                 </tr>
                                             </table>
+                                            <br></br>
+                                            <hr></hr>
+                                            <br></br>
+                                            <h3>DORM ASSISTANTS</h3>
+                                            <br></br>
+                                            <table  className='personel-table'>
+                                                
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Contact Number</th>
+                                                </tr>
+                                            </thead>
+                                            { assistants !== undefined ?
+                                                assistants.map((person, i) => {
+                                                    console.log(person)
+                                                    if (person.dorm === dorm.dorm_name && person.role === "dorm assistant") {
+                                                        return (
+                                                            <tbody>
+                                                            <tr className='name-click' onClick={()=> navigate("/resident-personal/"+person._id)}>
+                                                                <td>{person.last_name}, {person.first_name} {person.middle_name}</td>
+                                                                <td>{person.email}</td>
+                                                                <td>{person.contact_number}</td>
+                                                            </tr>
+                                                            </tbody>
+                                                        )
+                                                        
+                                                    }
+                                                })
+                                            : "hello"
+                                            }
+                                            </table>
+                                            
                                     </div>
                             </div>
                         : " " )

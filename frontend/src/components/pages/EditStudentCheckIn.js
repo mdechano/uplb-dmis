@@ -160,7 +160,7 @@ function EditStudentCheckIn () {
                     appliances: appliances,
                     appliances_information: appliances_information,
                     emergency_details: currentResident.emergency_details,
-                    slas: "None",
+                    slas: currentResident.slas,
                     picture_url: currentResident.picture_url
                     // soon: pass payment and violation deets from personel edits
                 })

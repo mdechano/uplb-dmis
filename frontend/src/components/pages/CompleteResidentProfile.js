@@ -311,7 +311,7 @@ function CompleteResidentProfile () {
                 <div className='upper-div'>
                     <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
                     <p className='page-title'>COMPLETE PROFILE</p>
-                    <button className='save-button' onClick={sendData}>SAVE</button>
+                    <button className='save-button' type="submit" onClick={sendData}>SAVE</button>
                 </div>
                 <hr className='divider'></hr>
                 <div className="body-div">
@@ -366,8 +366,8 @@ function CompleteResidentProfile () {
                                                 <option value="intersex">Intersex</option>
                                             </select>
                                         </td>
-                                        <td className='cell-input'><input type="text" id="student_no" required placeholder='format: 20XX-XXXXX'></input></td>
-                                        <td className='cell-input'><input type="text" id="civil_status" required></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="student_no" required placeholder='format: 20XX-XXXXX'></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input'  id="civil_status" required></input></td>
                                         {/* <td className='cell-input'> */}
                                         <select className='custom-select-birthday-month' id="birth-month">
                                                 <option value="January">January</option>
@@ -419,7 +419,7 @@ function CompleteResidentProfile () {
                                                 <option value="31">31</option>
                                             </select>
                                         {/* </td> */}
-                                        <td className='cell-input'><input type="text" className='year'  id="birth-year" placeholder='year'></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input'  id="birth-year" placeholder='year'></input></td>
                                         
                                     </tr>
                                     <tr className='table-row'>

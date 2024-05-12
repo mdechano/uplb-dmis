@@ -12,6 +12,9 @@ function StudentInfoSheetPayment () {
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
     const [ currentResident, setResident] = useState();
     const [ resident_users, setResidentUsers] = useState();
+    const [ hire_flag, setHireFlag ] = useState(false);
+    const [ remove_flag, setRemoveFlag ] = useState(false);
+    const [ delete_flag, setDeleteFlag ] = useState(false);
 
     const fetchData = () => {
         const link = window.location.href;
@@ -207,6 +210,23 @@ function StudentInfoSheetPayment () {
         }
     }
     
+    const deleteResident = (id) => {
+        fetch(apiUrl("/resident"), {
+            method: "DELETE",
+            credentials:'include',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                ids: [`${id}`],
+            }) 
+        })
+        .then(response => {return response.json()})
+        .then(alert("Successfully deleted resident."),
+        setTimeout(function(){
+            window.location.reload();
+        }, 1000))
+    }
     
     useEffect(()=>{
         if(isAuthenticated === false){
@@ -244,13 +264,50 @@ function StudentInfoSheetPayment () {
                             <button className='profile-nav-btn' onClick={() => navigate('/resident-check-in/'+currentResident._id)}>CHECK IN DETAILS</button>
                             <button className='profile-nav-btn-current' onClick={() => navigate('/resident-payment/'+currentResident._id)}>PAYMENT DETAILS</button>
                             <button className='profile-nav-btn' onClick={() => navigate('/resident-violation/'+currentResident._id)}>VIOLATION DETAILS</button>
-                        </div>
-                        { user.role === 'dorm manager' && currentResident.role === 'resident' ?
-                            <button className='profile-nav-btn' onClick = {editResidentRole}>HIRE AS ASSISTANT</button>
-                            : user.role === 'dorm manager' ?
-                            <button className='profile-nav-btn' onClick={editResidentRole1}>REMOVE AS ASSISTANT</button>
-                            : ""}
                             <br></br>
+                        { user.role === 'dorm manager' && currentResident.role === 'resident' && hire_flag === false?
+                            <button className='profile-nav-btn-current' onClick = {() => setHireFlag(true)}>HIRE AS ASSISTANT</button>
+                            : user.role === 'dorm manager' && currentResident.role === 'dorm assistant' ?
+                            <button className='profile-nav-btn-current' onClick={() => setRemoveFlag(true)}>REMOVE AS ASSISTANT</button>
+                            : ""}
+                            { hire_flag === true ?
+                            <div className='mini-popup'>
+                                <br></br>
+                                <p className='payment-note'><i>Are you sure you want to hire {currentResident.first_name}?</i></p>
+                                <br></br>
+                                <div>
+                                    <button className='edit-violation-btn' onClick={editResidentRole}>YES</button>
+                                    <button className='delete-violation-btn' onClick={() => setHireFlag(false)}>NO</button>
+                                </div>
+                            </div>
+                            : ""}
+                            { remove_flag === true ?
+                            <div className='mini-popup'>
+                            <br></br>
+                            <p className='payment-note'><i>Are you sure you want to remove {currentResident.first_name} as dorm assistant?</i></p>
+                            <br></br>
+                            <div>
+                                <button className='edit-violation-btn' onClick={editResidentRole1}>YES</button>
+                                <button className='delete-violation-btn' onClick={() => setRemoveFlag(false)}>NO</button>
+                            </div>
+                            </div>
+                            : ""}
+                            { user.role === 'dorm manager' ?
+                            <button className='profile-nav-btn-delete' onClick = {() => setDeleteFlag(true)}>DELETE RESIDENT</button>
+                            : ""}
+                            { delete_flag === true ?
+                            <div className='mini-popup'>
+                            <br></br>
+                            <p className='payment-note'><i>Are you sure you want to delete {currentResident.first_name}?</i></p>
+                            <br></br>
+                            <div>
+                                <button className='edit-violation-btn' onClick={() => deleteResident(currentResident._id)}>YES</button>
+                                <button className='delete-violation-btn' onClick={() => setDeleteFlag(false)}>NO</button>
+                            </div>
+                            </div>
+                            : ""}
+                        </div>
+                        <br></br>
                     </div>
 
                     <div className='profile-div-right'>

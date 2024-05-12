@@ -2,7 +2,7 @@ const mongoose = require ("mongoose");
 
 const ViolationSchema = new mongoose.Schema(
     {
-        date: {type: Date},
+        date: {type: String},
         time: {type: String},
         nature: {type: String},
         remarks: {type: String},

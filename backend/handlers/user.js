@@ -85,3 +85,14 @@ exports.getAll = () => {
         })
     });
 }
+
+exports.delete = (query) => {
+    return new Promise((resolve, reject) => {
+        // deletemany returns an object w/ number of deleted docs if the operation is successful
+        User.deleteMany(query, (err, result) => {
+            if(err) { reject(err); }
+            else { resolve(result); }
+        })
+    })
+    
+}

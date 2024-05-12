@@ -176,3 +176,10 @@ hr.horizontal-line {
 hr.line {
   border: 1px solid red;
 }
+
+.mini-popup {
+  justify-content: center;
+  text-align: center;
+  padding-left: 5px;
+  padding-right: 5px;
+}

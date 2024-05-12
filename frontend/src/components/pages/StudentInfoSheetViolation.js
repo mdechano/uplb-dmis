@@ -14,6 +14,9 @@ function StudentInfoSheetViolation () {
     const [ currentResident, setResident] = useState();
     const [ resident_users, setResidentUsers] = useState();
     const [ resident_violations, setResidentViolations] = useState();
+    const [ hire_flag, setHireFlag ] = useState(false);
+    const [ remove_flag, setRemoveFlag ] = useState(false);
+    const [ delete_flag, setDeleteFlag ] = useState(false);
 
     const fetchData = () => {
         const link = window.location.href;
@@ -236,6 +239,42 @@ function StudentInfoSheetViolation () {
             window.location.reload();
         }, 1000))
     }
+
+    const deleteViolation = (id) => {
+        fetch(apiUrl("/violation"), {
+            method: "DELETE",
+            credentials:'include',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                ids: [`${id}`],
+            }) 
+        })
+        .then(response => {return response.json()})
+        .then(alert("Successfully deleted violation."),
+        setTimeout(function(){
+            window.location.reload();
+        }, 1000))
+    }
+
+    const deleteResident = (id) => {
+        fetch(apiUrl("/resident"), {
+            method: "DELETE",
+            credentials:'include',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                ids: [`${id}`],
+            }) 
+        })
+        .then(response => {return response.json()})
+        .then(alert("Successfully deleted resident."),
+        setTimeout(function(){
+            window.location.reload();
+        }, 1000))
+    }
     
     useEffect(()=>{
         if(isAuthenticated === false){
@@ -258,6 +297,7 @@ function StudentInfoSheetViolation () {
                     <div className='extra-space'></div>
                 </div>
                 <hr className='divider'></hr>
+                <div>
                 { currentResident !== undefined ?
                 <div className='body-div'>
                     <div className='profile-div-left'>
@@ -273,13 +313,52 @@ function StudentInfoSheetViolation () {
                             <button className='profile-nav-btn' onClick={() => navigate('/resident-check-in/'+currentResident._id)}>CHECK IN DETAILS</button>
                             <button className='profile-nav-btn' onClick={() => navigate('/resident-payment/'+currentResident._id)}>PAYMENT DETAILS</button>
                             <button className='profile-nav-btn-current' onClick={() => navigate('/resident-violation/'+currentResident._id)}>VIOLATION DETAILS</button>
-                        </div>
-                        { user.role === 'dorm manager' && currentResident.role === 'resident' ?
-                            <button className='profile-nav-btn' onClick = {editResidentRole}>HIRE AS ASSISTANT</button>
-                            : user.role === 'dorm manager' ?
-                            <button className='profile-nav-btn' onClick={editResidentRole1}>REMOVE AS ASSISTANT</button>
-                            : ""}
+                        
                             <br></br>
+                            { user.role === 'dorm manager' && currentResident.role === 'resident' && hire_flag === false?
+                            <button className='profile-nav-btn-current' onClick = {() => setHireFlag(true)}>HIRE AS ASSISTANT</button>
+                            : user.role === 'dorm manager' && currentResident.role === 'dorm assistant' ?
+                            <button className='profile-nav-btn-current' onClick={() => setRemoveFlag(true)}>REMOVE AS ASSISTANT</button>
+                            : ""}
+                            { hire_flag === true ?
+                            <div className='mini-popup'>
+                                <br></br>
+                                <p className='payment-note'><i>Are you sure you want to hire {currentResident.first_name}?</i></p>
+                                <br></br>
+                                <div>
+                                    <button className='edit-violation-btn' onClick={editResidentRole}>YES</button>
+                                    <button className='delete-violation-btn' onClick={() => setHireFlag(false)}>NO</button>
+                                </div>
+                            </div>
+                            : ""}
+                            { remove_flag === true ?
+                            <div className='mini-popup'>
+                            <br></br>
+                            <p className='payment-note'><i>Are you sure you want to remove {currentResident.first_name} as dorm assistant?</i></p>
+                            <br></br>
+                            <div>
+                                <button className='edit-violation-btn' onClick={editResidentRole1}>YES</button>
+                                <button className='delete-violation-btn' onClick={() => setRemoveFlag(false)}>NO</button>
+                            </div>
+                            </div>
+                            : ""}
+                            {/* delete resident */}
+                            { user.role === 'dorm manager' ?
+                            <button className='profile-nav-btn-delete' onClick = {() => setDeleteFlag(true)}>DELETE RESIDENT</button>
+                            : ""}
+                            { delete_flag === true ?
+                            <div className='mini-popup'>
+                            <br></br>
+                            <p className='payment-note'><i>Are you sure you want to delete {currentResident.first_name}?</i></p>
+                            <br></br>
+                            <div>
+                                <button className='edit-violation-btn' onClick={() => deleteResident(currentResident._id)}>YES</button>
+                                <button className='delete-violation-btn' onClick={() => setDeleteFlag(false)}>NO</button>
+                            </div>
+                            </div>
+                            : ""}
+                        </div>
+                        <br></br>
                     </div>
 
                     <div className='profile-div-right'>
@@ -294,10 +373,10 @@ function StudentInfoSheetViolation () {
                                     <td className='cell-title-display'>Nature</td>
                                     <td className='cell-title-display'>Remarks</td>
                                     { user.role === "dorm manager" || user.role === 'dorm attendant' ?
-                                        <td className='cell-title-display'>Edit</td>
+                                        <td className='cell-title-display-violation'>Edit</td>
                                     : ""}
                                     { user.role === "dorm manager" || user.role === 'dorm attendant' ?
-                                        <td className='cell-title-display'>Delete</td>
+                                        <td className='cell-title-display-violation'>Delete</td>
                                     : ""}
                                 </tr>
                                 { resident_violations !== undefined ?
@@ -305,15 +384,15 @@ function StudentInfoSheetViolation () {
                                         if (currentResident._id === violation.resident_id) {
                                             return (
                                                 <tr className='table-row-display'>
-                                                    <td className='cell-input-display'>{violation.date.split("").slice(0,10)}</td>
+                                                    <td className='cell-input-display'>{violation.date}</td>
                                                     <td className='cell-input-display'>{violation.time}</td>
                                                     <td className='cell-input-display'>{violation.nature}</td>
                                                     <td className='cell-input-display'>{violation.remarks}</td>
                                                     { user.role === "dorm manager" || user.role === 'dorm attendant' ?
-                                                        <td className='cell-input-display'>{}</td>
+                                                        <td className='cell-input-display-violation'><button className='edit-violation-btn'>EDIT</button></td>
                                                     : ""}
                                                     { user.role === "dorm manager" || user.role === 'dorm attendant' ?
-                                                        <td className='cell-input-display'>{}</td>
+                                                        <td className='cell-input-display-violation'><button className='delete-violation-btn' onClick={() => deleteViolation(violation._id)}>DELETE</button></td>
                                                     : ""}
                                                 </tr>
                                             )
@@ -353,6 +432,12 @@ function StudentInfoSheetViolation () {
                     </div>
                 </div>
                 : <p className='profile-note'><i>Loading profile...</i></p> }
+                </div>
+                {/* {isOpenDelete ? <ConfirmDelete
+                instance = {deleted}
+                type = {"violation"}
+                handleClose={togglePopupDelete}
+                /> : ""} */}
             </div>
         </div>
     )

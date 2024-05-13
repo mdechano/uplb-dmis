@@ -160,63 +160,73 @@ function CompleteResidentProfile () {
             
         }
 
-        if (notuniqueEmail === false) {
-            allEmails.push(tempEmail);
+        // if ( document.getElementById("first_name").value === "" || document.getElementById("last_name").value === "" || document.getElementById("sex").value ||
+        // document.getElementById("student_no").value === "" || document.getElementById("contact_number").value === "" || document.getElementById("email").value === "" ||
+        // document.getElementById("home_address").value === "" || document.getElementById("region").value === "" || document.getElementById("college").value === "" ||
+        // document.getElementById("degree_program").value === "" || document.getElementById("fathername").value === "" || document.getElementById("mothername").value === "" ||
+        // document.getElementById("emergency-contact-name-1").value === "" || document.getElementById("emergency-contact-address-1").value || document.getElementById("emergency-contact-phone-1").value) {
+        //     alert("Some information are missing. Please make sure to fill the necessary details.")
+        // } else {
 
-            fetch(apiUrl("/resident"),{
-                method: "POST",
-                credentials:'include',
-                headers:{
-                    'Content-Type':'application/json'
-                },
-                body: JSON.stringify({
-                    user_id: user._id, 
-                    dorm: user.dorm,
-                    role: user.role,
-                    first_name: document.getElementById("first_name").value,
-                    last_name: document.getElementById("last_name").value,
-                    middle_name: document.getElementById("middle_name").value,
-                    suffix: document.getElementById("suffix").value,
-                    sex: document.getElementById("sex").value,
-                    student_no: document.getElementById("student_no").value,
-                    civil_status: document.getElementById("civil_status").value,
-                    birthday: document.getElementById("birth-month").value + " " + document.getElementById("birth-day").value + ", " + document.getElementById("birth-year").value,
-                    contact_number: document.getElementById("contact_number").value,
-                    email: document.getElementById("email").value,
-                    home_address: document.getElementById("home_address").value,
-                    region: document.getElementById("region").value,
-                    college: document.getElementById("college").value,
-                    degree_program: document.getElementById("degree_program").value,
-                    last_school_attended: document.getElementById("last_school_attended").value,
-                    classification: document.getElementById("classification").value,
-                    honors_received: document.getElementById("honors_received").value,
-                    talents: document.getElementById("talents").value,
-                    hobbies: document.getElementById("hobbies").value,
-                    organizations: document.getElementById("organizations").value,
-                    ailments: document.getElementById("ailments").value,
-                    medications: document.getElementById("medications").value,
-                    scholarships: document.getElementById("scholarships").value,
-                    monthly_stipend: document.getElementById("monthly_stipend").value,
-                    parents_status: document.getElementById("parents-status").value,
-                    father_details: father_details,
-                    mother_details: mother_details,
-                    number_of_brothers: document.getElementById("numberbrothers").value,
-                    number_of_sisters: document.getElementById("numbersisters").value,
-                    birth_order: document.getElementById("birthorder").value,
-                    check_in_out_details: check_in_out_details,
-                    appliances: appliances,
-                    appliances_information: appliances_information,
-                    emergency_details: emergency_details,
-                    slas: "None",
-                    picture_url: finalpicture
+            if (notuniqueEmail === false) {
+                allEmails.push(tempEmail);
+
+                fetch(apiUrl("/resident"),{
+                    method: "POST",
+                    credentials:'include',
+                    headers:{
+                        'Content-Type':'application/json'
+                    },
+                    body: JSON.stringify({
+                        user_id: user._id, 
+                        dorm: user.dorm,
+                        role: user.role,
+                        first_name: document.getElementById("first_name").value,
+                        last_name: document.getElementById("last_name").value,
+                        middle_name: document.getElementById("middle_name").value,
+                        suffix: document.getElementById("suffix").value,
+                        sex: document.getElementById("sex").value,
+                        student_no: document.getElementById("student_no").value,
+                        civil_status: document.getElementById("civil_status").value,
+                        birthday: document.getElementById("birth-month").value + " " + document.getElementById("birth-day").value + ", " + document.getElementById("birth-year").value,
+                        contact_number: document.getElementById("contact_number").value,
+                        email: document.getElementById("email").value,
+                        home_address: document.getElementById("home_address").value,
+                        region: document.getElementById("region").value,
+                        college: document.getElementById("college").value,
+                        degree_program: document.getElementById("degree_program").value,
+                        last_school_attended: document.getElementById("last_school_attended").value,
+                        classification: document.getElementById("classification").value,
+                        honors_received: document.getElementById("honors_received").value,
+                        talents: document.getElementById("talents").value,
+                        hobbies: document.getElementById("hobbies").value,
+                        organizations: document.getElementById("organizations").value,
+                        ailments: document.getElementById("ailments").value,
+                        medications: document.getElementById("medications").value,
+                        scholarships: document.getElementById("scholarships").value,
+                        monthly_stipend: document.getElementById("monthly_stipend").value,
+                        parents_status: document.getElementById("parents-status").value,
+                        father_details: father_details,
+                        mother_details: mother_details,
+                        number_of_brothers: document.getElementById("numberbrothers").value,
+                        number_of_sisters: document.getElementById("numbersisters").value,
+                        birth_order: document.getElementById("birthorder").value,
+                        check_in_out_details: check_in_out_details,
+                        appliances: appliances,
+                        appliances_information: appliances_information,
+                        emergency_details: emergency_details,
+                        slas: "None",
+                        picture_url: finalpicture
+                    })
                 })
-            })
-            .then(response => {return response.json()})
-            .then(getResidents)
-        }
-        else {
-            alert("Inputted email address already exists!")
-        }
+                .then(response => {return response.json()})
+                .then(getResidents)
+            }
+            else {
+                alert("Inputted email address already exists!")
+            }
+
+        // }
     }
 
     const getResidents = () => {
@@ -317,6 +327,7 @@ function CompleteResidentProfile () {
                 <div className="body-div">
                     <div className='left-div'>
                     <form className='upload-div'>
+                        
                         <div className='upload-body'>
                             {picture === "" || picture === null ? "" : <img id='image-upload' width={100} src={picture}></img>}
                             <br></br>
@@ -333,28 +344,29 @@ function CompleteResidentProfile () {
                     </div>
                     <div className="right-div">
                         <form className="form-div">
+                            {/* <input type="submit" id="submit-form" className="hidden" /> */}
                             <div className="form-div-personal">
                                 <h3>PERSONAL INFORMATION</h3>
                                 <br></br>
                                 <table>
                                     <tr className='table-row'>
-                                        <td className='cell-title'>First Name</td>
+                                        <td className='cell-title'>First Name*</td>
                                         <td className='cell-title'>Middle Name</td>
-                                        <td className='cell-title'>Last Name</td>
+                                        <td className='cell-title'>Last Name*</td>
                                         <td className='cell-title'>Suffix</td>
                                     </tr>
                                     <tr className='table-row'>
                                         <td className='cell-input'><input type="text" className='complete-input' id="first_name" name="firstname" required></input></td>
-                                        <td className='cell-input'><input type="text" className='complete-input' id="middle_name" name="middlename" required></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="middle_name" name="middlename"></input></td>
                                         <td className='cell-input'><input type="text" className='complete-input' id="last_name" name="lastname" required></input></td>
                                         <td className='cell-input'><input type="text" className='complete-input' id="suffix" name="suffix"></input></td>
                                         
                                     </tr>
                                     <tr className='table-row'>
-                                        <td className='cell-title'>Assigned Sex</td>
-                                        <td className='cell-title'>Student Number</td>
+                                        <td className='cell-title'>Assigned Sex*</td>
+                                        <td className='cell-title'>Student Number*</td>
                                         <td className='cell-title'>Civil Status</td>
-                                        <td className='cell-title'>Birthday</td>
+                                        <td className='cell-title'>Birthday*</td>
                                         
                                     </tr>
                                     <tr className='table-row'>
@@ -367,7 +379,7 @@ function CompleteResidentProfile () {
                                             </select>
                                         </td>
                                         <td className='cell-input'><input type="text" className='complete-input' id="student_no" required placeholder='format: 20XX-XXXXX'></input></td>
-                                        <td className='cell-input'><input type="text" className='complete-input'  id="civil_status" required></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input'  id="civil_status" ></input></td>
                                         {/* <td className='cell-input'> */}
                                         <select className='custom-select-birthday-month' id="birth-month">
                                                 <option value="January">January</option>
@@ -423,10 +435,10 @@ function CompleteResidentProfile () {
                                         
                                     </tr>
                                     <tr className='table-row'>
-                                        <td className='cell-title'>Contact Number</td>
-                                        <td className='cell-title'>Email</td>
-                                        <td className='cell-title'>Home Address</td>
-                                        <td className='cell-title'>Region</td>
+                                        <td className='cell-title'>Contact Number*</td>
+                                        <td className='cell-title'>Email*</td>
+                                        <td className='cell-title'>Home Address*</td>
+                                        <td className='cell-title'>Region*</td>
                                     </tr>
                                     <tr className='table-row'>
                                         <td className='cell-input'><input type='text' className='complete-input' id='contact_number' name='contactnumber' required></input></td>
@@ -458,8 +470,8 @@ function CompleteResidentProfile () {
                                     </tr>
 
                                     <tr className='table-row'>
-                                        <td className='cell-title'>College</td>
-                                        <td className='cell-title'>Degree Program</td>
+                                        <td className='cell-title'>College*</td>
+                                        <td className='cell-title'>Degree Program*</td>
                                         <td className='cell-title'>Last School Attended</td>
                                         <td className='cell-title'>Classification</td>
                                         
@@ -480,7 +492,7 @@ function CompleteResidentProfile () {
                                             </select>
                                         </td>
                                         <td className='cell-input'><input type='text' className='complete-input' id='degree_program' placeholder='format: BS Computer Science' required></input></td>
-                                        <td className='cell-input'><input type='text' className='complete-input' id='last_school_attended' required></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='last_school_attended'></input></td>
                                         <td className='cell-input'><input type='text' className='complete-input' id='classification' ></input></td>
                                         
                                     </tr>
@@ -531,7 +543,7 @@ function CompleteResidentProfile () {
                                     </div>
                                     <br></br>
                                     <tr>
-                                        <td className='cell-title'>Father's Name</td>
+                                        <td className='cell-title'>Father's Name*</td>
                                         <td className='cell-title'>Father's Occupation</td>
                                         <td className='cell-title'>Father's Monthly Income</td>
                                     </tr>
@@ -553,7 +565,7 @@ function CompleteResidentProfile () {
                                     </tr>
                                     <br></br>
                                     <tr>
-                                        <td className='cell-title'>Mother's Name</td>
+                                        <td className='cell-title'>Mother's Name*</td>
                                         <td className='cell-title'>Mother's Occupation</td>
                                         <td className='cell-title'>Mother's Monthly Income</td>
                                     </tr>
@@ -594,9 +606,9 @@ function CompleteResidentProfile () {
                                 <br></br>
                                 <table>
                                     <tr>
-                                        <td className='cell-title'>Name</td>
-                                        <td className='cell-title'>Address</td>
-                                        <td className='cell-title'>Cellphone/Telephone No.</td>
+                                        <td className='cell-title'>Name*</td>
+                                        <td className='cell-title'>Address*</td>
+                                        <td className='cell-title'>Cellphone/Telephone No.*</td>
                                     </tr>
                                     <tr>
                                         <td className='cell-input'><input type = "text" className='complete-input' id = "emergency-contact-name-1" required></input></td>

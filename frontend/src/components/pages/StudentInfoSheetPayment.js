@@ -15,6 +15,8 @@ function StudentInfoSheetPayment () {
     const [ hire_flag, setHireFlag ] = useState(false);
     const [ remove_flag, setRemoveFlag ] = useState(false);
     const [ delete_flag, setDeleteFlag ] = useState(false);
+    const [ slas_flag, setSlasFlag ] = useState(false);
+    const [ new_slas, setNewSlas ] = useState();
 
     const fetchData = () => {
         const link = window.location.href;
@@ -228,6 +230,67 @@ function StudentInfoSheetPayment () {
         }, 1000))
     }
     
+    const handleChange=()=>{
+        console.log(document.getElementById("slas_status").value);
+        setNewSlas(document.getElementById("slas_status").value);
+    }
+
+    const updateResidentSLAS = (new_slas) => {
+        fetch(apiUrl("/resident/"+currentResident._id),{
+            method: "PUT",
+            credentials:'include',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                    user_id: currentResident.user_id, 
+                    dorm: currentResident.dorm,
+                    role: currentResident.role,
+                    first_name: currentResident.first_name,
+                    last_name: currentResident.last_name,
+                    middle_name: currentResident.middle_name,
+                    suffix: currentResident.suffix,
+                    sex: currentResident.sex,
+                    student_no: currentResident.student_no,
+                    civil_status: currentResident.civil_status,
+                    birthday: currentResident.birthday,
+                    contact_number: currentResident.contact_number,
+                    email: currentResident.email,
+                    home_address: currentResident.home_address,
+                    region: currentResident.region,
+                    college: currentResident.college,
+                    degree_program: currentResident.degree_program,
+                    last_school_attended: currentResident.last_school_attended,
+                    classification: currentResident.classification,
+                    honors_received: currentResident.honors_received,
+                    talents: currentResident.talents,
+                    hobbies: currentResident.hobbies,
+                    organizations: currentResident.organizations,
+                    ailments: currentResident.ailments,
+                    medications: currentResident.medications,
+                    scholarships: currentResident.scholarships,
+                    monthly_stipend: currentResident.monthly_stipend,
+                    parents_status: currentResident.parents_status,
+                    father_details: currentResident.father_details,
+                    mother_details: currentResident.mother_details,
+                    number_of_brothers: currentResident.number_of_brothers,
+                    number_of_sisters: currentResident.number_of_sisters,
+                    birth_order: currentResident.birth_order,
+                    check_in_out_details: currentResident.check_in_out_details,
+                    appliances: currentResident.appliances,
+                    appliances_information: currentResident.appliances_information,
+                    emergency_details: currentResident.emergency_details,
+                    slas: new_slas,
+                    picture_url: currentResident.picture_url
+            })
+        })
+        .then(response => {return response.json()})
+        .then(alert("Successfully updated SLAS status of student."),
+        setTimeout(function(){
+            window.location.reload();
+        }, 1000))
+    }
+
     useEffect(()=>{
         if(isAuthenticated === false){
             navigate("/")
@@ -264,7 +327,7 @@ function StudentInfoSheetPayment () {
                             <button className='profile-nav-btn' onClick={() => navigate('/resident-check-in/'+currentResident._id)}>CHECK IN DETAILS</button>
                             <button className='profile-nav-btn-current' onClick={() => navigate('/resident-payment/'+currentResident._id)}>PAYMENT DETAILS</button>
                             <button className='profile-nav-btn' onClick={() => navigate('/resident-violation/'+currentResident._id)}>VIOLATION DETAILS</button>
-                            <br></br>
+                            <br></br> 
                         { user.role === 'dorm manager' && currentResident.role === 'resident' && hire_flag === false?
                             <button className='profile-nav-btn-current' onClick = {() => setHireFlag(true)}>HIRE AS ASSISTANT</button>
                             : user.role === 'dorm manager' && currentResident.role === 'dorm assistant' ?
@@ -316,6 +379,31 @@ function StudentInfoSheetPayment () {
                             <br></br>
                             <p className='slas'>SLAS Status</p>
                             <p className='sts-bracket'><i>{currentResident.slas}</i></p>
+                            { user.role === "dorm manager" || user.role === "dorm attendant" ?
+                            <div>
+                                <button className='edit-violation-btn' onClick={() => setSlasFlag(true)}>Change SLAS</button>
+                            </div>
+                            : ""}
+                            { slas_flag === true ?
+                            <div className='mini-popup'>
+                            <br></br>
+                            <form>
+                                <select className='dashboard-custom-select' id='slas_status' onChange={handleChange}>
+                                    <option value=""disabled defaultValue hidden>Choose SLAS</option>
+                                    <option value='FDS'>FDS</option>
+                                    <option value='FD'>FD</option>
+                                    <option value='PD80'>PD 80%</option>
+                                    <option value='PD60'>PD 60%</option>
+                                    <option value='PD33'>PD 33%</option>
+                                    <option value='No Discount'>No Discount</option>
+                                </select>   
+                            </form>
+                            <div>
+                                <button className='edit-violation-btn' onClick={() => updateResidentSLAS(new_slas)}>SUBMIT</button>
+                                <button className='delete-violation-btn' onClick={() => setSlasFlag(false)}>CANCEL</button>
+                            </div>
+                            </div>
+                            : ""}
                             <br></br>
                             <table className='table-display'>
                                 <tr className='table-row-display'>

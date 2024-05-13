@@ -289,4 +289,8 @@ h3, h4 {
     height: 20px;
 }
 
+.hidden {
+    visibility: hidden;
+}
+
 

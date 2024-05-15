@@ -374,36 +374,41 @@ function StudentInfoSheetPayment () {
                     </div>
 
                     <div className='profile-div-right'>
-                        
                             <p className='payment-note'><i>Your confirmed payment will appear here after verification. Only authorized personel can edit this page. Kindly contact them for concerns.</i></p>
                             <br></br>
-                            <p className='slas'>SLAS Status</p>
-                            <p className='sts-bracket'><i>{currentResident.slas}</i></p>
-                            { user.role === "dorm manager" || user.role === "dorm attendant" ?
-                            <div>
-                                <button className='edit-violation-btn' onClick={() => setSlasFlag(true)}>Change SLAS</button>
+                            <div className='slas-div'>
+                                <div>
+                                    
+                                    <p className='slas'>SLAS Status</p>
+                                    <p className='sts-bracket'><i>{currentResident.slas}</i></p>
+                                    </div>
+                                <div>
+                                { (user.role === "dorm manager" || user.role === "dorm attendant") && slas_flag === true ?
+                                    <div className='mini-popup'>
+                                    <br></br>
+                                    <form>
+                                        <select className='dashboard-custom-select' id='slas_status' onChange={handleChange}>
+                                            <option value=""disabled defaultValue hidden>Choose SLAS</option>
+                                            <option value='FDS'>FDS</option>
+                                            <option value='FD'>FD</option>
+                                            <option value='PD80'>PD 80%</option>
+                                            <option value='PD60'>PD 60%</option>
+                                            <option value='PD33'>PD 33%</option>
+                                            <option value='No Discount'>No Discount</option>
+                                        </select>   
+                                    </form>
+                                    <div>
+                                        <button className='edit-violation-btn' onClick={() => updateResidentSLAS(new_slas)}>SUBMIT</button>
+                                        <button className='delete-violation-btn' onClick={() => setSlasFlag(false)}>CANCEL</button>
+                                    </div>
+                                    </div>
+                                :   user.role === "dorm manager" || user.role === "dorm attendant" ?
+                                    <div>
+                                    <button className='edit-slas-btn' onClick={() => setSlasFlag(true)}>Change SLAS</button>
+                                    </div>
+                                : ""}
+                                </div>
                             </div>
-                            : ""}
-                            { slas_flag === true ?
-                            <div className='mini-popup'>
-                            <br></br>
-                            <form>
-                                <select className='dashboard-custom-select' id='slas_status' onChange={handleChange}>
-                                    <option value=""disabled defaultValue hidden>Choose SLAS</option>
-                                    <option value='FDS'>FDS</option>
-                                    <option value='FD'>FD</option>
-                                    <option value='PD80'>PD 80%</option>
-                                    <option value='PD60'>PD 60%</option>
-                                    <option value='PD33'>PD 33%</option>
-                                    <option value='No Discount'>No Discount</option>
-                                </select>   
-                            </form>
-                            <div>
-                                <button className='edit-violation-btn' onClick={() => updateResidentSLAS(new_slas)}>SUBMIT</button>
-                                <button className='delete-violation-btn' onClick={() => setSlasFlag(false)}>CANCEL</button>
-                            </div>
-                            </div>
-                            : ""}
                             <br></br>
                             <table className='table-display'>
                                 <tr className='table-row-display'>

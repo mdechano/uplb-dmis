@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
-const Violation = require('../handlers/violation');
+const Payment = require('../handlers/payment');
 const UserLog = require('../handlers/userlog');
 const utils = require('./utils');
 const Delete = require('../handlers/deleted');
 
-exports.addViolation = async (req, res) => {
+exports.addPayment = async (req, res) => {
     const body = req.body;
 
     if (!req.cookies || !req.cookies.authToken) {
@@ -21,28 +21,30 @@ exports.addViolation = async (req, res) => {
         return;
     }
 
-    const newViolation = {
-        date: body.date,
-        time: body.time,
-        nature: body.nature,
-        remarks: body.remarks,
+    const newPayment = {
+        term: body.term,
+        period_covered: body.period_covered,
+        or_number: body.or_number,
+        dorm_fee: body.dorm_fee,
+        appliances_fee: body.appliances_fee,
+        date_paid: body.date_paid,
         resident_id: body.resident_id,
         committed_by: body.committed_by
     }
 
     try {
-        const violation = await Violation.create(newViolation);
-        await UserLog.create(token.user, 'create', `violation ${violation._id}`)
-        console.log(`New violation: \n ${violation}`);
-        return res.status(201).send({ message: 'New violation successfully added' });
+        const payment = await Payment.create(newPayment);
+        await UserLog.create(token.user, 'create', `payment ${payment._id}`)
+        console.log(`New payment: \n ${payment}`);
+        return res.status(201).send({ message: 'New payment successfully added' });
     }
     catch(err) {
-        console.log(`Unable to create new violation. Error: ${err}`);
-        return res.status(500).send({ message: "Error creating new violation" })
+        console.log(`Unable to create new payment. Error: ${err}`);
+        return res.status(500).send({ message: "Error creating new payment" })
     }
 }
 
-exports.editViolation = async (req, res) => {
+exports.editPayment = async (req, res) => {
     if (!req.cookies || !req.cookies.authToken) {
         res.status(401).send({message: "Unauthorized access"});
         return;
@@ -58,20 +60,22 @@ exports.editViolation = async (req, res) => {
     }
 
     const body = req.body;
-    console.log(`violation id: ${req.params.id}`)
+    console.log(`payment id: ${req.params.id}`)
 
-    const violation = {
+    const payment = {
         id: req.params.id,
-        date: body.date,
-        time: body.time,
-        nature: body.nature,
-        remarks: body.remarks,
+        term: body.term,
+        period_covered: body.period_covered,
+        or_number: body.or_number,
+        dorm_fee: body.dorm_fee,
+        appliances_fee: body.appliances_fee,
+        date_paid: body.date_paid,
         resident_id: body.resident_id,
         committed_by: body.committed_by
     };
 
     try{
-        mongoose.Types.ObjectId(violation.id)
+        mongoose.Types.ObjectId(payment.id)
     }
     catch (err) {
         console.log('Invalid id')
@@ -80,30 +84,30 @@ exports.editViolation = async (req, res) => {
 
     var existing = null
     try{
-        existing = await Violation.getOne({_id: violation.id});
+        existing = await Payment.getOne({_id: payment.id});
         if (!existing) {
-            console.log("Violation not found")
-            return res.status(404).send({ message: 'Violation not found' });
+            console.log("Payment not found")
+            return res.status(404).send({ message: 'Payment not found' });
         }
     }
     catch(err){
-        console.log(`Error looking for violation in DB. Error: ${err}`);
-        return res.status(500).send({ message: 'Error searching for violation in database' })
+        console.log(`Error looking for payment in DB. Error: ${err}`);
+        return res.status(500).send({ message: 'Error searching for payment in database' })
     }
 
     try{
-        const edit = await Violation.edit(violation)
-        await UserLog.create(token.user, 'edit', `violation ${edit._id}`)
-        console.log(`Edited violation ${edit}`)
-        return res.status(200).send({ message: 'Violation successfully edited' })
+        const edit = await Payment.edit(payment)
+        await UserLog.create(token.user, 'edit', `payment ${edit._id}`)
+        console.log(`Edited payment ${edit}`)
+        return res.status(200).send({ message: 'payment successfully edited' })
     }
     catch{
-        console.log(`Unable to edit violation. Error: ${err}`);
-        return res.status(500).send({ message: 'Error editing violation' })
+        console.log(`Unable to edit payment. Error: ${err}`);
+        return res.status(500).send({ message: 'Error editing payment' })
     }
 }
 
-exports.deleteViolation = async (req, res) => {
+exports.deletePayment = async (req, res) => {
     if (!req.cookies || !req.cookies.authToken) {
         res.status(401).send({message: "Unauthorized access"});
         return;
@@ -145,26 +149,26 @@ exports.deleteViolation = async (req, res) => {
             }
         
     
-            let violation = null;
+            let payment = null;
             try{
-                violation = await Violation.getOne({_id: idList[i]});  //call to handler here
+                payment = await Payment.getOne({_id: idList[i]});  //call to handler here
                 //console.log(manager);
-                if(violation){
-                    await Delete.create("violation", violation);
-                    await UserLog.create(token.user, 'delete', `violation ${violation._id}`)
-                    await Violation.delete({_id: idList[i]});
-                    console.log('Successfully deleted violation with id:', idList[i]);
+                if(payment){
+                    await Delete.create("payment", payment);
+                    await UserLog.create(token.user, 'delete', `payment ${payment._id}`)
+                    await Payment.delete({_id: idList[i]});
+                    console.log('Successfully deleted payment with id:', idList[i]);
                     validId[deleted] = idList[i];
                     deleted++;
                 }
                 else{
-                    console.log('Invalid violation id:', idList[i]);
+                    console.log('Invalid payment id:', idList[i]);
                     invalidId[failed] = idList[i];
                     failed++;
                 }
             }catch(err){
-                console.log(`Error searching for violation in the DB ${err}` );
-                return res.status(500).send({message: 'Error searching for violation'});
+                console.log(`Error searching for payment in the DB ${err}` );
+                return res.status(500).send({message: 'Error searching for payment'});
             }
         }
 
@@ -172,22 +176,22 @@ exports.deleteViolation = async (req, res) => {
             res.status(404).send({body: invalidId, message: "ids not found" })
             return;
         }else if(failed == 0){
-            res.status(200).send({message: `Successfully deleted ${deleted} violation`});
+            res.status(200).send({message: `Successfully deleted ${deleted} payment`});
             return;
         }else{
-            res.status(201).send({body: invalidId ,message: `Successfully deleted ${deleted} violation/s but failed to delete ${failed} violation/s`});
+            res.status(201).send({body: invalidId ,message: `Successfully deleted ${deleted} payment/s but failed to delete ${failed} payment/s`});
             return;
         }
         
     }catch(err){
-        console.log(`Error deleting violations ${err}`);
-        res.status(500).send({ message: 'Error deleting violations'});
+        console.log(`Error deleting payments ${err}`);
+        res.status(500).send({ message: 'Error deleting payments'});
         return;
     }
 }
 
 
-exports.findViolation = async (req, res) => {
+exports.findPayment = async (req, res) => {
     if (!req.cookies || !req.cookies.authToken) {
         res.status(401).send({message: "Unauthorized access"});
         return;
@@ -203,9 +207,9 @@ exports.findViolation = async (req, res) => {
     }
 
 
-    console.log(`violation id: ${req.params.id}`)
+    console.log(`payment id: ${req.params.id}`)
     const id = req.params.id;
-    let violation;
+    let payment;
 
     try{
         mongoose.Types.ObjectId(id)
@@ -217,18 +221,18 @@ exports.findViolation = async (req, res) => {
 
 
     try{
-        violation = await Violation.getOne({_id: id})
-        if(!violation){
-            console.log("Violation not found")
-            return res.status(404).send({message: `violation not found`})
+        payment = await Payment.getOne({_id: id})
+        if(!payment){
+            console.log("Payment not found")
+            return res.status(404).send({message: `payment not found`})
         }
         else{
-            return res.status(200).send(violation)
+            return res.status(200).send(payment)
         }
     }
     catch(err){
-        console.log(`Error searching for violation in the DB ${err}` );
-        return res.status(500).send({message: 'Error searching for violation'})
+        console.log(`Error searching for payment in the DB ${err}` );
+        return res.status(500).send({message: 'Error searching for payment'})
     }
 }
 
@@ -247,19 +251,19 @@ exports.findAll = async (req, res) => {
         return;
     }
 
-    let violation;
+    let payment;
     try{
-        violation = await Violation.getAll()
-        if(!violation){
-            console.log("Violation database is empty")
-            return res.status(404).send({message: `No violation in database`})
+        payment = await Payment.getAll()
+        if(!payment){
+            console.log("Payment database is empty")
+            return res.status(404).send({message: `No payment in database`})
         }
         else{
-            return res.status(200).send(violation)
+            return res.status(200).send(payment)
         }
     }
     catch(err){
-        console.log(`Error searching for violation in the DB ${err}` );
-        return res.status(500).send({message: 'Error searching for violation'})
+        console.log(`Error searching for payment in the DB ${err}` );
+        return res.status(500).send({message: 'Error searching for payment'})
     }
 } 

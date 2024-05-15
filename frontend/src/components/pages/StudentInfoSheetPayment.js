@@ -12,6 +12,7 @@ function StudentInfoSheetPayment () {
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
     const [ currentResident, setResident] = useState();
     const [ resident_users, setResidentUsers] = useState();
+    const [ resident_payments, setResidentPayments ] = useState();
     const [ hire_flag, setHireFlag ] = useState(false);
     const [ remove_flag, setRemoveFlag ] = useState(false);
     const [ delete_flag, setDeleteFlag ] = useState(false);
@@ -23,12 +24,15 @@ function StudentInfoSheetPayment () {
         const id = link.slice(link.lastIndexOf('/')+1,link.length);
         const getResident = axios.get(apiUrl("/resident/") + id, { withCredentials: true });
         const getResidentUsers = axios.get(apiUrl("/user") , { withCredentials: true });
-            axios.all([getResident, getResidentUsers]).then(
+        const getResidentPayments = axios.get(apiUrl("/payment") , { withCredentials: true });
+            axios.all([getResident, getResidentUsers, getResidentPayments]).then(
                 axios.spread((...allData) => {
                     const allResidentData = allData[0].data
                     const allResidentUserData = allData[1].data
+                    const allPaymentData = allData[2].data
                     setResident(allResidentData)
                     setResidentUsers(allResidentUserData)
+                    setResidentPayments(allPaymentData)
                 })
             )
     }
@@ -291,6 +295,50 @@ function StudentInfoSheetPayment () {
         }, 1000))
     }
 
+    const submitPayment = (e) => {
+        e.preventDefault();
+
+        fetch(apiUrl("/payment"),{
+            method: "POST",
+            credentials:'include',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                term: document.getElementById("term").value,
+                period_covered: document.getElementById("period_covered").value,
+                or_number: document.getElementById("or_number").value,
+                dorm_fee: document.getElementById("dorm_fee").value,
+                appliances_fee: document.getElementById("appliances_fee").value,
+                date_paid: document.getElementById("date_paid").value,
+                resident_id: currentResident._id,
+                committed_by: user._id
+            })
+        })
+        .then(response => {return response.json()})
+        .then(alert("Successfully submitted payment."),
+        fetchData()
+        )
+        .then(document.getElementById("myForm").reset())
+    }
+
+    const deletePayment = (id) => {
+        fetch(apiUrl("/payment"), {
+            method: "DELETE",
+            credentials:'include',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                ids: [`${id}`],
+            }) 
+        })
+        .then(response => {return response.json()})
+        .then(alert("Successfully deleted payment."),
+        fetchData())
+    }
+
+
     useEffect(()=>{
         if(isAuthenticated === false){
             navigate("/")
@@ -374,7 +422,10 @@ function StudentInfoSheetPayment () {
                     </div>
 
                     <div className='profile-div-right'>
+                        { user.role === "resident" ?
                             <p className='payment-note'><i>Your confirmed payment will appear here after verification. Only authorized personel can edit this page. Kindly contact them for concerns.</i></p>
+                        :""
+                        }
                             <br></br>
                             <div className='slas-div'>
                                 <div>
@@ -418,29 +469,70 @@ function StudentInfoSheetPayment () {
                                     <td className='cell-title-display'>Dorm Fee</td>
                                     <td className='cell-title-display'>Appliances</td>
                                     <td className='cell-title-display'>Date Paid</td>
+                                    { user.role === "dorm manager" || user.role === 'dorm attendant' ?
+                                        <td className='cell-title-display-violation'>Edit</td>
+                                    : ""}
+                                    { user.role === "dorm manager" || user.role === 'dorm attendant' ?
+                                        <td className='cell-title-display-violation'>Delete</td>
+                                    : ""}
                                 </tr>
-                                <tr className='table-row-display'>
-                                    <td className='cell-input-display'>{}</td>
-                                    <td className='cell-input-display'>{}</td>
-                                    <td className='cell-input-display'>{}</td>
-                                    <td className='cell-input-display'>{}</td>
-                                    <td className='cell-input-display'>{}</td>
-                                    <td className='cell-input-display'>{}</td>
-                                </tr>
+                                { resident_payments !== undefined ?
+                                    resident_payments.map((payment, i) => {
+                                        if (currentResident._id === payment.resident_id) {
+                                            return (
+                                                <tr className='table-row-display'>
+                                                    <td className='cell-input-display'>{payment.term}</td>
+                                                    <td className='cell-input-display'>{payment.period_covered}</td>
+                                                    <td className='cell-input-display'>{payment.or_number}</td>
+                                                    <td className='cell-input-display'>{payment.dorm_fee}</td>
+                                                    <td className='cell-input-display'>{payment.appliances_fee}</td>
+                                                    <td className='cell-input-display'>{payment.date_paid}</td>
+                                                    { user.role === "dorm manager" || user.role === 'dorm attendant' ?
+                                                        <td className='cell-input-display-violation'><button className='edit-violation-btn'>EDIT</button></td>
+                                                    : ""}
+                                                    { user.role === "dorm manager" || user.role === 'dorm attendant' ?
+                                                        <td className='cell-input-display-violation'><button className='delete-violation-btn' onClick={() => {deletePayment(payment._id)}}>DELETE</button></td>
+                                                    : ""}
+                                                </tr>
+                                            )
+                                        }
+                                    })
 
-                                {/* implement this*/}
-                                {/* { currentResident.appliances_information.appliance_1.appliance !== "" ?
-                                <tr className='table-row-display'>
-                                    <td className='cell-input-display'>{currentResident.appliances_information.appliance_1.appliance}</td>
-                                    <td className='cell-input-display'>{currentResident.appliances_information.appliance_1.date_installed_1st_sem}</td>
-                                    <td className='cell-input-display'>{currentResident.appliances_information.appliance_1.date_returned_1st_sem}</td>
-                                    <td className='cell-input-display'>{currentResident.appliances_information.appliance_1.date_installed_2nd_sem}</td>
-                                    <td className='cell-input-display'>{currentResident.appliances_information.appliance_1.date_returned_2nd_sem}</td>
-                                </tr>
-                            
-                                : ""} */}
+                                : ""}
                                 
+
                             </table>
+
+                            { user.role === "dorm manager" || user.role === 'dorm attendant' || user.role === 'dorm assistant' ?
+                            <div className='add-violation-div'>
+                                <br></br>
+                                <hr></hr>
+                                <br></br>
+                                <form className='add-violation-form'  id="myForm">
+                                    <table>
+                                    <tr className='table-row'>
+                                        <td className='cell-title'>Term</td>
+                                        <td className='cell-title'>Period Covered</td>
+                                        <td className='cell-title'>OR#</td>
+                                        <td className='cell-title'>Dorm Fee</td>
+                                        <td className='cell-title'>Appliances Fee</td>
+                                        <td className='cell-title'>Date Paid</td>
+                                    </tr>
+                                    <tr className='table-row'>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="term" placeholder='AY and Semester' ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="period_covered" placeholder='Month'></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="or_number" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="dorm_fee" placeholder='backend compute'></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="appliances_fee" placeholder='backend compute'></input></td>
+                                        <td className='cell-input'><input type="date" className='complete-input' id="date_paid"></input></td>
+                                        
+                                    </tr>
+                                    </table>
+                                </form>
+                                <button className='add-violation-btn' onClick={submitPayment} >SUBMIT PAYMENT</button>
+
+                            </div>
+                            : ""}
                             
                     </div>
                 </div>

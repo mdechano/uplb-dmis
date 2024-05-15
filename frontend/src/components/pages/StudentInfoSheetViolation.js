@@ -235,9 +235,8 @@ function StudentInfoSheetViolation () {
         })
         .then(response => {return response.json()})
         .then(alert("Successfully submitted violation."),
-        setTimeout(function(){
-            window.location.reload();
-        }, 1000))
+        fetchData())
+        .then(document.getElementById("myForm").reset())
     }
 
     const deleteViolation = (id) => {
@@ -408,7 +407,7 @@ function StudentInfoSheetViolation () {
                                 <br></br>
                                 <hr></hr>
                                 <br></br>
-                                <form className='add-violation-form'>
+                                <form className='add-violation-form' id="myForm">
                                     <table>
                                     <tr className='table-row'>
                                         <td className='cell-title'>Date</td>

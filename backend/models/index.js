@@ -7,6 +7,7 @@ exports.models = {
     Resident: require('./resident'),
     Deleted: require('./deleted'),
     Picture: require('./picture'),
-    Violation: require('./violation')
+    Violation: require('./violation'),
+    Payment: require('./payment')
 
 }

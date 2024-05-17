@@ -110,14 +110,11 @@ function EditStudentPersonal () {
                     emergency_details: emergency_details,
                     slas: "None",
                     picture_url: currentResident.picture_url
-                    // soon: pass payment and violation deets from personel edits
                 })
             })
             .then(response => {return response.json()})
             .then(alert("Successfully edited resident profile."),
-            setTimeout(function(){
-                window.location.reload();
-             }, 1000))
+            navigate('/resident-personal/'+currentResident._id))
         }
     }
 
@@ -205,7 +202,7 @@ function EditStudentPersonal () {
                     appliances: currentResident.appliances,
                     appliances_information: currentResident.appliances_information,
                     emergency_details: currentResident.emergency_details,
-                    slas: "None",
+                    slas: currentResident.slas,
                     picture_url: url
             })
         })
@@ -301,8 +298,8 @@ function EditStudentPersonal () {
                                                 <option value="intersex">Intersex</option>
                                             </select>
                                         </td>
-                                        <td className='cell-input'><input type="text" id="student_no" required placeholder='format: 20XX-XXXXX'></input></td>
-                                        <td className='cell-input'><input type="text" id="civil_status" required></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="student_no" required placeholder='format: 20XX-XXXXX'></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="civil_status" required></input></td>
                                         {/* <td className='cell-input'> */}
                                         <select className='custom-select-birthday-month' id="birth-month">
                                                 <option value="January">January</option>
@@ -354,7 +351,7 @@ function EditStudentPersonal () {
                                                 <option value="31">31</option>
                                             </select>
                                         {/* </td> */}
-                                        <td className='cell-input'><input type="text" className='year'  id="birth-year" placeholder='year'></input></td>
+                                        <td className='cell-input'><input type="text"  className='complete-input'  id="birth-year" placeholder='year'></input></td>
                                         
                                     </tr>
                                     <tr className='table-row'>

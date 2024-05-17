@@ -5,5 +5,7 @@ exports.controllers = {
     AttendantController: require('./attendant'),
     ResidentController: require('./resident'),
     PictureController: require('./picture'),
-    ViolationController: require('./violation')
+    ViolationController: require('./violation'),
+    PaymentController: require('./payment')
+
 }

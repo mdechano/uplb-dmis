@@ -1,16 +1,16 @@
-const { Violation } = require('../models/index').models;
+const { Payment } = require('../models/index').models;
 
 exports.create = (object) => {
     // asynchronous
     return new Promise((resolve,reject) => {
         // create and save new Picture
-        const violation = new Violation(object)
-        violation.save((err, violation) => {
+        const payment = new Payment(object)
+        payment.save((err, payment) => {
             // failed: return error
             if(err) { reject(err); }
             // success: return newly uploaded file
             else {
-                resolve(violation); 
+                resolve(payment); 
             }
         });
     });
@@ -18,18 +18,18 @@ exports.create = (object) => {
 
 exports.getAll = () => {
     return new Promise((resolve, reject) => {
-        Violation.find((err, violation) => {
+        Payment.find((err, payment) => {
             if (err) { reject(err); }
-            resolve(violation);
+            resolve(payment);
         });
     });
 }
 
 exports.getOne = (query, next) => {
     return new Promise((resolve, reject) => {
-        Violation.findOne(query, (err, violation) => {
+        Payment.findOne(query, (err, payment) => {
             if (err) { reject(err); }
-            resolve(violation);
+            resolve(payment);
         });
     });
 }
@@ -37,18 +37,20 @@ exports.getOne = (query, next) => {
 exports.edit = (object) => {
     return new Promise((resolve, reject) => {
         // findone then edit
-        Violation.findOne({ _id: object.id }, (err, violation) => {
+        Payment.findOne({ _id: object.id }, (err, payment) => {
             if (err) { reject(err); }
-            violation.date = object.date,
-            violation.time = object.time,
-            violation.nature = object.nature,
-            violation.remarks = object.remarks,
-            violation.resident_id = object.resident_id,
-            violation.committed_by = object.committed_by
+            payment.term = object.term,
+            payment.period_covered = object.period_covered,
+            payment.or_number = object.or_number,
+            payment.dorm_fee = object.dorm_fee,
+            payment.appliances_fee = object.appliances_fee,
+            payment.date_paid = object.date_paid,
+            payment.resident_id = object.resident_id,
+            payment.committed_by = object.committed_by
             
-            violation.save((err, violation) => {
+            payment.save((err, payment) => {
                 if(err) { reject(err); }
-                resolve(violation);
+                resolve(payment);
             });
         });
     });
@@ -57,7 +59,7 @@ exports.edit = (object) => {
 exports.delete = (query) => {
     return new Promise((resolve, reject) => {
         // deletemany returns an object w/ number of deleted docs if the operation is successful
-        Violation.deleteMany(query, (err, result) => {
+        Payment.deleteMany(query, (err, result) => {
             if(err) { reject(err); }
             else { resolve(result); }
         })

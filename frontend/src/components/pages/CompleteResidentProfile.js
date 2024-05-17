@@ -215,7 +215,7 @@ function CompleteResidentProfile () {
                         appliances: appliances,
                         appliances_information: appliances_information,
                         emergency_details: emergency_details,
-                        slas: "None",
+                        slas: "No Discount",
                         picture_url: finalpicture
                     })
                 })

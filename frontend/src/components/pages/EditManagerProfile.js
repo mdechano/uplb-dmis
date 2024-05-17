@@ -97,9 +97,7 @@ function EditManagerProfile () {
                         .then(response => {return response.json()})
                         .then(
                             alert("Successfully editted manager profile."),
-                            setTimeout(function(){
-                                window.location.reload();
-                            }, 1000)
+                            navigate('/manager/'+manager._id)
                         )
                     }
                 })

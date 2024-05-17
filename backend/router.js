@@ -5,6 +5,7 @@ const Attendant = require('./endpoints/attendant');
 const Dorm = require('./endpoints/dorm');
 const Picture = require('./endpoints/picture');
 const Violation = require('./endpoints/violation');
+const Payment = require('./endpoints/payment');
 const Router = require('express').Router;
 
 const router = Router();
@@ -16,5 +17,6 @@ router.use('/attendant', Attendant);
 router.use('/dorm', Dorm);
 router.use('/picture', Picture);
 router.use('/violation', Violation);
+router.use('/payment', Payment);
 
 module.exports = router;

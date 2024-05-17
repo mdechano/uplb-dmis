@@ -62,9 +62,7 @@ function EditDormInformation () {
                     .then(response => {return response.json()})
                     .then(
                         alert("Successfully editted dorm information."),
-                        setTimeout(function(){
-                            window.location.reload();
-                        }, 1000))
+                        navigate('/dorm-information'))
                 }
             })
         }

@@ -17,6 +17,8 @@ function StudentInfoSheetViolation () {
     const [ hire_flag, setHireFlag ] = useState(false);
     const [ remove_flag, setRemoveFlag ] = useState(false);
     const [ delete_flag, setDeleteFlag ] = useState(false);
+    const [ edit_flag, setEditFlag ] = useState(false);
+    const [ edit_violation, setEditViolation] = useState();
 
     const fetchData = () => {
         const link = window.location.href;
@@ -235,9 +237,35 @@ function StudentInfoSheetViolation () {
         })
         .then(response => {return response.json()})
         .then(alert("Successfully submitted violation."),
-        setTimeout(function(){
-            window.location.reload();
-        }, 1000))
+        fetchData())
+        .then(document.getElementById("myForm").reset())
+    }
+
+    const toggleeditViolation = (violation) => {
+        setEditFlag(true)
+        console.log("Edit violation: " + violation._id)
+        setEditViolation(violation)
+        console.log(edit_violation)
+    }
+
+    const editViolation = (violation) => {
+        fetch(apiUrl("/violation/"+violation._id),{
+                method: "PUT",
+                credentials:'include',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify({
+                    date: violation.date,
+                    time: violation.time,
+                    nature: document.getElementById("edit_violation_nature").value,
+                    remarks: document.getElementById("edit_violation_remarks").value,
+                    resident_id: violation.resident_id,
+                    committed_by: user._id
+                })
+            })
+            .then(response => {return response.json()})
+            .then(alert("Successfully editted violation."), setEditFlag(false), fetchData())
     }
 
     const deleteViolation = (id) => {
@@ -252,10 +280,7 @@ function StudentInfoSheetViolation () {
             }) 
         })
         .then(response => {return response.json()})
-        .then(alert("Successfully deleted violation."),
-        setTimeout(function(){
-            window.location.reload();
-        }, 1000))
+        .then(alert("Successfully deleted violation."), fetchData())
     }
 
     const deleteResident = (id) => {
@@ -342,7 +367,6 @@ function StudentInfoSheetViolation () {
                             </div>
                             </div>
                             : ""}
-                            {/* delete resident */}
                             { user.role === 'dorm manager' ?
                             <button className='profile-nav-btn-delete' onClick = {() => setDeleteFlag(true)}>DELETE RESIDENT</button>
                             : ""}
@@ -382,14 +406,15 @@ function StudentInfoSheetViolation () {
                                 { resident_violations !== undefined ?
                                     resident_violations.map((violation, i) => {
                                         if (currentResident._id === violation.resident_id) {
+                                            // console.log(i)
                                             return (
-                                                <tr className='table-row-display'>
+                                                <tr key={i} className='table-row-display'>
                                                     <td className='cell-input-display'>{violation.date}</td>
                                                     <td className='cell-input-display'>{violation.time}</td>
                                                     <td className='cell-input-display'>{violation.nature}</td>
                                                     <td className='cell-input-display'>{violation.remarks}</td>
                                                     { user.role === "dorm manager" || user.role === 'dorm attendant' ?
-                                                        <td className='cell-input-display-violation'><button className='edit-violation-btn'>EDIT</button></td>
+                                                        <td className='cell-input-display-violation'><button className='edit-violation-btn' onClick={() => {toggleeditViolation(violation)}}>EDIT</button></td>
                                                     : ""}
                                                     { user.role === "dorm manager" || user.role === 'dorm attendant' ?
                                                         <td className='cell-input-display-violation'><button className='delete-violation-btn' onClick={() => deleteViolation(violation._id)}>DELETE</button></td>
@@ -397,18 +422,46 @@ function StudentInfoSheetViolation () {
                                                 </tr>
                                             )
                                         }
+                                        
                                     })
 
                                 : ""}
-                                
                             </table>
+                            
+                            { edit_flag === true?
+                                <div >
+                                <br></br>
+                                <p className='payment-note'><i>You are about to edit a violation. You may only edit the nature and remarks of the violation. If you wish to edit the date and time, kindly delete the violation and submit a new one.</i></p>
+                                <br></br>
+                                    
+                                     <table className='table-display'>
+                                        <tr className='table-row-display'>
+                                            <td ><b>Date</b></td>
+                                            <td ><b>Time</b></td>
+                                            <td ><b>Nature</b></td>
+                                            <td ><b>Remarks</b></td>
+                                            <td ></td>
+                                            <td ></td>
+                                            
+                                        </tr>
+                                        <tr className='table-row-display-edit'>
+                                            <td className='cell-input'>{edit_violation.date}</td>
+                                            <td className='cell-input'>{edit_violation.time}</td>
+                                            <td className='cell-input'><input type="text" className='complete-input' id="edit_violation_nature" placeholder={edit_violation.nature}></input></td>
+                                            <td className='cell-input'><input type="text" className='complete-input' id="edit_violation_remarks" placeholder={edit_violation.remarks}></input></td>
+                                            <td className='cell-title-display'><button className='edit-violation-btn' onClick={() => {editViolation(edit_violation)}}>SAVE</button></td>
+                                            <td className='cell-title-display'><button className='delete-violation-btn' onClick={() => setEditFlag(false)}>CANCEL</button></td>
+                                        </tr>  
+                                    </table>   
+                                </div>
+                                : ""}
 
                             { user.role === "dorm manager" || user.role === 'dorm attendant' ?
                             <div className='add-violation-div'>
                                 <br></br>
                                 <hr></hr>
                                 <br></br>
-                                <form className='add-violation-form'>
+                                <form className='add-violation-form' id="myForm">
                                     <table>
                                     <tr className='table-row'>
                                         <td className='cell-title'>Date</td>
@@ -433,11 +486,7 @@ function StudentInfoSheetViolation () {
                 </div>
                 : <p className='profile-note'><i>Loading profile...</i></p> }
                 </div>
-                {/* {isOpenDelete ? <ConfirmDelete
-                instance = {deleted}
-                type = {"violation"}
-                handleClose={togglePopupDelete}
-                /> : ""} */}
+               
             </div>
         </div>
     )

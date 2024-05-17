@@ -162,14 +162,11 @@ function EditStudentCheckIn () {
                     emergency_details: currentResident.emergency_details,
                     slas: currentResident.slas,
                     picture_url: currentResident.picture_url
-                    // soon: pass payment and violation deets from personel edits
                 })
             })
             .then(response => {return response.json()})
             .then(alert("Successfully edited resident profile."),
-            setTimeout(function(){
-                window.location.reload();
-             }, 1000))
+            navigate('/resident-check-in/'+currentResident._id))
         }
     }
 
@@ -257,7 +254,7 @@ function EditStudentCheckIn () {
                     appliances: currentResident.appliances,
                     appliances_information: currentResident.appliances_information,
                     emergency_details: currentResident.emergency_details,
-                    slas: "None",
+                    slas: currentResident.slas,
                     picture_url: url
             })
         })
@@ -343,17 +340,17 @@ function EditStudentCheckIn () {
                                         <tr>
                                             <td className='cell-title'><th>FORM 5</th></td>
                                             <td>1st Sem &nbsp;&nbsp;&nbsp;</td>
-                                            <td><input type="text" id="first-sem-form5" name="first-sem-form5"></input></td>
+                                            <td><input type="text" id="first-sem-form5" className='complete-input' name="first-sem-form5"></input></td>
                                             <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;&nbsp;</td>
-                                            <td><input type="text" id="second-sem-form5" name="second-sem-form5"></input></td>
+                                            <td><input type="text" id="second-sem-form5" className='complete-input' name="second-sem-form5"></input></td>
                                         </tr>
 
                                         <tr>
                                             <td className='cell-title'><th>ROOM NUMBER</th></td>
                                             <td>1st Sem &nbsp;&nbsp;&nbsp;</td>
-                                            <td><input type="text" id="first-sem-room-number" name="room-number-1"></input></td>
+                                            <td><input type="text" id="first-sem-room-number" className='complete-input' name="room-number-1"></input></td>
                                             <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2nd Sem &nbsp;&nbsp;&nbsp;</td>
-                                            <td><input type="text" id="second-sem-room-number" name="room-number-2"></input></td>
+                                            <td><input type="text" id="second-sem-room-number" className='complete-input' name="room-number-2"></input></td>
                                         </tr>
 
                                     </div>
@@ -440,56 +437,56 @@ function EditStudentCheckIn () {
                                                 <td className='cell-title'>Date Returned in 2nd Sem</td>
                                             </tr>
                                             <tr className='table-form-tr'>
-                                                <td className='cell-input'><input type = "text" id = "appliance-1"></input></td>
+                                                <td className='cell-input'><input type = "text" className='complete-input' id = "appliance-1"></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-1-date-installed-1st-sem" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-1-date-installed-2nd-sem" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-1-date-returned-1st-sem" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-1-date-returned-2nd-sem" ></input></td>
                                             </tr>
                                             <tr className='table-form-tr'>
-                                                <td className='cell-input'><input type = "text" id = "appliance-2" ></input></td>
+                                                <td className='cell-input'><input type = "text" className='complete-input' id = "appliance-2" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-2-date-installed-1st-sem" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-2-date-installed-2nd-sem" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-2-date-returned-1st-sem" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-2-date-returned-2nd-sem" ></input></td>
                                             </tr>
                                             <tr className='table-form-tr'>
-                                                <td className='cell-input'><input type = "text" id = "appliance-3" ></input></td>
+                                                <td className='cell-input'><input type = "text" className='complete-input' id = "appliance-3" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-3-date-installed-1st-sem" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-3-date-installed-2nd-sem" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-3-date-returned-1st-sem" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-3-date-returned-2nd-sem" ></input></td>
                                             </tr>
                                             <tr className='table-form-tr'>
-                                                <td className='cell-input'><input type = "text" id = "appliance-4" ></input></td>
+                                                <td className='cell-input'><input type = "text" className='complete-input' id = "appliance-4" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-4-date-installed-1st-sem" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-4-date-installed-2nd-sem" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-4-date-returned-1st-sem" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-4-date-returned-2nd-sem" ></input></td>
                                             </tr>
                                             <tr className='table-form-tr'>
-                                                <td className='cell-input'><input type = "text" id = "appliance-5" ></input></td>
+                                                <td className='cell-input'><input type = "text" className='complete-input' id = "appliance-5" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-5-date-installed-1st-sem" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-5-date-installed-2nd-sem" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-5-date-returned-1st-sem" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-5-date-returned-2nd-sem" ></input></td>
                                             </tr>
                                             <tr className='table-form-tr'>
-                                                <td className='cell-input'><input type = "text" id = "appliance-6" ></input></td>
+                                                <td className='cell-input'><input type = "text" className='complete-input' id = "appliance-6" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-6-date-installed-1st-sem" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-6-date-installed-2nd-sem" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-6-date-returned-1st-sem" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-6-date-returned-2nd-sem" ></input></td>
                                             </tr>
                                             <tr className='table-form-tr'>
-                                                <td className='cell-input'><input type = "text" id = "appliance-7" ></input></td>
+                                                <td className='cell-input'><input type = "text" className='complete-input' id = "appliance-7" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-7-date-installed-1st-sem" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-7-date-installed-2nd-sem" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-7-date-returned-1st-sem" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-7-date-returned-2nd-sem" ></input></td>
                                             </tr>
                                             <tr className='table-form-tr'>
-                                                <td className='cell-input'><input type = "text" id = "appliance-8" ></input></td>
+                                                <td className='cell-input'><input type = "text" className='complete-input' id = "appliance-8" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-8-date-installed-1st-sem" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-8-date-installed-2nd-sem" ></input></td>
                                                 <td className='cell-input'><input type = "date" id = "appliance-8-date-returned-1st-sem" ></input></td>

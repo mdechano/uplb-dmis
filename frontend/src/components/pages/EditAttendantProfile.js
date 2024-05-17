@@ -98,9 +98,7 @@ function EditAttendantProfile () {
                         .then(response => {return response.json()})
                         .then(
                             alert("Successfully editted attendant profile."),
-                                setTimeout(function(){
-                                    window.location.reload();
-                                 }, 1000)
+                            navigate('/attendant/'+attendant._id)
                         )
                     }
                 })

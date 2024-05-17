@@ -347,3 +347,9 @@ padding-right: 10px;
 .profile-nav-btn-delete:focus {
   background-color: #b3060b;
 }
+
+.table-row-display-edit {
+  border-collapse: collapse;
+    width: 100%;
+    /* background-color: #f4bc45; */
+}

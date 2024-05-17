@@ -223,3 +223,11 @@ hr.horizontal-line {
 .edit-slas-btn:focus {
     background-color: #068b42;
 }
+
+.edit-input {
+    width: 100%;
+    padding: 10px 10px;
+    
+    border: thin solid #555;
+    border-radius: 5px;
+}

@@ -125,13 +125,24 @@ function DormInformation () {
                                                     console.log(person)
                                                     if (person.dorm === dorm.dorm_name && person.role === "dorm assistant") {
                                                         return (
+                                                            
                                                             <tbody>
+                                                            { user.role !== 'resident' ?
                                                             <tr className='name-click' onClick={()=> navigate("/resident-personal/"+person._id)}>
                                                                 <td>{person.last_name}, {person.first_name} {person.middle_name}</td>
                                                                 <td>{person.email}</td>
                                                                 <td>{person.contact_number}</td>
                                                             </tr>
+                                                            : 
+                                                            <tr>
+                                                                <td>{person.last_name}, {person.first_name} {person.middle_name}</td>
+                                                                <td>{person.email}</td>
+                                                                <td>{person.contact_number}</td>
+                                                            </tr>
+                                                            }
                                                             </tbody>
+                                                            
+                                                            
                                                         )
                                                         
                                                     }

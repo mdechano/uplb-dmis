@@ -18,6 +18,8 @@ function StudentInfoSheetPayment () {
     const [ delete_flag, setDeleteFlag ] = useState(false);
     const [ slas_flag, setSlasFlag ] = useState(false);
     const [ new_slas, setNewSlas ] = useState();
+    const [ edit_flag, setEditFlag ] = useState(false);
+    const [ edit_payment, setEditPayment] = useState();
 
     const fetchData = () => {
         const link = window.location.href;
@@ -229,9 +231,7 @@ function StudentInfoSheetPayment () {
         })
         .then(response => {return response.json()})
         .then(alert("Successfully deleted resident."),
-        setTimeout(function(){
-            window.location.reload();
-        }, 1000))
+        navigate("/residents-list"))
     }
     
     const handleChange=()=>{
@@ -290,9 +290,7 @@ function StudentInfoSheetPayment () {
         })
         .then(response => {return response.json()})
         .then(alert("Successfully updated SLAS status of student."),
-        setTimeout(function(){
-            window.location.reload();
-        }, 1000))
+        navigate("/resident-payment/"+currentResident._id), fetchData(), setSlasFlag(false))
     }
 
     const submitPayment = (e) => {
@@ -321,6 +319,36 @@ function StudentInfoSheetPayment () {
         )
         .then(document.getElementById("myForm").reset())
     }
+
+    const toggleeditPayment = (payment) => {
+        setEditFlag(true)
+        console.log("Edit payment: " + payment._id)
+        setEditPayment(payment)
+        console.log(edit_payment)
+    }
+
+    const editPayment = (payment) => {
+        fetch(apiUrl("/payment/"+payment._id),{
+                method: "PUT",
+                credentials:'include',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify({
+                    term: payment.term,
+                    period_covered: payment.period_covered,
+                    or_number: payment.or_number,
+                    dorm_fee: document.getElementById("edit_dorm_fee").value,
+                    appliances_fee: document.getElementById("edit_appliances_fee").value,
+                    date_paid: document.getElementById("edit_date_paid").value,
+                    resident_id: payment.resident_id,
+                    committed_by: user._id
+                })
+            })
+            .then(response => {return response.json()})
+            .then(alert("Successfully editted payment."), setEditFlag(false), fetchData())
+    }
+
 
     const deletePayment = (id) => {
         fetch(apiUrl("/payment"), {
@@ -467,12 +495,12 @@ function StudentInfoSheetPayment () {
                                     <td className='cell-title-display'>Period Covered</td>
                                     <td className='cell-title-display'>OR#</td>
                                     <td className='cell-title-display'>Dorm Fee</td>
-                                    <td className='cell-title-display'>Appliances</td>
+                                    <td className='cell-title-display'>Appliance Fee</td>
                                     <td className='cell-title-display'>Date Paid</td>
-                                    { user.role === "dorm manager" || user.role === 'dorm attendant' ?
+                                    { user.role === "dorm manager" || user.role === 'dorm attendant' || user.role === 'dorm assistant' ?
                                         <td className='cell-title-display-violation'>Edit</td>
                                     : ""}
-                                    { user.role === "dorm manager" || user.role === 'dorm attendant' ?
+                                    { user.role === "dorm manager" || user.role === 'dorm attendant' || user.role === 'dorm assistant' ?
                                         <td className='cell-title-display-violation'>Delete</td>
                                     : ""}
                                 </tr>
@@ -487,10 +515,10 @@ function StudentInfoSheetPayment () {
                                                     <td className='cell-input-display'>{payment.dorm_fee}</td>
                                                     <td className='cell-input-display'>{payment.appliances_fee}</td>
                                                     <td className='cell-input-display'>{payment.date_paid}</td>
-                                                    { user.role === "dorm manager" || user.role === 'dorm attendant' ?
-                                                        <td className='cell-input-display-violation'><button className='edit-violation-btn'>EDIT</button></td>
+                                                    { user.role === "dorm manager" || user.role === 'dorm attendant' || user.role === 'dorm assistant' ?
+                                                        <td className='cell-input-display-violation'><button className='edit-violation-btn' onClick={() => {toggleeditPayment(payment)}}>EDIT</button></td>
                                                     : ""}
-                                                    { user.role === "dorm manager" || user.role === 'dorm attendant' ?
+                                                    { user.role === "dorm manager" || user.role === 'dorm attendant' || user.role === 'dorm assistant' ?
                                                         <td className='cell-input-display-violation'><button className='delete-violation-btn' onClick={() => {deletePayment(payment._id)}}>DELETE</button></td>
                                                     : ""}
                                                 </tr>
@@ -502,6 +530,39 @@ function StudentInfoSheetPayment () {
                                 
 
                             </table>
+
+                            { edit_flag === true?
+                                <div >
+                                <br></br>
+                                <p className='payment-note'><i>You are about to edit a payment. You may only edit the dorm fee, appliance fee, and date paid. If you wish to edit the term, period covered, or OR#, kindly delete the payment and submit a new one.</i></p>
+                                <br></br>
+                                    
+                                     <table className='table-display'>
+                                        <tr className='table-row-display'>
+                                            <td ><b>Term</b></td>
+                                            <td ><b>Period Covered</b></td>
+                                            <td ><b>OR#</b></td>
+                                            <td ><b>Dorm Fee</b></td>
+                                            <td ><b>Appliance Fee</b></td>
+                                            <td ><b>Date Paid</b></td>
+                                            <td ></td>
+                                            <td ></td>
+                                            
+                                        </tr>
+
+                                        <tr className='table-row-display-edit'>
+                                        <td className='cell-input'>{edit_payment.term}</td>
+                                        <td className='cell-input'>{edit_payment.period_covered}</td>
+                                        <td className='cell-input'>{edit_payment.or_number}</td>
+                                        <td className='cell-input'><input type="text" className='edit-input' id="edit_dorm_fee" placeholder={edit_payment.dorm_fee}></input></td>
+                                        <td className='cell-input'><input type="text" className='edit-input' id="edit_appliances_fee" placeholder={edit_payment.appliances_fee}></input></td>
+                                        <td className='cell-input'><input type="date" className='edit-input' id="edit_date_paid" placeholder={edit_payment.date_paid}></input></td>
+                                            <td className='cell-title-display'><button className='edit-violation-btn' onClick={() => {editPayment(edit_payment)}}>SAVE</button></td>
+                                            <td className='cell-title-display'><button className='delete-violation-btn' onClick={() => setEditFlag(false)}>CANCEL</button></td>
+                                        </tr>  
+                                    </table>   
+                                </div>
+                                : ""}
 
                             { user.role === "dorm manager" || user.role === 'dorm attendant' || user.role === 'dorm assistant' ?
                             <div className='add-violation-div'>
@@ -519,11 +580,11 @@ function StudentInfoSheetPayment () {
                                         <td className='cell-title'>Date Paid</td>
                                     </tr>
                                     <tr className='table-row'>
-                                        <td className='cell-input'><input type="text" className='complete-input' id="term" placeholder='AY and Semester' ></input></td>
-                                        <td className='cell-input'><input type="text" className='complete-input' id="period_covered" placeholder='Month'></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="term" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="period_covered"></input></td>
                                         <td className='cell-input'><input type="text" className='complete-input' id="or_number" ></input></td>
-                                        <td className='cell-input'><input type="text" className='complete-input' id="dorm_fee" placeholder='backend compute'></input></td>
-                                        <td className='cell-input'><input type="text" className='complete-input' id="appliances_fee" placeholder='backend compute'></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="dorm_fee"></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="appliances_fee" ></input></td>
                                         <td className='cell-input'><input type="date" className='complete-input' id="date_paid"></input></td>
                                         
                                     </tr>

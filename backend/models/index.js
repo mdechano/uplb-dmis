@@ -8,6 +8,7 @@ exports.models = {
     Deleted: require('./deleted'),
     Picture: require('./picture'),
     Violation: require('./violation'),
-    Payment: require('./payment')
+    Payment: require('./payment'),
+    Receipt: require('./receipt')
 
 }

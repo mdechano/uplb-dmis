@@ -7,6 +7,7 @@ exports.handlers = {
     DeletedHandler: require('./deleted'),
     PictureHandler: require('./picture'),
     ViolationHandler: require('./violation'),
-    PaymentHandler: require('./payment')
+    PaymentHandler: require('./payment'),
+    ReceiptHandler: require('./receipt')
     
 }

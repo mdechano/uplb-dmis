@@ -6,5 +6,6 @@ exports.endpoints = {
     Resident: require('./resident'),
     Picture: require('./picture'),
     Violation: require('./violation'),
-    Payment: require('./payment')
+    Payment: require('./payment'),
+    Receipt: require('./receipt')
 }

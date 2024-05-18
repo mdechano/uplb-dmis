@@ -13,7 +13,7 @@ function CompleteAttendantProfile () {
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
 
-    const [file, setfile] = useState();
+    const [file, setfile] = useState(); 
     const [finalpicture, setFinalPicture] = useState();
     const [picture, setPicture] = useState();
     const [dorm, setDorm] = useState();

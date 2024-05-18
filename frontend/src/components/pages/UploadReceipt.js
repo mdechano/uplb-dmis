@@ -1,49 +1,147 @@
-import {React, useState, useEffect} from 'react';
-import {Link} from 'react-router-dom'
-import {useNavigate} from 'react-router-dom';
-import '../css/UploadReceipt.css'
-import NavBar from '../pages/NavBar';
+import {React, useEffect, useState} from 'react';
+import {Link, useNavigate} from 'react-router-dom';
+import {apiUrl} from '../utilities/apiUrl';
+import useStore from '../utilities/authHook';
+import axios, { all } from "axios";
+import '../css/UploadReceipt.css';
+import NavBar from './NavBar';
+import { v4 as uuidv4 } from "uuid";
+import { supabase } from "../../lib/supabase";
 
 function UploadReceipt () {
 
     const navigate = useNavigate();
+    const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
+    const [ resident, setResident ] = useState();
+    const [file, setfile] = useState(); 
+    const [final_pdf, setFinalPDF] = useState();
+
+    const fetchData = () => {
+        const link = window.location.href;
+        const id = link.slice(link.lastIndexOf('/')+1,link.length);
+        const getResident = axios.get(apiUrl("/resident/") + id, { withCredentials: true });
+        axios.all([getResident]).then(
+            axios.spread((...allData) => {
+                setResident(allData[0].data)
+            })
+        )
+    }
+
+    const sendData = (e) => {
+        // e.preventDefault();
+
+        fetch(apiUrl("/receipt"),{
+            method: "POST",
+            credentials:'include',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                date_posted: document.getElementById("date_posted").value,
+                academic_year: document.getElementById("academic_year").value,
+                semester: document.getElementById("semester").value,
+                months_covered: document.getElementById("months").value,
+                resident_id: resident._id,
+                pdf_url: final_pdf
+            })
+        })
+        .then(response => {return response.json()})
+        .then(alert("Successfully uploaded receipt."), navigate('/resident-payment/'+resident._id))
+    }
+
+    const handleFileSelected = (e) => {
+        // supabase assignment
+        setfile(e.target.files[0]);
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+            // upload pdf
+            const filename = `${uuidv4()}-${file.name}`;
+            const { data, error } = await supabase.storage.from("receipts").upload(filename, file, {
+                cacheControl: "3600",
+                upsert: false,
+            });
+            // get generated data path
+            const filepath = data.path;
+            // get and save public URL in final_pdf
+            const { data: pdf } = supabase.storage.from('receipts').getPublicUrl(`${filepath}`);
+            setFinalPDF(pdf.publicUrl);
+            // alert("Successfully uploaded PDF.")
+
+            sendData()
+    };
+
+
+
+    useEffect(()=>{
+        if(isAuthenticated === false){
+            navigate("/")
+        } 
+        else {
+            fetchData()
+        }
+    },[]);
 
     return (
         <div>
             <NavBar></NavBar>
-
-            <div className='upload-receipt-div'>
-            <   div className='upper-div'>
-                    <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
+            <div>
+                <div>
+                    <div className='upper-div'>
+                    <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button> 
+                    </div>
+                    <div className='title-bg'><p className='page-title'>UPLOAD RECEIPT</p></div>
+                    
                 </div>
-                <div className='title-bg'><p className='page-title'>PAYMENT RECEIPTS</p></div>
-                <form action method="post">
-    
-                    <h1><strong>File upload</strong> with style and pure CSS</h1>
+                { resident !== undefined ?
+                <div  className='upload-receipt-div'>
+                     <div className='upload-body'>
+                     <p className='upload-receipt-note'><i>Kindly upload your payment receipts in PDF format. You may view, edit, or delete your uploaded receipts at the <b>Uploaded Receipts</b> section of your student information sheet.</i></p>
+                     <br></br>
+                        <form className='upload-receipt-form'>
+                            <table >
+                                    <tr className='table-row'>
+                                        <td className='cell-title'>Date Today</td>
+                                        <td className='cell-title'>Academic Year</td>
+                                    </tr>
+                                    <tr className='table-row'>
+                                        <td className='cell-input'><input type="date" className='complete-input' id="date_posted" required></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="academic_year" ></input></td>
+                                    </tr>
+                                    <tr className='table-row'>
+                                        <td className='cell-title'>Semester</td>
+                                        <td className='cell-title'>Months Covered of Payment</td>
+                                    </tr>
+                                    <tr className='table-row'>
+                                    <td className='cell-input'>
+                                            <select className='custom-select-sex' id="semester" required>
+                                                <option>Select Semester</option>
+                                                <option value="1st Semester">1st Sem</option>
+                                                <option value="2nd Semester">2nd Sem</option>
+                                                <option value="Midyear">Midyear</option>
+                                            </select>
+                                        </td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="months" ></input></td>
+                                        
+                                    </tr>
+                            </table>
+                            <br></br>
+                            <div className='upload-file-container'>
+                                <input className='pdf-file-upload'  type="file" accept="application/pdf" onClick={handleFileSelected} ></input>
+                            </div>
+                            <br></br>
+                            <button className='upload-pdf-submit' id='submit-btn' type="submit" onClick={handleSubmit}>UPLOAD RECEIPT</button>
+                        </form>
+                        <br></br>
+                        <br></br>
+                    </div>
                     
-                    <div class="form-group">
-                        <label for="title">Title <span>Use title case to get a better result</span></label>
-                        <input type="text" name="title" id="title" class="form-controll"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="caption">Caption <span>This caption should be descriptiv</span></label>
-                        <input type="text" name="caption" id="caption" class="form-controll"/>
-                    </div>
-                    
-                    <div class="form-group file-area">
-                            <label for="images">Images <span>Your images should be at least 400x300 wide</span></label>
-                        <input type="file" name="images" id="images" required="required" multiple="multiple"/>
-                        <div class="file-dummy">
-                        <div class="success">Great, your files are selected. Keep on.</div>
-                        <div class="default">Please select some files</div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <button type="submit">Upload images</button>
-                    </div>
+                </div>
+                : ""}
                 
-                </form>
+               
             </div>
         </div>
     )

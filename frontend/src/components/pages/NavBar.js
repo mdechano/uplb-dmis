@@ -5,8 +5,6 @@ import useStore from '../utilities/authHook';
 import {apiUrl} from '../utilities/apiUrl';
 import axios, { all } from "axios";
 import UPLBLogoText from '../images/UPLBLogoText.png'
-import DDMenu from '../images/DDMenu.png'
-import profilepic from '../images/userprofile.png'
 import '../css/NavBar.css'
 
 function NavBar () {
@@ -59,8 +57,8 @@ function NavBar () {
                         { role === 'resident' && user.completed_profile === true ?
                         <div className='dropdown-content'>
                             <a onClick={() => navigate('/resident-personal/'+user.profile_id)}>Student Information Sheet</a>
-                            <a><Link to='/generate-soa'>Generate SOA</Link></a>
-                            <a><Link to='/upload-receipt'>Upload Receipt</Link></a>
+                            <a onClick={() => navigate('/generate-soa/'+user.profile_id)}>Generate SOA</a>
+                            <a onClick={() => navigate('/upload-receipt/'+user.profile_id)}>Upload Receipt</a>
                             <a onClick={() => navigate('/dorm-information')}>Dorm Information</a>
                             
                         </div>
@@ -83,8 +81,8 @@ function NavBar () {
                         <div className='dropdown-content'>
                         <a onClick={() => navigate('/residents-list')}>Resident List</a>
                         <a onClick={() => navigate('/resident-personal/'+user.profile_id)}>Student Information Sheet</a>
-                        <a><Link to='/generate-soa'>Generate SOA</Link></a>
-                        <a><Link to='/upload-receipt'>Upload Receipt</Link></a>
+                        <a onClick={() => navigate('/generate-soa/'+user.profile_id)}>Generate SOA</a>
+                        <a onClick={() => navigate('/upload-receipt/'+user.profile_id)}>Upload Receipt</a>
                         <a onClick={() => navigate('/dorm-information')}>Dorm Information</a>
                         </div>
                         : "" }

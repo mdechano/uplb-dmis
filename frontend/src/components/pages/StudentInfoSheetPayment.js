@@ -403,6 +403,7 @@ function StudentInfoSheetPayment () {
                             <button className='profile-nav-btn' onClick={() => navigate('/resident-check-in/'+currentResident._id)}>CHECK IN DETAILS</button>
                             <button className='profile-nav-btn-current' onClick={() => navigate('/resident-payment/'+currentResident._id)}>PAYMENT DETAILS</button>
                             <button className='profile-nav-btn' onClick={() => navigate('/resident-violation/'+currentResident._id)}>VIOLATION DETAILS</button>
+                            <button className='profile-nav-btn' onClick={() => navigate('/resident-receipts/'+currentResident._id)}>UPLOADED RECEIPTS</button>
                             <br></br> 
                         { user.role === 'dorm manager' && currentResident.role === 'resident' && hire_flag === false?
                             <button className='profile-nav-btn-current' onClick = {() => setHireFlag(true)}>HIRE AS ASSISTANT</button>

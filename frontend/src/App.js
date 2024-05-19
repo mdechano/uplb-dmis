@@ -15,6 +15,7 @@ import StudentInfoSheetPayment from './components/pages/StudentInfoSheetPayment'
 import StudentInfoSheetPersonal from './components/pages/StudentInfoSheetPersonal';
 import EditStudentPersonal from './components/pages/EditStudentPersonal';
 import StudentInfoSheetViolation from './components/pages/StudentInfoSheetViolation';
+import StudentInfoSheetReceipts from './components/pages/StudentInfoSheetReceipts';
 import GenerateSOA from './components/pages/GenerateSOA';
 import UploadReceipt from './components/pages/UploadReceipt';
 import DormInformation from './components/pages/DormInformation';
@@ -40,6 +41,7 @@ function App() {
             <Route exact={true} path="/resident-payment/:id" element={<StudentInfoSheetPayment />} />
             <Route exact={true} path="/resident-personal/:id" element={<StudentInfoSheetPersonal />} />
             <Route exact={true} path="/resident-violation/:id" element={<StudentInfoSheetViolation />} />
+            <Route exact={true} path="/resident-receipts/:id" element={<StudentInfoSheetReceipts />} />
             <Route exact={true} path="/edit-resident-check-in/:id" element={<EditStudentCheckIn />} />
             <Route exact={true} path="/edit-resident-personal/:id" element={<EditStudentPersonal />} />
             <Route exact={true} path="/generate-soa/:id" element={<GenerateSOA />} />

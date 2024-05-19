@@ -338,7 +338,7 @@ function StudentInfoSheetViolation () {
                             <button className='profile-nav-btn' onClick={() => navigate('/resident-check-in/'+currentResident._id)}>CHECK IN DETAILS</button>
                             <button className='profile-nav-btn' onClick={() => navigate('/resident-payment/'+currentResident._id)}>PAYMENT DETAILS</button>
                             <button className='profile-nav-btn-current' onClick={() => navigate('/resident-violation/'+currentResident._id)}>VIOLATION DETAILS</button>
-                        
+                            <button className='profile-nav-btn' onClick={() => navigate('/resident-receipts/'+currentResident._id)}>UPLOADED RECEIPTS</button>
                             <br></br>
                             { user.role === 'dorm manager' && currentResident.role === 'resident' && hire_flag === false?
                             <button className='profile-nav-btn-current' onClick = {() => setHireFlag(true)}>HIRE AS ASSISTANT</button>
@@ -386,10 +386,11 @@ function StudentInfoSheetViolation () {
                     </div>
 
                     <div className='profile-div-right'>
-                        
+                            { user.role === "resident" || user.role === "dorm assistant" ?
                             <p className='payment-note'><i>Your recorded violations will appear here. Only authorized personel can edit this page. Kindly contact them for concerns.</i></p>
+                            :""
+                            }
                             <br></br>
-                            
                             <table className='table-display'>
                                 <tr className='table-row-display'>
                                     <td className='cell-title-display'>Date</td>

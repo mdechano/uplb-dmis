@@ -250,23 +250,24 @@ function StudentInfoSheetPersonal () {
         else {
             fetchData()
         }
-    },[]);
+    },[user, currentResident]);
 
     return (
         <div>
             <NavBar></NavBar>
-
+            { currentResident !== undefined ?
             <div className='stud-info-sheet-div'>
+                
                 <div className='upper-div'>
                     <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
                     <p className='page-title'>STUDENT INFORMATION SHEET</p>
-                    { user.role === 'resident' || user.role === 'dorm assistant' ?
+                    { user.role === 'resident' || (user.role === 'dorm assistant' && currentResident.role === 'dorm assistant') ?
                         <button className='edit-profile-button' onClick = {()=> navigate("/edit-resident-personal/"+user.profile_id)}>EDIT PROFILE</button>
-                    : <div className='extra-space'></div>}
                     
+                    : <div className='extra-space'></div>}
                 </div>
                 <hr className='divider'></hr>
-                { currentResident !== undefined ?
+                
                 
                     <div className='body-div'>
                         <div className='profile-div-left'>
@@ -283,6 +284,7 @@ function StudentInfoSheetPersonal () {
                                 <button className='profile-nav-btn' onClick={() => navigate('/resident-check-in/'+currentResident._id)}>CHECK IN DETAILS</button>
                                 <button className='profile-nav-btn' onClick={() => navigate('/resident-payment/'+currentResident._id)}>PAYMENT DETAILS</button>
                                 <button className='profile-nav-btn' onClick={() => navigate('/resident-violation/'+currentResident._id)}>VIOLATION DETAILS</button>
+                                <button className='profile-nav-btn' onClick={() => navigate('/resident-receipts/'+currentResident._id)}>UPLOADED RECEIPTS</button>
                                 <br></br>
                             { user.role === 'dorm manager' && currentResident.role === 'resident' && hire_flag === false?
                             <button className='profile-nav-btn-current' onClick = {() => setHireFlag(true)}>HIRE AS ASSISTANT</button>
@@ -509,9 +511,10 @@ function StudentInfoSheetPersonal () {
                         </div>
                         
                     </div>
-                : <p className='profile-note'><i>Loading profile...</i></p> }
+                
                 
             </div>
+            : <p className='profile-note'><i>Loading profile...</i></p> }
         </div>
     )
 

@@ -3,30 +3,36 @@ import {Link, useNavigate} from 'react-router-dom';
 import {apiUrl} from '../utilities/apiUrl';
 import useStore from '../utilities/authHook';
 import axios from "axios";
-import '../css/StudentInfoSheetCheckIn.css';
+import '../css/StudentInfoSheetReceipts.css';
 import NavBar from './NavBar';
 
-function StudentInfoSheetCheckIn () {
+function StudentInfoSheetReceipts () {
 
     const navigate = useNavigate();
+
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
     const [ currentResident, setResident] = useState();
     const [ resident_users, setResidentUsers] = useState();
+    const [ resident_receipts, setResidentReceipts] = useState();
     const [ hire_flag, setHireFlag ] = useState(false);
     const [ remove_flag, setRemoveFlag ] = useState(false);
     const [ delete_flag, setDeleteFlag ] = useState(false);
+    const [ edit_flag, setEditFlag ] = useState(false);
 
     const fetchData = () => {
         const link = window.location.href;
         const id = link.slice(link.lastIndexOf('/')+1,link.length);
         const getResident = axios.get(apiUrl("/resident/") + id, { withCredentials: true });
         const getResidentUsers = axios.get(apiUrl("/user") , { withCredentials: true });
-            axios.all([getResident, getResidentUsers]).then(
+        const getResidentReceipts = axios.get(apiUrl("/receipt") , { withCredentials: true });
+            axios.all([getResident, getResidentUsers, getResidentReceipts]).then(
                 axios.spread((...allData) => {
                     const allResidentData = allData[0].data
                     const allResidentUserData = allData[1].data
+                    const allResidentReceipts = allData[2].data
                     setResident(allResidentData)
                     setResidentUsers(allResidentUserData)
+                    setResidentReceipts(allResidentReceipts)
                 })
             )
     }
@@ -222,12 +228,28 @@ function StudentInfoSheetCheckIn () {
             }) 
         })
         .then(response => {return response.json()})
-        .then(alert("Successfully deleted resident."),
-        setTimeout(function(){
-            window.location.reload();
-        }, 1000))
+        .then(deleteUser(currentResident.user_id))
+        
     }
-    
+
+    const deleteUser = (id) => {
+        console.log("user to delete: "+id)
+        fetch(apiUrl("/user/delete-user"), {
+            method: "DELETE",
+            credentials:'include',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                ids: [`${id}`],
+            }) 
+        })
+        .then(response => {return response.json()})
+        .then(alert("Successfully deleted resident."),
+        navigate("/residents-list"))
+    }
+
+
     useEffect(()=>{
         if(isAuthenticated === false){
             navigate("/")
@@ -237,39 +259,34 @@ function StudentInfoSheetCheckIn () {
         }
     },[]);
 
-
     return (
         <div>
             <NavBar></NavBar>
-            { currentResident !== undefined ?
+
             <div className='stud-info-sheet-div'>
                 <div className='upper-div'>
                     <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
                     <p className='page-title'>STUDENT INFORMATION SHEET</p>
-                    { user.role === 'resident' || (user.role === 'dorm assistant' && currentResident.role === 'dorm assistant') ?
-                        <button className='edit-profile-button' onClick = {()=> navigate("/edit-resident-personal/"+user.profile_id)}>EDIT PROFILE</button>
-                    
-                    : <div className='extra-space'></div>}
+                    <div className='extra-space'></div>
                 </div>
                 <hr className='divider'></hr>
-                
-                
+                { currentResident !== undefined ?
                 <div className='body-div'>
                     <div className='profile-div-left'>
-                        <img width={250} className='profile-pic' src={currentResident.picture_url}></img>
+                    <img width={250} className='profile-pic' src={currentResident.picture_url}></img>
                         <br></br>
-                        <p className='profile-info'>{currentResident.first_name + " "  + currentResident.last_name}</p>
+                        <p className='profile-info'>{currentResident.first_name + " " + currentResident.last_name}</p>
                         <p className='profile-info'>{currentResident.student_no}</p>
                         <p className='profile-info'><b>Resident</b></p>
                         <p className='profile-info'><i>{currentResident.dorm}</i></p>
                         <br></br>
                         <div className='profile-nav'>
                             <button className='profile-nav-btn' onClick={() => navigate('/resident-personal/'+currentResident._id)}>PERSONAL INFORMATION</button>
-                            <button className='profile-nav-btn-current' onClick={() => navigate('/resident-check-in/'+currentResident._id)}>CHECK IN DETAILS</button>
+                            <button className='profile-nav-btn' onClick={() => navigate('/resident-check-in/'+currentResident._id)}>CHECK IN DETAILS</button>
                             <button className='profile-nav-btn' onClick={() => navigate('/resident-payment/'+currentResident._id)}>PAYMENT DETAILS</button>
                             <button className='profile-nav-btn' onClick={() => navigate('/resident-violation/'+currentResident._id)}>VIOLATION DETAILS</button>
-                            <button className='profile-nav-btn' onClick={() => navigate('/resident-receipts/'+currentResident._id)}>UPLOADED RECEIPTS</button>
-                            <br></br>
+                            <button className='profile-nav-btn-current' onClick={() => navigate('/resident-receipts/'+currentResident._id)}>UPLOADED RECEIPTS</button>
+                            <br></br> 
                         { user.role === 'dorm manager' && currentResident.role === 'resident' && hire_flag === false?
                             <button className='profile-nav-btn-current' onClick = {() => setHireFlag(true)}>HIRE AS ASSISTANT</button>
                             : user.role === 'dorm manager' && currentResident.role === 'dorm assistant' ?
@@ -316,179 +333,57 @@ function StudentInfoSheetCheckIn () {
                     </div>
 
                     <div className='profile-div-right'>
+                        { user.role === 'resident' || (user.role === 'dorm assistant' && currentResident.role === 'dorm assistant')  ?
+                            <p className='payment-note'><i>Your uploaded receipts will appear here. You may only edit the ____.</i></p>
+                        :""
+                        }
+                        <br></br>
                         <table className='table-display'>
-                            
-                            <h3 className='section-label'>Check In Details</h3>
                             <tr className='table-row-display'>
-                                <td className='cell-title-display'>First Sem Check In Date</td>
-                                <td className='cell-title-display'>First Sem Check Out Date</td>
-                                <td className='cell-title-display'>First Sem Form 5</td>
-                                <td className='cell-title-display'>First Sem Room Number</td>
+                                <td className='cell-title-display'>Date Submittted</td>
+                                <td className='cell-title-display'>Academic Year</td>
+                                <td className='cell-title-display'>Semester</td>
+                                <td className='cell-title-display'>Months Covered</td>
+                                <td className='cell-title-display'>Link to PDF</td>
+                                { user.role === 'resident' || (user.role === 'dorm assistant' && currentResident.role === 'dorm assistant')  ?
+                                    <td className='cell-title-display-violation'>Edit</td>
+                                : ""}
+                                { user.role === 'resident' || (user.role === 'dorm assistant' && currentResident.role === 'dorm assistant')  ?
+                                    <td className='cell-title-display-violation'>Delete</td>
+                                : ""}
                             </tr>
-                            <tr className='table-row-display'>
-                                <td className='cell-input-display'>{currentResident.check_in_out_details.first_sem.checkin}</td>
-                                <td className='cell-input-display'>{currentResident.check_in_out_details.first_sem.checkout}</td>
-                                <td className='cell-input-display'>{currentResident.check_in_out_details.first_sem.form5}</td>
-                                <td className='cell-input-display'>{currentResident.check_in_out_details.first_sem.room_number}</td>
-                            </tr>
-                            
-                            <tr className='table-row-display'>
-                                <td className='cell-title-display'>Second Sem Check In Date</td>
-                                <td className='cell-title-display'>Second Sem Check Out Date</td>
-                                <td className='cell-title-display'>Second Sem Form 5</td>
-                                <td className='cell-title-display'>Second Sem Room Number</td>
-                            </tr>
-                            <tr className='table-row-display'>
-                                <td className='cell-input-display'>{currentResident.check_in_out_details.second_sem.checkin}</td>
-                                <td className='cell-input-display'>{currentResident.check_in_out_details.second_sem.checkout}</td>
-                                <td className='cell-input-display'>{currentResident.check_in_out_details.second_sem.form5}</td>
-                                <td className='cell-input-display'>{currentResident.check_in_out_details.second_sem.room_number}</td>
-                            </tr>
+                            { resident_receipts !== undefined ?
+                                    resident_receipts.map((receipt, i) => {
+                                        if (currentResident._id === receipt.resident_id) {
+                                            // console.log(i)
+                                            return (
+                                                <tr key={i} className='table-row-display'>
+                                                    <td className='cell-input-display'>{receipt.date_posted}</td>
+                                                    <td className='cell-input-display'>{receipt.academic_year}</td>
+                                                    <td className='cell-input-display'>{receipt.semester}</td>
+                                                    <td className='cell-input-display'>{receipt.months_covered}</td>
+                                                    <td className='cell-input-display'><a href={receipt.pdf_url} target='_blank' className='pdf_url'>PAYMENT RECEIPT</a></td>
+                                                    { user.role === 'resident' || (user.role === 'dorm assistant' && currentResident.role === 'dorm assistant')  ?
+                                                        <td className='cell-input-display-violation'><button className='edit-violation-btn' >EDIT</button></td>
+                                                    : ""}
+                                                    { user.role === 'resident' || (user.role === 'dorm assistant' && currentResident.role === 'dorm assistant')  ?
+                                                        <td className='cell-input-display-violation'><button className='delete-violation-btn' >DELETE</button></td>
+                                                    : ""}
+                                                </tr>
+                                            )
+                                        }
+                                        
+                                    })
 
+                                : ""}
                         </table>
-
-                        <br></br>
-                        <hr className='horizontal-line'></hr>
-                        <br></br>
-
-                        <table className='table-display'>
-                            
-                            <h3 className='section-label'>Appliances</h3>
-                            <tr className='table-row-display'>
-                                <td className='cell-title-display'>Laptop</td>
-                                <td className='cell-title-display'>Gadgets</td>
-                                <td className='cell-title-display'>Printer</td>
-                                <td className='cell-title-display'>Rice Cooker</td>
-                                <td className='cell-title-display'>Electric Fan</td>
-                                <td className='cell-title-display'>Refrigerator</td>
-                            </tr>
-                            <tr className='table-row-display'>
-                                <td className='cell-input-display'>{currentResident.appliances.laptop}</td>
-                                <td className='cell-input-display'>{currentResident.appliances.gadgets}</td>
-                                <td className='cell-input-display'>{currentResident.appliances.printer}</td>
-                                <td className='cell-input-display'>{currentResident.appliances.rice_cooker}</td>
-                                <td className='cell-input-display'>{currentResident.appliances.electric_fan}</td>
-                                <td className='cell-input-display'>{currentResident.appliances.refrigerator}</td>
-                            </tr>
-                            
-                        </table>
-
-                        <br></br>
-                        <hr className='horizontal-line'></hr>
-                        <br></br>
-
-                        <table className='table-display'>
-                            
-                            <h3 className='section-label'>Appliances Information</h3>
-                            <tr className='table-row-display'>
-                                <td className='cell-title-display'>Appliance</td>
-                                <td className='cell-title-display'>Date Installed 1st Sem</td>
-                                <td className='cell-title-display'>Date Returned 1st Sem</td>
-                                <td className='cell-title-display'>Date Installed 2nd Sem</td>
-                                <td className='cell-title-display'>Date Returned 2nd Sem</td>
-                            </tr>
-
-                        { currentResident.appliances_information.appliance_1.appliance !== "" ?
-                            <tr className='table-row-display'>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_1.appliance}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_1.date_installed_1st_sem}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_1.date_returned_1st_sem}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_1.date_installed_2nd_sem}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_1.date_returned_2nd_sem}</td>
-                            </tr>
-                            
-                        : ""}
-
-                        { currentResident.appliances_information.appliance_2.appliance !== "" ?
-                            <tr className='table-row-display'>
-                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_2.appliance}</td>
-                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_2.date_installed_1st_sem}</td>
-                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_2.date_returned_1st_sem}</td>
-                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_2.date_installed_2nd_sem}</td>
-                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_2.date_returned_2nd_sem}</td>
-                            </tr>
-                            
-                        : ""}
-
-                        { currentResident.appliances_information.appliance_3.appliance !== "" ?
-                            <tr className='table-row-display'>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_3.appliance}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_3.date_installed_1st_sem}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_3.date_returned_1st_sem}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_3.date_installed_2nd_sem}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_3.date_returned_2nd_sem}</td>
-                            </tr>
-                            
-                        : ""}
-
-                        { currentResident.appliances_information.appliance_4.appliance !== "" ?
-                            <tr className='table-row-display'>
-                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_4.appliance}</td>
-                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_4.date_installed_1st_sem}</td>
-                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_4.date_returned_1st_sem}</td>
-                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_4.date_installed_2nd_sem}</td>
-                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_4.date_returned_2nd_sem}</td>
-                            </tr>
-                            
-                        : ""}
-
-                        { currentResident.appliances_information.appliance_5.appliance !== "" ?
-                            <tr className='table-row-display'>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_5.appliance}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_5.date_installed_1st_sem}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_5.date_returned_1st_sem}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_5.date_installed_2nd_sem}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_5.date_returned_2nd_sem}</td>
-                            </tr>
-                            
-                        : ""}
-
-                        { currentResident.appliances_information.appliance_6.appliance !== "" ?
-                            <tr className='table-row-display'>
-                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_6.appliance}</td>
-                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_6.date_installed_1st_sem}</td>
-                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_6.date_returned_1st_sem}</td>
-                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_6.date_installed_2nd_sem}</td>
-                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_6.date_returned_2nd_sem}</td>
-                            </tr>
-                            
-                        : ""}
-
-                        { currentResident.appliances_information.appliance_7.appliance !== "" ?
-                            <tr className='table-row-display'>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_7.appliance}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_7.date_installed_1st_sem}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_7.date_returned_1st_sem}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_7.date_installed_2nd_sem}</td>
-                                <td className='cell-input-display'>{currentResident.appliances_information.appliance_7.date_returned_2nd_sem}</td>
-                            </tr>
-                            
-                        : ""}
-
-                        { currentResident.appliances_information.appliance_8.appliance !== "" ?
-                            <tr className='table-row-display'>
-                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_8.appliance}</td>
-                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_8.date_installed_1st_sem}</td>
-                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_8.date_returned_1st_sem}</td>
-                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_8.date_installed_2nd_sem}</td>
-                                <td className='cell-input-display-even'>{currentResident.appliances_information.appliance_8.date_returned_2nd_sem}</td>
-                            </tr>
-                            
-                        : ""}
-
-                        </table>
-
-
                     </div>
-                    
                 </div>
-            
-
+                : <p className='profile-note'><i>Loading profile...</i></p> }
             </div>
-            : <p className='profile-note'><i>Loading profile...</i></p> }
         </div>
     )
 
 }
 
-export default StudentInfoSheetCheckIn;
+export default StudentInfoSheetReceipts;

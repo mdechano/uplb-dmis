@@ -1,0 +1,86 @@
+.upload-receipt-div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.upload-body{
+    border: 0px solid grey;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 2px 0px #555;
+    width: 50%;
+    font-size: 20px;
+    font-family: "Montserrat", sans-serif;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.upload-receipt-note {
+    padding: 10px;
+    text-align: center;
+    font-size: 13px;
+}
+
+.upload-receipt-form {
+    display: flex;
+    flex-direction: column;
+    /* border: 1px solid; */
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+}
+
+.upload-file-container{
+    border: 1px dashed grey;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.pdf-file-upload::file-selector-button {
+    margin-right: 20px;
+    border: none;
+    background: #0A4424;
+    padding: 10px 20px;
+    
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+    transition: background .2s ease-in-out;
+  }
+  
+  .pdf-file-upload::file-selector-button:hover {
+    background: #068b42;
+  }
+
+.upload-pdf-submit{
+    width: 35%;
+    height: 35px;
+    background-color: #76090C;
+    color: white;
+    font-size: 15px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    transition: background .2s ease-in-out;
+}
+
+.upload-pdf-submit:hover {
+    background-color: #b91f24;
+    cursor: pointer;
+}
+
+.complete-input-receipt {
+    width: 90%;
+    padding: 10px 10px;
+    
+    border: thin solid #555;
+    border-radius: 5px;
+}
+
+.complete-input-receipt:focus {
+    background-color: lightblue;
+}

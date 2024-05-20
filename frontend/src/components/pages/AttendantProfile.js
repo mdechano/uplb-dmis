@@ -4,9 +4,6 @@ import {useNavigate} from 'react-router-dom';
 import useStore from '../utilities/authHook';
 import {apiUrl} from '../utilities/apiUrl';
 import axios, { all } from "axios";
-import UPLBLogoText from '../images/UPLBLogoText.png'
-import DDMenu from '../images/DDMenu.png'
-import profilepic from '../images/userprofile.png'
 import '../css/NavBar.css'
 import NavBar from './NavBar';
 import '../css/ManagerProfile.css';

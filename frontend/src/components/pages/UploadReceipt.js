@@ -15,6 +15,7 @@ function UploadReceipt () {
     const [ resident, setResident ] = useState();
     const [file, setfile] = useState(); 
 
+
     const fetchData = () => {
         const link = window.location.href;
         const id = link.slice(link.lastIndexOf('/')+1,link.length);
@@ -68,8 +69,7 @@ function UploadReceipt () {
            
     };
 
-
-
+    
     useEffect(()=>{
         if(isAuthenticated === false){
             navigate("/")

@@ -18,6 +18,8 @@ function StudentInfoSheetReceipts () {
     const [ remove_flag, setRemoveFlag ] = useState(false);
     const [ delete_flag, setDeleteFlag ] = useState(false);
     const [ edit_flag, setEditFlag ] = useState(false);
+    const [ edit_receipt, setEditReceipt] = useState();
+
 
     const fetchData = () => {
         const link = window.location.href;
@@ -249,6 +251,48 @@ function StudentInfoSheetReceipts () {
         navigate("/residents-list"))
     }
 
+    const toggleeditReceipt = (receipt) => {
+        setEditFlag(true)
+        console.log("Edit receipt: " + receipt._id)
+        setEditReceipt(receipt)
+        console.log(edit_receipt)
+    }
+
+    const editReceipt = (receipt) => {
+        fetch(apiUrl("/receipt/"+receipt._id),{
+                method: "PUT",
+                credentials:'include',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify({
+                    date_posted: receipt.date_posted,
+                    academic_year: document.getElementById("edit_academic_year").value,
+                    semester: document.getElementById("edit_semester").value,
+                    months_covered: document.getElementById("edit_months_covered").value,
+                    pdf_url: receipt.pdf_url,
+                    resident_id: receipt.resident_id
+                })
+            })
+            .then(response => {return response.json()})
+            .then(alert("Successfully editted violation."), setEditFlag(false), fetchData())
+    }
+
+    const deleteReceipt = (id) => {
+        fetch(apiUrl("/receipt"), {
+            method: "DELETE",
+            credentials:'include',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                ids: [`${id}`],
+            }) 
+        })
+        .then(response => {return response.json()})
+        .then(alert("Successfully deleted receipt."), fetchData())
+    }
+
 
     useEffect(()=>{
         if(isAuthenticated === false){
@@ -364,10 +408,10 @@ function StudentInfoSheetReceipts () {
                                                     <td className='cell-input-display'>{receipt.months_covered}</td>
                                                     <td className='cell-input-display'><a href={receipt.pdf_url} target='_blank' className='pdf_url'>PAYMENT RECEIPT</a></td>
                                                     { user.role === 'resident' || (user.role === 'dorm assistant' && currentResident.role === 'dorm assistant')  ?
-                                                        <td className='cell-input-display-violation'><button className='edit-violation-btn' >EDIT</button></td>
+                                                        <td className='cell-input-display-violation'><button className='edit-violation-btn' onClick={() => toggleeditReceipt(receipt)}>EDIT</button></td>
                                                     : ""}
                                                     { user.role === 'resident' || (user.role === 'dorm assistant' && currentResident.role === 'dorm assistant')  ?
-                                                        <td className='cell-input-display-violation'><button className='delete-violation-btn' >DELETE</button></td>
+                                                        <td className='cell-input-display-violation'><button className='delete-violation-btn' onClick={() => deleteReceipt(receipt._id)}>DELETE</button></td>
                                                     : ""}
                                                 </tr>
                                             )
@@ -377,6 +421,43 @@ function StudentInfoSheetReceipts () {
 
                                 : ""}
                         </table>
+
+                        { edit_flag === true?
+                                <div >
+                                <br></br>
+                                <p className='payment-note'><i>You are about to edit a receipt. You may only edit the academic year, semester, and months covered of the violation. If you wish to edit the PDF, kindly delete the receipt and submit a new one.</i></p>
+                                <br></br>
+                                    
+                                     <table className='table-display'>
+                                        <tr className='table-row-display'>
+                                            <td ><b>Date Posted</b></td>
+                                            <td ><b>Academic Year</b></td>
+                                            <td ><b>Semester</b></td>
+                                            <td ><b>Months Covered</b></td>
+                                            <td ><b>Link to PDF</b></td>
+                                            <td ></td>
+                                            <td ></td>
+                                            
+                                        </tr>
+                                        <tr className='table-row-display-edit'>
+                                            <td className='cell-input'>{edit_receipt.date_posted}</td>
+                                            <td className='cell-input'><input type="text" className='complete-input-receipt' id="edit_academic_year" placeholder={edit_receipt.academic_year}></input></td>
+                                            <td className='cell-input'>
+                                                <select className='custom-select-sex' id="edit_semester" required>
+                                                    <option>Select Semester</option>
+                                                    <option value="1st Semester">1st Sem</option>
+                                                    <option value="2nd Semester">2nd Sem</option>
+                                                    <option value="Midyear">Midyear</option>
+                                                </select>
+                                            </td>
+                                            <td className='cell-input'><input type="text" className='complete-input-receipt' id="edit_months_covered" placeholder={edit_receipt.months_covered}></input></td>
+                                            <td className='cell-input'><a href={edit_receipt.pdf_url} target='_blank' className='pdf_url'>PAYMENT RECEIPT</a></td>
+                                            <td className='cell-title-display'><button className='edit-violation-btn' onClick={() => {editReceipt(edit_receipt)}}>SAVE</button></td>
+                                            <td className='cell-title-display'><button className='delete-violation-btn' onClick={() => setEditFlag(false)}>CANCEL</button></td>
+                                        </tr>  
+                                    </table>   
+                                </div>
+                                : ""}
                     </div>
                 </div>
                 : <p className='profile-note'><i>Loading profile...</i></p> }

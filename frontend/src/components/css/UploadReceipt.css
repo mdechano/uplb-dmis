@@ -72,3 +72,15 @@
     background-color: #b91f24;
     cursor: pointer;
 }
+
+.complete-input-receipt {
+    width: 90%;
+    padding: 10px 10px;
+    
+    border: thin solid #555;
+    border-radius: 5px;
+}
+
+.complete-input-receipt:focus {
+    background-color: lightblue;
+}

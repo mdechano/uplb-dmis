@@ -97,7 +97,7 @@ exports.editReceipt = async (req, res) => {
         console.log(`Edited receipt ${edit}`)
         return res.status(200).send({ message: 'Receipt successfully edited' })
     }
-    catch{
+    catch(err){
         console.log(`Unable to edit receipt. Error: ${err}`);
         return res.status(500).send({ message: 'Error editing receipt' })
     }

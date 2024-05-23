@@ -45,6 +45,17 @@ exports.getAll = () => {
     });
 }
 
+exports.getAllSorted = (query) => {
+    //console.log(query)
+    return new Promise((resolve, reject) => {
+        Resident.find((err,resident) => {
+            if(err) {reject(err); }
+            resolve(resident)
+        })
+        .sort(query)
+    });
+}
+
 exports.edit = (object) =>{
     return new Promise((resolve, reject) => {
         // findone then edit

@@ -400,3 +400,70 @@ exports.searchResident = async (req, res) => {
     }
 }
 
+exports.sortBy = async (req, res) => {
+
+    if (!req.cookies || !req.cookies.authToken) {
+        res.status(401).send({message: "Unauthorized access"});
+        return;
+      }
+      
+      // validate token
+    const token = await utils.verifyToken(req);
+    
+      // error validating token
+    if(!token.status){
+        res.status(token.code).send({ message: token.message });
+        return;
+    }
+
+    let sortby = req.query
+    const key = Object.keys(sortby)
+    const value = Object.values(sortby)
+    let sortedResidents = new Array;
+    try{
+        if(key[0] === 'last_name'){
+            const resident = await Resident.getAllSorted({last_name:parseInt(value)})
+            if(!resident){
+                console.log("Resident database is empty")
+                return res.status(404).send({message: `No resident in database`})
+            }
+            else{
+                for(let i = 0; i < resident.length; i++){
+                    sortedResidents.push(resident[i])
+                }
+                return res.status(200).send(sortedResidents)
+            }
+        }
+        else if(key[0] === 'student_number'){
+            const resident = await Resident.getAllSorted({student_no:parseInt(value)})
+            if(!resident){
+                console.log("Resident database is empty")
+                return res.status(404).send({message: `No resident in database`})
+            }
+            else{
+                for(let i = 0; i < resident.length; i++){
+                    sortedResidents.push(resident[i])
+                }
+                return res.status(200).send(sortedResidents)
+            }
+        }
+        else if(key[0] === 'college'){
+            const resident = await Resident.getAllSorted({college:parseInt(value)})
+            if(!resident){
+                console.log("Resident database is empty")
+                return res.status(404).send({message: `No resident in database`})
+            }
+            else{
+                for(let i = 0; i < resident.length; i++){
+                    sortedResidents.push(resident[i])
+                }
+                return res.status(200).send(sortedResidents)
+            }
+        }
+    }
+    catch(err){
+        console.log(`Error searching for resident in the DB ${err}` );
+        return res.status(500).send({message: 'Error searching for resident'})
+    }
+
+}

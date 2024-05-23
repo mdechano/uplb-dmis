@@ -19,6 +19,14 @@ function ResidentsList () {
     // const [ residents, setResidents ] =  useState();
     const [record, setRecord] = useState();
     const [viewValue, setViewValue] = useState("resident");
+    const [orderValue, setOrderValue] = useState("");
+
+    const orderFilter = [
+        {label: 'NONE', value: ''},
+        {label: 'LAST NAME', value: 'last_name'},
+        {label: 'STUDENT NUMBER', value: 'student_number'},
+        {label: 'COLLEGE', value: 'college'}
+    ]
 
     const fetchData = () => {
         const getResidents = axios.get(apiUrl("/"+viewValue), { withCredentials: true });
@@ -32,13 +40,25 @@ function ResidentsList () {
     }
 
     useEffect(()=>{
-        if(isAuthenticated === false){
-            navigate("/")
-        } 
+        if(orderValue !== '' && viewValue === 'resident'){
+            fetch(apiUrl("/" + [viewValue] + "/sortby?" + [orderValue] + "=1"),{
+                method: "GET",
+                credentials:'include',
+            })
+            .then(response => {return response.json()})
+            .then((data) => {
+                setRecord(data)
+            })
+        }
         else {
             fetchData()
         }
-    },[viewValue]);
+    },[orderValue]);
+
+    const orderChange=(e)=>{
+        setOrderValue(e.target.value);
+    }
+
 
     const handleUserInput = (e) => {
         input = e.target.value;
@@ -62,6 +82,29 @@ function ResidentsList () {
         }
     }
 
+    useEffect(()=>{
+        if(isAuthenticated === false){
+            navigate("/")
+        } 
+        else {
+            fetchData()
+        }
+    },[viewValue]);
+
+    const DropDown =({value,options,onChange,type})=>{
+        return(
+            <label>
+                <select value={value} onChange={onChange} className = 'record-dropdown'>
+                {type === "order" ?  <option value = "" disabled hidden>ORDER BY</option> : <option value = "" disabled hidden></option>}
+                {options.map((option,i)=>(
+                    <option key={i} value = {option.value} className = 'record-option'> {option.label} </option>
+                ))}
+                </select>
+            </label>
+        );
+    }
+
+
     return (
         <div>
             <NavBar></NavBar>
@@ -70,15 +113,20 @@ function ResidentsList () {
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
                     <h1>{user.dorm} Residents List</h1>
                     <form class="search-bar" >
-                    <input type="text" placeholder="Search..." value = {input} onChange = {handleUserInput} required />
+                    <input type="text" placeholder="last name or first name" value = {input} onChange = {handleUserInput} required />
                     <button onClick={handleSubmit} type="submit"><i class="fa fa-search"></i></button>
                     </form>
                 </div>
                 <br></br>
                 <div className='residents-list-middle'>
                     <p className='payment-note'><i>You are now viewing the list of residents residing in {user.dorm}. To search for a specific student, enter their <b>student number</b> or <b>last name</b> in the search bar of this page.</i></p>
+                    <div className='record-dropdowns'>
+                    {viewValue === 'resident' ? <DropDown className = 'record-dropdown' type="order" options={orderFilter} value = {orderValue} onChange={orderChange}/>: 
+                    ""} 
+                </div>
                 </div>
                 <br></br>
+                
                 <div className="scrollable-table">
                     <table className='residents-list-table'>
                         <thead>

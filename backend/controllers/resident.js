@@ -368,11 +368,11 @@ exports.searchResident = async (req, res) => {
         return;
     }
 
-    let search = req.query.name
+    let search = req.query.input
     let result = new Array;
     
     try{
-        if(search == ''){
+        if(!search){
             return res.status(200).send({result})
         }
         let resident = await Resident.getAll()
@@ -381,12 +381,13 @@ exports.searchResident = async (req, res) => {
             return res.status(400).send({message: `No resident in database`})
         }
         else{
+            
             search = search.toLowerCase()
+
             for(let i = 0; i < resident.length; i++){
-                const fname = resident[i].first_name.toLowerCase()
-                const mname = resident[i].middle_name.toLowerCase()
                 const lname = resident[i].last_name.toLowerCase()
-                if(fname.match(search) || lname.match(search) || mname.match(search)){
+                const fname = resident[i].first_name.toLowerCase()
+                if(lname.match(search) || fname.match(search)){
                     result.push(resident[i])
                 }
             }
@@ -398,3 +399,4 @@ exports.searchResident = async (req, res) => {
         return res.status(500).send({message: 'Error searching for resident'})
     }
 }
+

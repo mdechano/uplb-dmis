@@ -4,6 +4,7 @@ import {useNavigate} from 'react-router-dom';
 import useStore from '../utilities/authHook';
 import {apiUrl} from '../utilities/apiUrl';
 import axios, { all } from "axios";
+import {jsPDF} from "jspdf";
 import '../css/NavBar.css';
 import NavBar from './NavBar';
 import '../css/GenerateSOA.css'
@@ -300,16 +301,16 @@ function GenerateSOA () {
                                         <tr>
                                             <td><b>Laptop</b></td>
                                             <td>{laptop_total}</td>
-                                            <td><b>Gadgets</b></td>
-                                            <td>{gadgets_total}</td>
                                             <td><b>Printer</b></td>
                                             <td>{printer_total}</td>
-                                        </tr>
-                                        <tr>
-                                            <td><b>Rice Cooker</b></td>
-                                            <td>{rice_cooker_total}</td>
                                             <td><b>Electric Fan</b></td>
                                             <td>{electric_fan_total}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Gadgets</b></td>
+                                            <td>{gadgets_total}</td>
+                                            <td><b>Rice Cooker</b></td>
+                                            <td>{rice_cooker_total}</td>
                                             <td><b>Refrigerator</b></td>
                                             <td>{refrigerator_total}</td>
                                         </tr>

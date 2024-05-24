@@ -92,7 +92,7 @@ function UploadReceipt () {
                 </div>
                 { resident !== undefined ?
                 <div  className='upload-receipt-div'>
-                     <div className='upload-body'>
+                    <div className='upload-body'>
                      <p className='upload-receipt-note'><i>Kindly upload your payment receipts in PDF format. You may view, edit, or delete your uploaded receipts at the <b>Uploaded Receipts</b> section of your student information sheet.</i></p>
                      <br></br>
                         <form className='upload-receipt-form' >

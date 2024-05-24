@@ -378,7 +378,7 @@ function StudentInfoSheetReceipts () {
 
                     <div className='profile-div-right'>
                         { user.role === 'resident' || (user.role === 'dorm assistant' && currentResident.role === 'dorm assistant')  ?
-                            <p className='payment-note'><i>Your uploaded receipts will appear here. You may only edit the ____.</i></p>
+                            <p className='payment-note'><i>Your uploaded receipts will appear here.</i></p>
                         :""
                         }
                         <br></br>

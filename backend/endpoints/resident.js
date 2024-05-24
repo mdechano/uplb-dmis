@@ -11,5 +11,4 @@ Resident.get('/sortby', ResidentController.sortBy);
 Resident.get('/:id', ResidentController.findResident);
 Resident.get('/', ResidentController.findAll);
 
-
 module.exports = Resident;

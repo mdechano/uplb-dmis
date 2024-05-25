@@ -5,13 +5,12 @@ import useStore from '../utilities/authHook';
 import {apiUrl} from '../utilities/apiUrl';
 import axios, { all } from "axios";
 import {jsPDF} from "jspdf";
+import {autoTable} from 'jspdf-autotable';
 import '../css/NavBar.css';
 import NavBar from './NavBar';
 import '../css/GenerateSOA.css'
 
 function GenerateSOA () {
-
-    
 
     const navigate = useNavigate();
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
@@ -187,7 +186,29 @@ function GenerateSOA () {
     }
     
     const makePDF = () => {
+        var document = new jsPDF();
+        var title = `${currentResident.student_no} ${months_covered} SOA`;
+
+        document.setFont("Courier");
+        document.setFontSize(15);
+        document.text("Statement of Account", 70, 10)
+
+        document.setFont("Courier");
+        document.setFontSize(12);
+
         
+
+        document.autoTable({ html: '#upper-table' , startY: 20, useCss: true})
+        document.autoTable({ html: '#appliances-table', useCss: true })
+
+        document.text(`Statement of Account for ${semester}`, 15, 80)
+        document.text(`Month/s Covered: ${months_covered}`, 15, 85)
+        document.text(`Date generated: ${date_generated}`, 15, 90)
+
+        document.autoTable({ html: '#soa', startY: 100, useCss: true})
+
+        document.save(title)
+
     }
 
     useEffect(()=>{
@@ -219,7 +240,7 @@ function GenerateSOA () {
                                 <p className='upload-receipt-note'><i>blah blah blah</i></p>
                                 <br></br>
                                 <div className='generate-soa-form'>
-                                    <table className='soa-table'>
+                                    <table className='soa-table' id='upper-table'>
                                         <tr>
                                             <td><b>Account Name</b></td>
                                             <td>{account_name}</td>
@@ -240,7 +261,10 @@ function GenerateSOA () {
                                         </tr>
                                     </table>
                                     <br></br>
-                                    <table className='soa-table'>
+                                    <table className='soa-table' id='appliances-table'>
+                                        <tr>
+                                            <th colspan="6"><b>LIST OF APPLIANCES</b></th>
+                                        </tr>
                                         <tr>
                                             <td><b>Laptop</b></td>
                                             <td>{currentResident.appliances.laptop}</td>
@@ -297,7 +321,10 @@ function GenerateSOA () {
                                     <p>Statement of Account for <b>{semester}</b> for the month/s: <b>{months_covered}</b>.</p>
                                     <p>Date generated: {date_generated}.</p>
                                     <br></br>
-                                    <table className='soa-table'>
+                                    <table className='soa-table' id='soa'>
+                                        <tr>
+                                            <th colspan='6'><b>SOA Computation</b></th>
+                                        </tr>
                                         <tr>
                                             <td><b>Laptop</b></td>
                                             <td>{laptop_total}</td>
@@ -325,7 +352,7 @@ function GenerateSOA () {
                                     </table>
                                     <br></br>
                                     <div className='soa-btns'>
-                                        <button className='edit-violation-btn'>DOWNLOAD</button>
+                                        <button className='edit-violation-btn' onClick={makePDF}>DOWNLOAD</button>
                                         <button className='delete-violation-btn' onClick={() => setGenerateFlag(false)}>CANCEL</button>
                                     </div>
                                     <br></br>

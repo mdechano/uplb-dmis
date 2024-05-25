@@ -191,7 +191,7 @@ function GenerateSOA () {
 
         document.setFont("Courier");
         document.setFontSize(15);
-        document.text("Statement of Account", 70, 10)
+        document.text("Statement of Account", 70, 15)
 
         document.setFont("Courier");
         document.setFontSize(12);

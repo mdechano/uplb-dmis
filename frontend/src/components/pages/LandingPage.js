@@ -77,10 +77,11 @@ function LandingPage () {
     },[]);
 
     return (
-        <div>
+        <div className='landing'>
             
             <div className="landing_container">
                 <div className="landing-left">
+
                     <p className='p_landing_title'>Welcome to the UPLB<br></br>Dormitory Management<br></br>Information System</p>
                     <div className='blank-space'></div> 
                     <img className='dmis-logo' src={UPLBDMISlogo} alt='dmis-logo'></img>
@@ -89,10 +90,11 @@ function LandingPage () {
                     <button className='login-button' id='signInDiv'></button>  
                     <div className='blank-space'></div>      
                 </div>
-                <div className='landing-right'>
-                    hello dito ko lalagay yung slides ng pics of dorms hahaha
-                </div>
             </div>
+            <div className='bottom-credits'>
+                <p className='credits'>© University of the Philippines Los Baños 2024</p>
+            </div>
+           
         </div>
     )
 

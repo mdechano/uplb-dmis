@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import {useNavigate} from 'react-router-dom';
 import '../css/Dashboard.css'
 import NavBar from '../pages/NavBar';
+import DMISLogo from '../images/UPLBDMISlogo.png'
 import useStore from '../utilities/authHook';
 import {apiUrl} from '../utilities/apiUrl';
 import axios, { all } from "axios";
@@ -58,20 +59,30 @@ const Dashboard = () => {
     return (
         <div >
             <NavBar></NavBar>
+            
             <div className='dashboard-body'>
+                
                 <div className='dashboard-notice'>
-                    
-                    {user ?
-                    <div>
-                        <p className='greet'>Greetings, {user.first_name}!</p>
-                        <br></br>
-                        <p className='paragraph'>Welcome to the UPLB Dormitory Management Information System.</p>  
+                    <div  className='dashboard-notice-notice'>
+                       <img className='dmislogo' src={DMISLogo}></img>
+                        {user ?
+                        
+                        <div className='greet-div'>
+                            <br></br>
+                            <p className='greet'>Greetings, {user.first_name}!</p>
+                            <br></br>
+                            <p className='greet-paragraph'>Welcome to the UPLB Dormitory Management Information System. You are currently logged in as <b>{user.role}</b>.</p>  
+                            
+                        </div>
+                        :""}
+ 
                     </div>
-                    :
-                    ""
-                    }
+                    
                     <br></br>
+                    <br></br>
+                    <div className='profile'>
                     { role === 'resident' && user.completed_profile === false ?
+                
                     <div>
                     <p className='paragraph'>To access resident permissions, kindly complete your profile first.</p>
                     <br></br>
@@ -102,18 +113,11 @@ const Dashboard = () => {
                     :
                     ""
                     }
-                    { role === 'dorm assistant' && user.completed_profile === true ?
-                    <div>
-                    <p className='paragraph'>As a dorm assistant, you have elevated resident permissions.</p>
                     </div>
-                    :
-                    ""
-                    }
-                    
+
                 </div>
 
-            
-
+              
             { role === 'user' ?
             <div className='sign-up-board'>
                 

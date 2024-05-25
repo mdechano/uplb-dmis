@@ -8,7 +8,7 @@
     border: 0px solid grey;
     background-color: white;
     border-radius: 10px;
-    box-shadow: 0px 2px 0px #555;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     width: 70%;
     margin-top: 50px;
     /* margin-left: 5%;
@@ -17,9 +17,17 @@
     padding-left: 3%;
     padding-right: 3%;
     padding-bottom: 40px;
-    font-size: 20px;
+    /* font-size: 20px; */
     font-family: "Montserrat", sans-serif;
+    display: flex;
+    flex-direction: column;
 }
+
+.dashboard-notice-notice {
+  display: flex;
+}
+
+
 
 .sign-up-board {
     border: 0px solid grey;
@@ -35,10 +43,19 @@
     font-family: "Montserrat", sans-serif;
     
 }
-
+.greet-div {
+  margin-top: 20px;
+    padding: 10px;
+    margin-left: 10px;
+}
 .greet {
-    font-size: 20px;
+    font-size: 25px;
     font-weight: bold;
+    
+}
+.greet-paragraph {
+  font-size: 18px;
+ 
 }
 
 .complete-sign-up {
@@ -174,4 +191,13 @@
   background-color: #22ff86;
   box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
   transform: translateY(0);
+}
+
+.dmislogo {
+  width: 15%;
+  /* align-self: center; */
+}
+
+.profile {
+  /* margin-left: 50px; */
 }

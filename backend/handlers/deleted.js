@@ -3,7 +3,7 @@ const { Deleted } = require('../models/index').models;
 exports.create = (type, data) => {
     // asynchronous
     return new Promise((resolve,reject) => {
-        // create and save new Donor
+        // create and save new Deleted
         const object = {
             object_type: type,
             object: data
@@ -12,7 +12,7 @@ exports.create = (type, data) => {
         toDelete.save((err, deleted) => {
             // failed: return error
             if(err) { reject(err); }
-            // success: return newly created donor
+            // success: return newly created delete
             else {
                 resolve(deleted); 
             }

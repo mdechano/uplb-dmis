@@ -12,7 +12,7 @@
     width: 100%;
     scroll-snap-type: y mandatory;
     border-radius: 10px;
-    box-shadow: 0px 1px 2px 1px grey;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
 .scrollable-table > .residents-list-table {
@@ -46,8 +46,10 @@
 
 .residents-list-table tr {
  scroll-snap-align: start;
- border: thin solid grey;
+ border: thin solid rgb(215, 215, 215);
+
 }
+
 
 .residents-list-table tr:hover {
     background-color: rgb(215, 215, 215);
@@ -64,11 +66,15 @@
 .residents-list-middle {
     padding-left: 5px;
     padding-right: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 form.search-bar input[type=text] {
     padding: 10px;
-    font-size: 17px;
+    font-size: 15px;
     border: 1px solid grey;
     float: left;
     width: 70%;
@@ -82,7 +88,7 @@ form.search-bar input[type=text] {
     padding: 10px;
     background: #0A4424;
     color: white;
-    font-size: 17px;
+    font-size: 15px;
     border: 1px solid grey;
     border-left: none;
     cursor: pointer;
@@ -99,6 +105,18 @@ form.search-bar input[type=text] {
     display: table;
   }
 
-  /* .list-note {
-    font-size: 15px;
-  } */
+  .record-dropdown{
+    background-color: rgb(211, 211, 211);
+    border: 1px solid grey;
+    border-radius: 10px;
+    padding: 5px;
+    font-family: 'Inter', sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    height: 35px;
+}
+
+.record-dropdown:hover{
+    background-color: rgb(230, 230, 230);   
+    cursor: pointer; 
+}

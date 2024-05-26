@@ -3,7 +3,7 @@ const { Violation } = require('../models/index').models;
 exports.create = (object) => {
     // asynchronous
     return new Promise((resolve,reject) => {
-        // create and save new Picture
+        // create and save new violation
         const violation = new Violation(object)
         violation.save((err, violation) => {
             // failed: return error

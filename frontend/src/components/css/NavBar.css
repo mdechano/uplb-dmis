@@ -5,11 +5,15 @@
 
 .dashboard_header {
     background-color: #E5E4E2;
+    /* background-color: rgb(203, 155, 0); */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 5px;
-    box-shadow: 0px 2px #888888;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 5px;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.4);
 }
 
 .left-header {
@@ -23,6 +27,8 @@
     padding-left: 10px;
     padding-right: 10px;
 }
+
+
 
 .uplblogo {
  width: 15%;
@@ -80,6 +86,7 @@
     background-color: rgba(149, 5, 5, 0.659);
   }
 
+
   .dropdown-content {
     display: none;
     position: absolute;
@@ -104,10 +111,6 @@
   .dropdown:hover .dropdown-content {
     display: block;
   }
-  
-  /* .dropdown:hover .dropbtn {
-    background-color: #3e8e41;
-  } */
 
   .profile-div {
     flex: 1;
@@ -124,7 +127,7 @@
   }
 
   .user-image {
-    width: 50px;
+    width: 40px;
     padding: 5px;
-    border-radius: 50%;
+    cursor: pointer;
   }

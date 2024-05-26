@@ -378,7 +378,7 @@ function StudentInfoSheetReceipts () {
 
                     <div className='profile-div-right'>
                         { user.role === 'resident' || (user.role === 'dorm assistant' && currentResident.role === 'dorm assistant')  ?
-                            <p className='payment-note'><i>Your uploaded receipts will appear here. You may only edit the ____.</i></p>
+                            <p className='payment-note'><i>Your uploaded receipts will appear here.</i></p>
                         :""
                         }
                         <br></br>
@@ -422,10 +422,10 @@ function StudentInfoSheetReceipts () {
                                 : ""}
                         </table>
 
-                        { edit_flag === true?
+                        { edit_flag === true ?
                                 <div >
                                 <br></br>
-                                <p className='payment-note'><i>You are about to edit a receipt. You may only edit the academic year, semester, and months covered of the violation. If you wish to edit the PDF, kindly delete the receipt and submit a new one.</i></p>
+                                <p className='payment-note'><i>You are about to edit a receipt. You may only edit the academic year, semester, and months covered of the receipt. If you wish to edit the PDF, kindly delete the receipt and submit a new one.</i></p>
                                 <br></br>
                                     
                                      <table className='table-display'>

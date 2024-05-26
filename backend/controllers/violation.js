@@ -97,7 +97,7 @@ exports.editViolation = async (req, res) => {
         console.log(`Edited violation ${edit}`)
         return res.status(200).send({ message: 'Violation successfully edited' })
     }
-    catch{
+    catch(err){
         console.log(`Unable to edit violation. Error: ${err}`);
         return res.status(500).send({ message: 'Error editing violation' })
     }
@@ -127,7 +127,7 @@ exports.deleteViolation = async (req, res) => {
     try{
         var reqLength = idList.length;
     }
-    catch{
+    catch(err){
     console.log('Invalid property');
     res.status(501).send({ message: 'Invalid property'});
     }

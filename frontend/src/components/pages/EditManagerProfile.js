@@ -168,7 +168,7 @@ function EditManagerProfile () {
             })
         })
         .then(response => {return response.json()})
-        .then(alert("Successfully changed picture."), setChangePic(false))
+        .then(alert("Successfully changed picture."), fetchData(), setChangePic(false))
     }
 
     const flag_change_pic = () => {

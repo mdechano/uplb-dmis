@@ -51,9 +51,10 @@ function AttendantProfile () {
                     
                     <p className='page-title'>ATTENDANT PROFILE</p>
                     
-                    <div>
-                        <button className='edit-profile-button' onClick = {()=> navigate("/edit-attendant/"+user.profile_id)}>EDIT PROFILE</button>
-                    </div>
+                    { user.role === 'dorm attendant' ?
+                    <button className='edit-profile-button' onClick = {()=> navigate("/edit-attendant/"+user.profile_id)}>EDIT PROFILE</button>
+                    : <div className='extra-space'></div>}
+                   
                 </div>
                 <hr className='divider'></hr>
 

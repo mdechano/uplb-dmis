@@ -43,7 +43,10 @@ function ManagerProfile () {
                 <div className='upper-div'>
                     <button className='back-button' onClick = {()=> navigate('/dashboard')}>BACK</button>
                     <p className='page-title'>MANAGER PROFILE</p>
+                    { user.role === 'dorm manager' ?
                     <button className='edit-profile-button' onClick={()=> navigate('/edit-manager/'+user.profile_id)}>EDIT PROFILE</button>
+                    : <div className='extra-space'></div>}
+                    
                 </div>
 
                 <hr className='divider'></hr>

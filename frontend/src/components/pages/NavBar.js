@@ -5,6 +5,8 @@ import useStore from '../utilities/authHook';
 import {apiUrl} from '../utilities/apiUrl';
 import axios, { all } from "axios";
 import UPLBLogoText from '../images/UPLBLogoText.png'
+import DMISLogo from '../images/UPLBDMISlogo.png'
+import DDMenu from '../images/DDMenu.png'
 import '../css/NavBar.css'
 
 function NavBar () {
@@ -47,13 +49,14 @@ function NavBar () {
         <div>
             <header className='dashboard_header'>
                 <div className='left-header'>
+                    
                     <img className='uplblogo' src={UPLBLogoText} alt='logo' />
                 </div>
                 { user ?
                 <div className='profile-div'>
                     <a className='user-name'>{user.first_name}&nbsp;&nbsp;&nbsp;&nbsp;</a>
                     <div className='dropdown'>
-                        <img className="user-image" alt="profile" src={user.picture}/>
+                        <img className="user-image" alt="profile" src={DDMenu}/>
                         { role === 'resident' && user.completed_profile === true ?
                         <div className='dropdown-content'>
                             <a onClick={() => navigate('/resident-personal/'+user.profile_id)}>Student Information Sheet</a>

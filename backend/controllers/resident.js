@@ -180,7 +180,7 @@ exports.editResident = async (req,res) => {
         console.log(`Edited resident ${edit}`)
         return res.status(200).send({ message: 'Resident successfully edited' })
     }
-    catch{
+    catch(err){
         console.log(`Unable to edit resident. Error: ${err}`);
         return res.status(500).send({ message: 'Error editing resident' })
     }
@@ -368,11 +368,11 @@ exports.searchResident = async (req, res) => {
         return;
     }
 
-    let search = req.query.name
+    let search = req.query.input
     let result = new Array;
     
     try{
-        if(search == ''){
+        if(!search){
             return res.status(200).send({result})
         }
         let resident = await Resident.getAll()
@@ -381,12 +381,13 @@ exports.searchResident = async (req, res) => {
             return res.status(400).send({message: `No resident in database`})
         }
         else{
+            
             search = search.toLowerCase()
+
             for(let i = 0; i < resident.length; i++){
-                const fname = resident[i].first_name.toLowerCase()
-                const mname = resident[i].middle_name.toLowerCase()
                 const lname = resident[i].last_name.toLowerCase()
-                if(fname.match(search) || lname.match(search) || mname.match(search)){
+                const fname = resident[i].first_name.toLowerCase()
+                if(lname.match(search) || fname.match(search)){
                     result.push(resident[i])
                 }
             }
@@ -398,3 +399,73 @@ exports.searchResident = async (req, res) => {
         return res.status(500).send({message: 'Error searching for resident'})
     }
 }
+
+exports.sortBy = async (req, res) => {
+
+    if (!req.cookies || !req.cookies.authToken) {
+        res.status(401).send({message: "Unauthorized access"});
+        return;
+      }
+      
+      // validate token
+    const token = await utils.verifyToken(req);
+    
+      // error validating token
+    if(!token.status){
+        res.status(token.code).send({ message: token.message });
+        return;
+    }
+
+    let sortby = req.query
+    const key = Object.keys(sortby)
+    const value = Object.values(sortby)
+    let sortedResidents = new Array;
+    try{
+        if(key[0] === 'last_name'){
+            const resident = await Resident.getAllSorted({last_name:parseInt(value)})
+            if(!resident){
+                console.log("Resident database is empty")
+                return res.status(404).send({message: `No resident in database`})
+            }
+            else{
+                for(let i = 0; i < resident.length; i++){
+                    sortedResidents.push(resident[i])
+                }
+                return res.status(200).send(sortedResidents)
+            }
+        }
+        else if(key[0] === 'student_number'){
+            const resident = await Resident.getAllSorted({student_no:parseInt(value)})
+            if(!resident){
+                console.log("Resident database is empty")
+                return res.status(404).send({message: `No resident in database`})
+            }
+            else{
+                for(let i = 0; i < resident.length; i++){
+                    sortedResidents.push(resident[i])
+                }
+                return res.status(200).send(sortedResidents)
+            }
+        }
+        else if(key[0] === 'college'){
+            const resident = await Resident.getAllSorted({college:parseInt(value)})
+            if(!resident){
+                console.log("Resident database is empty")
+                return res.status(404).send({message: `No resident in database`})
+            }
+            else{
+                for(let i = 0; i < resident.length; i++){
+                    sortedResidents.push(resident[i])
+                }
+                return res.status(200).send(sortedResidents)
+            }
+        }
+    }
+    catch(err){
+        console.log(`Error searching for resident in the DB ${err}` );
+        return res.status(500).send({message: 'Error searching for resident'})
+    }
+
+}
+
+

@@ -3,7 +3,7 @@ const { Payment } = require('../models/index').models;
 exports.create = (object) => {
     // asynchronous
     return new Promise((resolve,reject) => {
-        // create and save new Picture
+        // create and save new payment
         const payment = new Payment(object)
         payment.save((err, payment) => {
             // failed: return error

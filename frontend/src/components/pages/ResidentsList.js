@@ -12,18 +12,74 @@ import'../css/ResidentsList.css';
 function ResidentsList () {
 
     const navigate = useNavigate();
+
+    let input;
+
     const { user, isAuthenticated, setAuth } = useStore();     // from zustand store
-    const [ residents, setResidents ] =  useState([]);
+    // const [ residents, setResidents ] =  useState();
+    const [record, setRecord] = useState();
+    const [viewValue, setViewValue] = useState("resident");
+    const [orderValue, setOrderValue] = useState("");
+
+    const orderFilter = [
+        {label: 'NONE', value: ''},
+        {label: 'LAST NAME', value: 'last_name'},
+        {label: 'STUDENT NUMBER', value: 'student_number'},
+        {label: 'COLLEGE', value: 'college'}
+    ]
 
     const fetchData = () => {
-        const getResidents = axios.get(apiUrl("/resident"), { withCredentials: true });
+        const getResidents = axios.get(apiUrl("/"+viewValue), { withCredentials: true });
         axios.all([getResidents]).then(
             axios.spread((...allData) => {
                 const allResidentsData = allData[0].data
-                setResidents(allResidentsData)
+                setRecord(allResidentsData)
             })
         )
-        console.log(residents)
+        console.log(record)
+    }
+
+    useEffect(()=>{
+        if(orderValue !== '' && viewValue === 'resident'){
+            fetch(apiUrl("/" + [viewValue] + "/sortby?" + [orderValue] + "=1"),{
+                method: "GET",
+                credentials:'include',
+            })
+            .then(response => {return response.json()})
+            .then((data) => {
+                setRecord(data)
+            })
+        }
+        else {
+            fetchData()
+        }
+    },[orderValue]);
+
+    const orderChange=(e)=>{
+        setOrderValue(e.target.value);
+    }
+
+
+    const handleUserInput = (e) => {
+        input = e.target.value;
+        console.log(input)
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (input !== '' && viewValue === 'resident' ){
+            fetch(apiUrl("/resident"+ "/search?input=" + [input]),{
+                method: "GET",
+                credentials:'include',
+            })
+            .then(response => {return response.json()})
+            .then((data) => {
+                setRecord(data.result)
+            })
+        } else {
+            fetchData()
+        }
     }
 
     useEffect(()=>{
@@ -33,7 +89,21 @@ function ResidentsList () {
         else {
             fetchData()
         }
-    },[]);
+    },[viewValue]);
+
+    const DropDown =({value,options,onChange,type})=>{
+        return(
+            <label>
+                <select value={value} onChange={onChange} className = 'record-dropdown'>
+                {type === "order" ?  <option value = "" disabled hidden>ORDER BY</option> : <option value = "" disabled hidden></option>}
+                {options.map((option,i)=>(
+                    <option key={i} value = {option.value} className = 'record-option'> {option.label} </option>
+                ))}
+                </select>
+            </label>
+        );
+    }
+
 
     return (
         <div>
@@ -43,15 +113,20 @@ function ResidentsList () {
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
                     <h1>{user.dorm} Residents List</h1>
                     <form class="search-bar" >
-                    <input type="text" placeholder="Search..." />
-                    <button type="submit"><i class="fa fa-search"></i></button>
+                    <input type="text" placeholder="last name or first name" value = {input} onChange = {handleUserInput} required />
+                    <button onClick={handleSubmit} type="submit"><i class="fa fa-search"></i></button>
                     </form>
                 </div>
                 <br></br>
                 <div className='residents-list-middle'>
                     <p className='payment-note'><i>You are now viewing the list of residents residing in {user.dorm}. To search for a specific student, enter their <b>student number</b> or <b>last name</b> in the search bar of this page.</i></p>
+                    <div className='record-dropdowns'>
+                    {viewValue === 'resident' ? <DropDown className = 'record-dropdown' type="order" options={orderFilter} value = {orderValue} onChange={orderChange}/>: 
+                    ""} 
+                </div>
                 </div>
                 <br></br>
+                
                 <div className="scrollable-table">
                     <table className='residents-list-table'>
                         <thead>
@@ -65,8 +140,8 @@ function ResidentsList () {
                                 <th>CONTACT NUMBER</th>
                             </tr>
                         </thead>
-                        { residents !== undefined ?
-                            residents.map((person,i) => {
+                        { record !== undefined ?
+                            record.map((person,i) => {
                                 if (person.dorm === user.dorm) {
                                     return (
                                         <tbody>

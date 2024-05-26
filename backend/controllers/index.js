@@ -4,7 +4,6 @@ exports.controllers = {
     ManagerController: require('./manager'),
     AttendantController: require('./attendant'),
     ResidentController: require('./resident'),
-    PictureController: require('./picture'),
     ViolationController: require('./violation'),
     PaymentController: require('./payment'),
     ReceiptController: require('./receipt')

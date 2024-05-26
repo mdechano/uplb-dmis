@@ -1,34 +1,59 @@
- body{
-    background-color: #F5F5F5;
-  }
+ body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f5f5f5;
+ }
   
+   
   .dmis-logo {
     width: 200px;
     padding-bottom: 20px;
+    filter: drop-shadow(1px 3px 3px rgb(40, 40, 40));
   }
 
   .blank-space {
     height: 50px;
   }
   
+  .landing {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position:fixed;
+  padding:0;
+  margin:0;
+
+  top:0;
+  left:0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../images/bg.png");
+    background-size: cover;
+    background-repeat:   no-repeat;
+    background-attachment: fixed;
+  }
+  
   .landing_container {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    height: 100%;
-
+    justify-content: center;
+    height: 70%;
+    /* margin-bottom:90px; */
   }
 
   
   .landing-left {
-    padding-top: 100px;
-    padding-bottom: 100px;
-    width: 50%;
+    padding-top: 50px;
+    padding-bottom: 25px;
+    width: 30%;
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #f5f5f5;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    margin-top: 60px;
+    background-color: rgb(255, 255, 255, 255);
     
   }
 
@@ -38,17 +63,24 @@
     font-size: 25px;
     color: #7b1716;
     text-align: center;
+    /* z-index:1 */
+    /* filter: drop-shadow(1px 1px 1px rgb(76, 76, 76)); */
   }
 
   .login-button {
     background-color: #f5f5f5; /*gawing color ng final bg*/
     border: none;
+    /* z-index:1 */
   }
 
-.landing-right {
-    border: 1px grey solid;
-    width: 50%;
-    padding-top: 50px;
-    padding-left: 30px;
-    
+.bottom-credits {
+  background-color: rgb(158, 158, 158);
+  /* position: absolute; */
+bottom: 0;
+/* float: right; */
+}
+
+.credits {
+  float: right;
+  padding-right: 5px;
 }

@@ -122,7 +122,7 @@ exports.editManager = async (req, res) => {
         console.log(`Edited manager ${edit}`)
         return res.status(200).send({ message: 'Manager successfully edited' })
     }
-    catch{
+    catch(err){
         console.log(`Unable to edit manager. Error: ${err}`);
         return res.status(500).send({ message: 'Error editing manager' })
     }
@@ -152,7 +152,7 @@ exports.deleteManager = async (req, res) => {
     try{
         var reqLength = idList.length;
     }
-    catch{
+    catch(err){
     console.log('Invalid property');
     res.status(501).send({ message: 'Invalid property'});
     }

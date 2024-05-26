@@ -101,7 +101,7 @@ exports.editPayment = async (req, res) => {
         console.log(`Edited payment ${edit}`)
         return res.status(200).send({ message: 'payment successfully edited' })
     }
-    catch{
+    catch(err){
         console.log(`Unable to edit payment. Error: ${err}`);
         return res.status(500).send({ message: 'Error editing payment' })
     }
@@ -131,7 +131,7 @@ exports.deletePayment = async (req, res) => {
     try{
         var reqLength = idList.length;
     }
-    catch{
+    catch(err){
     console.log('Invalid property');
     res.status(501).send({ message: 'Invalid property'});
     }

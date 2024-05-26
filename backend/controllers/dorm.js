@@ -127,7 +127,7 @@ exports.editDorm = async (req, res) => {
         console.log(`Edited dorm ${edit}`)
         return res.status(200).send({ message: 'Dorm successfully edited' })
     }
-    catch{
+    catch(err){
         console.log(`Unable to edit dorm. Error: ${err}`);
         return res.status(500).send({ message: 'Error editing dorm' })
     }
@@ -157,7 +157,7 @@ exports.deleteDorm = async (req, res) => {
     try{
         var reqLength = idList.length;
     }
-    catch{
+    catch(err){
     console.log('Invalid property');
     res.status(501).send({ message: 'Invalid property'});
     }

@@ -180,7 +180,7 @@ exports.editResident = async (req,res) => {
         console.log(`Edited resident ${edit}`)
         return res.status(200).send({ message: 'Resident successfully edited' })
     }
-    catch{
+    catch(err){
         console.log(`Unable to edit resident. Error: ${err}`);
         return res.status(500).send({ message: 'Error editing resident' })
     }

@@ -237,8 +237,8 @@ function GenerateSOA () {
                     { currentResident !== undefined ?
                         <div className='generate-soa-div'>
                             <div className='soa-body'>
-                                <p className='upload-receipt-note'><i>blah blah blah</i></p>
-                                <br></br>
+                                {/* <p className='upload-receipt-note'><i>blah blah blah</i></p>
+                                <br></br> */}
                                 <div className='generate-soa-form'>
                                     <table className='soa-table' id='upper-table'>
                                         <tr>

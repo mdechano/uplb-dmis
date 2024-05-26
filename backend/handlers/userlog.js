@@ -3,7 +3,7 @@ const { UserLog } = require('../models/index').models;
 exports.create = (user,action,description) => {
     // asynchronous
     return new Promise((resolve,reject) => {
-        // create and save new Scholar
+        // create and save new Userlog
         const object = {
             userId: user._id,
             userEmail: user.email,

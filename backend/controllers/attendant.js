@@ -125,7 +125,7 @@ exports.editAttendant = async (req, res) => {
         console.log(`Edited attendant ${edit}`)
         return res.status(200).send({ message: 'Attendant successfully edited' })
     }
-    catch{
+    catch(err){
         console.log(`Unable to edit attendant. Error: ${err}`);
         return res.status(500).send({ message: 'Error editing attendant' })
     }
@@ -156,7 +156,7 @@ exports.deleteAttendant = async (req, res) => {
     try{
         var reqLength = idList.length;
     }
-    catch{
+    catch(err){
     console.log('Invalid property');
     res.status(501).send({ message: 'Invalid property'});
     }

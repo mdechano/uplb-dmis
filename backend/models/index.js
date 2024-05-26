@@ -6,7 +6,6 @@ exports.models = {
     Attendant: require('./attendant'),
     Resident: require('./resident'),
     Deleted: require('./deleted'),
-    Picture: require('./picture'),
     Violation: require('./violation'),
     Payment: require('./payment'),
     Receipt: require('./receipt')

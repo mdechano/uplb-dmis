@@ -203,7 +203,7 @@ exports.changeResidentRole = async(req, res) => {
             console.log(`Edited user ${edit}`)
             return res.status(200).send({ message: 'User successfully edited' })
         }
-        catch{
+        catch(err){
             console.log(`Unable to edit user. Error: ${err}`);
             return res.status(500).send({ message: 'Error editing user' })
         }
@@ -317,7 +317,7 @@ exports.deleteUser = async (req, res) => {
     try{
         var reqLength = idList.length;
     }
-    catch{
+    catch(err){
     console.log('Invalid property');
     res.status(501).send({ message: 'Invalid property'});
     }

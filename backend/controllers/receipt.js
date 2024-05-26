@@ -127,7 +127,7 @@ exports.deleteReceipt = async (req, res) => {
     try{
         var reqLength = idList.length;
     }
-    catch{
+    catch(err){
     console.log('Invalid property');
     res.status(501).send({ message: 'Invalid property'});
     }

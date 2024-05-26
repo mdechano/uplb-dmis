@@ -16,7 +16,7 @@
     border: 0px solid grey;
     background-color: white;
     border-radius: 10px;
-    box-shadow: 0px 2px 0px #555;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     width: 20%;
     height: auto;
     padding-top: 20px;
@@ -42,7 +42,7 @@
 .profile-nav {
     display: flex;
     flex-direction: column;
-    
+    align-items: center;
 }
 
 .profile-nav-btn {
@@ -106,7 +106,7 @@
     -webkit-user-select: none;
     touch-action: manipulation;
     vertical-align: baseline;
-    width: 100%;
+    width: 250px;
     margin-top: 2px;
     padding-left: 10px;
     padding-right: 10px;
@@ -125,7 +125,7 @@
     border: 0px solid grey;
     background-color: white;
     border-radius: 10px;
-    box-shadow: 0px 2px 0px #555;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     padding-top: 20px;
     padding-bottom: 30px;
     padding-left: 30px;

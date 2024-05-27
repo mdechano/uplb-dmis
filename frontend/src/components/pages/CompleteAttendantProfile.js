@@ -70,7 +70,7 @@ function CompleteAttendantProfile () {
                     sex: document.getElementById("sex").value,
                     birthday: document.getElementById("birth-month").value + " " + document.getElementById("birth-day").value + ", " + document.getElementById("birth-year").value,
                     contact_number: document.getElementById("contact_number").value,
-                    email: document.getElementById("email").value,
+                    email: user.email,
                     home_address: document.getElementById("home_address").value,
                     picture_url: finalpicture
                 })
@@ -221,7 +221,7 @@ function CompleteAttendantProfile () {
                 <div className="body-div">
                     <div className='left-div'>
                     <form className='upload-div'>
-                            <div className='upload-body'>
+                            <div className='upload-img-body'>
                                 {picture === "" || picture === null ? "" : <img id='image-upload' width={100} src={picture}></img>}
                                 <br></br>
                                 <br></br>
@@ -319,7 +319,7 @@ function CompleteAttendantProfile () {
                                                 <option value="31">31</option>
                                             </select>
                                         {/* </td> */}
-                                        <td className='cell-input'><input type="text" className='year' id="birth-year" placeholder='year'></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="birth-year" placeholder='year'></input></td>
                                         
                                     </tr>
                                     <tr className='table-row'>
@@ -330,7 +330,7 @@ function CompleteAttendantProfile () {
                                     </tr>
                                     <tr className='table-row'>
                                         <td className='cell-input'><input type='text' className='complete-input' id='contact_number' required></input></td>
-                                        <td className='cell-input'><input type='text' className='complete-input' id='email' required></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input'  disabled value={user.email}></input></td>
                                         <td className='cell-input'><input type='text' className='complete-input' id='home_address' required></input></td>
                                         
                                         

@@ -247,7 +247,7 @@ function StudentInfoSheetCheckIn () {
                     <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
                     <p className='page-title'>STUDENT INFORMATION SHEET</p>
                     { user.role === 'resident' || (user.role === 'dorm assistant' && currentResident.role === 'dorm assistant') ?
-                        <button className='edit-profile-button' onClick = {()=> navigate("/edit-resident-personal/"+user.profile_id)}>EDIT PROFILE</button>
+                        <button className='edit-profile-button' onClick = {()=> navigate("/edit-resident-check-in/"+user.profile_id)}>EDIT PROFILE</button>
                     
                     : <div className='extra-space'></div>}
                 </div>

@@ -207,7 +207,7 @@ function EditStudentPersonal () {
             })
         })
         .then(response => {return response.json()})
-        .then(alert("Successfully changed picture."))
+        .then(alert("Successfully changed picture."), fetchData(), setChangePic(false))
     }
 
     const flag_change_pic = () => {
@@ -240,7 +240,7 @@ function EditStudentPersonal () {
                         <form className='upload-div'>
                             { changePic === true ? 
                                 <div>
-                                    <div className='upload-body'>
+                                    <div className='upload-img-body'>
                                     {picture === "" || picture === null ? "" : <img id='image-upload' width={100} src={picture}></img>}
                                         <input className='upload-img-file'  type="file" accept="image/png, image/jpeg, image/jpg" onChange={handleFileSelected} ></input>
                                         <br></br>
@@ -362,7 +362,7 @@ function EditStudentPersonal () {
                                     </tr>
                                     <tr className='table-row'>
                                         <td className='cell-input'><input type='text' className='complete-input' id='contact_number' name='contactnumber' required></input></td>
-                                        <td className='cell-input'><input type='text' className='complete-input' id='email' name='email' required></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input'  disabled value={user.email}></input></td>
                                         <td className='cell-input'><input type='text' className='complete-input' id='home_address' name='address' required></input></td>
                                         <td className='cell-input'>
                                             <select className='custom-select-sex' id='region' name='region'>

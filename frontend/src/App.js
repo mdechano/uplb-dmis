@@ -28,6 +28,7 @@ function App() {
       <BrowserRouter>
         <div>
           <Routes>
+            <Route exact={true} path="" element={<LandingPage />} />
             <Route exact={true} path="/" element={<LandingPage />} />
             <Route exact={true} path="/dashboard" element={<Dashboard />} />
             <Route exact={true} path="/complete-resident-profile" element={<CompleteResidentProfile />} />

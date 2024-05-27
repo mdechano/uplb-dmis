@@ -291,6 +291,7 @@ exports.findAll = async (req, res) => {
 exports.logout = (req, res) => {
     console.log("logged out")
     res.clearCookie('authToken').send({isAuthenticated: false})
+    return res.status(200).redirect('/');
   }
 
 exports.deleteUser = async (req, res) => {

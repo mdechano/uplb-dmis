@@ -26,7 +26,6 @@ function NavBar () {
         })
         .then(response => {
             return response.json()
-            
         })
         .then(navigate("/"))
         .then(
@@ -34,6 +33,8 @@ function NavBar () {
                 window.location.reload();
              }, 1000)
         )
+       
+        
     }
 
 
@@ -43,7 +44,7 @@ function NavBar () {
         } else {
             setRole(user.role);
         }
-    });
+    },[]);
 
     return (
         <div>

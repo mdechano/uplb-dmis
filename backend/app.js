@@ -21,7 +21,8 @@ exports.start = () => {
     
 
     App.use((req, res, next) => {
-        res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000")
+        // res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000")
+        res.setHeader("Access-Control-Allow-Origin", "https://uplb-dmis.netlify.app")
         res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE")
         res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers,Access-Control-Allow-Methods,Origin,Accept,Content-Type")
         res.setHeader("Access-Control-Allow-Credentials","true")

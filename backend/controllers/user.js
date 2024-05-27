@@ -42,7 +42,7 @@ exports.login = async (req, res) => {
                 token
             }
             await UserLog.create(existing, 'login', `user ${existing._id} logged in`)
-            return res.status(200).cookie('authToken', token, {maxAge: 60 * 60 * 1000, httpOnly: true}).send(response)
+            return res.status(200).cookie('authToken', token, {maxAge: 60 * 60 * 1000, httpOnly: true, sameSite: 'None', secure: true}).send(response)
         }
     }
     catch(err){

@@ -147,9 +147,7 @@ function CompleteAttendantProfile () {
                                     .then(response => {return response.json()})
                                     .then(
                                         alert("Successfully completed attendant profile."),
-                                        setTimeout(function(){
-                                            window.location.reload();
-                                        }, 1000)
+                                        navigate("/dashboard")
                                     )
                                 )
                                 }

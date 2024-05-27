@@ -287,7 +287,7 @@ function GenerateSOA () {
                                 
                                 <form className='generate-soa-form'>
                                     
-                                    <br></br>
+                            
                                     <table>
                                         <tr className='table-row'>
                                             <td className='cell-title'>Date Today</td>
@@ -317,7 +317,7 @@ function GenerateSOA () {
                                 : "" }
                                 { generate_flag === true ?
                                     <div className='generate-soa-form'>
-                                    <br></br>
+                                    
                                     <p>Statement of Account for <b>{semester}</b> for the month/s: <b>{months_covered}</b>.</p>
                                     <p>Date generated: {date_generated}.</p>
                                     <br></br>

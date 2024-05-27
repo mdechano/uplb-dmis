@@ -259,7 +259,7 @@ function EditStudentCheckIn () {
             })
         })
         .then(response => {return response.json()})
-        .then(alert("Successfully changed picture."))
+        .then(alert("Successfully changed picture."),fetchData(), setChangePic(false))
     }
 
     const flag_change_pic = () => {
@@ -292,7 +292,7 @@ function EditStudentCheckIn () {
                     <form className='upload-div'>
                         { changePic === true ? 
                                 <div>
-                                    <div className='upload-body'>
+                                    <div className='upload-img-body'>
                                     {picture === "" || picture === null ? "" : <img id='image-upload' width={100} src={picture}></img>}
                                         <input className='upload-img-file'  type="file" accept="image/png, image/jpeg, image/jpg" onChange={handleFileSelected} ></input>
                                         <br></br>
@@ -379,12 +379,25 @@ function EditStudentCheckIn () {
                                                 <td><input type='number' id='printer' className='appliances-number'></input></td>
                                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;Printer</td>
                                             </tr>
-                                            <tr>
+                                            {/* <tr>
                                                 <td><input type='number' id='rice-cooker' className='appliances-number'></input></td>
                                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;Rice Cooker</td>
-                                            </tr>
+                                            </tr> */}
                                         </div>
                                         <div className='appliances-right'>
+
+                                            <h4>Rice Cooker</h4>
+                                            <div>
+                                            <div className='custom-select'>
+                                                    <select className='electric-fan' id='rice-cooker'>
+                                                        <option value=""disabled defaultValue hidden>Choose Rice Cooker Size</option>
+                                                        <option value='small'>Small</option>
+                                                        <option value='big'>Big</option>
+                                                        <option value='I do not own a rice cooker.'>I do not own a rice cooker.</option>
+                                                    </select>   
+                                                </div>
+                                            </div>
+                                            <br></br>
                                             <h4>Electric Fan</h4>
                                             <div>
                                                 

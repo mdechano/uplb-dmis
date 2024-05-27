@@ -41,7 +41,7 @@ function CompleteResidentProfile () {
 
     const sendData = (e) => {
         e.preventDefault();
-        var tempEmail = document.getElementById("email").value;
+        var tempEmail = user.email;
         var notuniqueEmail = checkEmailExists(tempEmail); // boolean
 
         const father_details = {
@@ -160,14 +160,6 @@ function CompleteResidentProfile () {
             
         }
 
-        // if ( document.getElementById("first_name").value === "" || document.getElementById("last_name").value === "" || document.getElementById("sex").value ||
-        // document.getElementById("student_no").value === "" || document.getElementById("contact_number").value === "" || document.getElementById("email").value === "" ||
-        // document.getElementById("home_address").value === "" || document.getElementById("region").value === "" || document.getElementById("college").value === "" ||
-        // document.getElementById("degree_program").value === "" || document.getElementById("fathername").value === "" || document.getElementById("mothername").value === "" ||
-        // document.getElementById("emergency-contact-name-1").value === "" || document.getElementById("emergency-contact-address-1").value || document.getElementById("emergency-contact-phone-1").value) {
-        //     alert("Some information are missing. Please make sure to fill the necessary details.")
-        // } else {
-
             if (notuniqueEmail === false) {
                 allEmails.push(tempEmail);
 
@@ -190,7 +182,7 @@ function CompleteResidentProfile () {
                         civil_status: document.getElementById("civil_status").value,
                         birthday: document.getElementById("birth-month").value + " " + document.getElementById("birth-day").value + ", " + document.getElementById("birth-year").value,
                         contact_number: document.getElementById("contact_number").value,
-                        email: document.getElementById("email").value,
+                        email: user.email,
                         home_address: document.getElementById("home_address").value,
                         region: document.getElementById("region").value,
                         college: document.getElementById("college").value,
@@ -317,6 +309,7 @@ function CompleteResidentProfile () {
     return (
         <div>
             <NavBar></NavBar>
+            { user !== undefined ?
             <div classname = 'stud-info-sheet-div'>
                 <div className='upper-div'>
                     <button className='back-button' onClick = {()=> navigate("/dashboard")}>BACK</button>
@@ -328,7 +321,7 @@ function CompleteResidentProfile () {
                     <div className='left-div'>
                     <form className='upload-div'>
                         
-                        <div className='upload-body'>
+                        <div className='upload-img-body'>
                             {picture === "" || picture === null ? "" : <img id='image-upload' width={100} src={picture}></img>}
                             <br></br>
                             <br></br>
@@ -442,7 +435,10 @@ function CompleteResidentProfile () {
                                     </tr>
                                     <tr className='table-row'>
                                         <td className='cell-input'><input type='text' className='complete-input' id='contact_number' name='contactnumber' required></input></td>
-                                        <td className='cell-input'><input type='text' className='complete-input' id='email' name='email' required></input></td>
+                                        
+                                        <td className='cell-input'><input type="text" className='complete-input'  disabled value={user.email}></input></td>
+                                       
+                                        
                                         <td className='cell-input'><input type='text' className='complete-input' id='home_address' name='address' required></input></td>
                                         <td className='cell-input'>
                                             <select className='custom-select-sex' id='region' name='region'>
@@ -687,12 +683,24 @@ function CompleteResidentProfile () {
                                                 <td><input type='number' id='printer' className='appliances-number'></input></td>
                                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;Printer</td>
                                             </tr>
-                                            <tr>
+                                            {/* <tr>
                                                 <td><input type='number' id='rice-cooker' className='appliances-number'></input></td>
                                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;Rice Cooker</td>
-                                            </tr>
+                                            </tr> */}
                                         </div>
                                         <div className='appliances-right'>
+                                            <h4>Rice Cooker</h4>
+                                            <div>
+                                            <div className='custom-select'>
+                                                    <select className='electric-fan' id='rice-cooker'>
+                                                        <option value=""disabled defaultValue hidden>Choose Rice Cooker Size</option>
+                                                        <option value='small'>Small</option>
+                                                        <option value='big'>Big</option>
+                                                        <option value='I do not own a rice cooker.'>I do not own a rice cooker.</option>
+                                                    </select>   
+                                                </div>
+                                            </div>
+                                            <br></br>
                                             <h4>Electric Fan</h4>
                                             <div>
                                                 
@@ -809,6 +817,7 @@ function CompleteResidentProfile () {
                     </div>
                 </div>
             </div>
+             : ""}
         </div>
     )
 

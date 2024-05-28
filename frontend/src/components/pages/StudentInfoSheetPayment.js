@@ -469,12 +469,13 @@ function StudentInfoSheetPayment () {
                                     <form>
                                         <select className='dashboard-custom-select' id='slas_status' onChange={handleChange}>
                                             {/* <option value="" disabled default>Choose SLAS</option> */}
-                                            <option value='FDS'>FDS </option>
-                                            <option value='FD'>FD </option>
+                                            <option value='No Discount'>No Discount</option>
+                                            <option value='FDS'>FDS</option>
+                                            <option value='FD'>FD</option>
                                             <option value='PD80'>PD 80%</option>
                                             <option value='PD60'>PD 60%</option>
                                             <option value='PD33'>PD 33%</option>
-                                            <option value='No Discount'>No Discount</option>
+                                            
                                         </select>   
                                     </form>
                                     <div>

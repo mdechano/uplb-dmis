@@ -51,7 +51,7 @@ function EditAttendantProfile () {
                 sex: document.getElementById("sex").value,
                 birthday: document.getElementById("birth-month").value + " " + document.getElementById("birth-day").value + ", " + document.getElementById("birth-year").value,
                 contact_number: document.getElementById("contact_number").value,
-                email: document.getElementById("email").value,
+                email: user.email,
                 home_address: document.getElementById("home_address").value,
                 picture_url: attendant.picture_url
             })
@@ -91,7 +91,7 @@ function EditAttendantProfile () {
                                 stayover_permit_start: currentDorm.stayover_permit_start,
                                 dorm_attendant_id: currentDorm.dorm_attendant_id,
                                 dorm_attendant_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value,
-                                dorm_attendant_email: document.getElementById("email").value,
+                                dorm_attendant_email: user.email,
                                 dorm_attendant_contact_number: document.getElementById("contact_number").value
                             })
                         })

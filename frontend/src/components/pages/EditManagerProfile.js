@@ -52,7 +52,7 @@ function EditManagerProfile () {
                 sex: document.getElementById("sex").value,
                 birthday: document.getElementById("birth-month").value + " " + document.getElementById("birth-day").value + ", " + document.getElementById("birth-year").value,
                 contact_number: document.getElementById("contact_number").value,
-                email: document.getElementById("email").value,
+                email: user.email,
                 home_address: document.getElementById("home_address").value,
                 picture_url: manager.picture_url
             })
@@ -79,7 +79,7 @@ function EditManagerProfile () {
                                 dorm_details: currentDorm.dorm_details,
                                 dorm_manager_id: currentDorm.dorm_manager_id,
                                 dorm_manager_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value,
-                                dorm_manager_email: document.getElementById("email").value,
+                                dorm_manager_email: user.email,
                                 dorm_manager_contact_number: document.getElementById("contact_number").value,
                                 office_hours_start: currentDorm.office_hours_start,
                                 office_hours_end: currentDorm.office_hours_end,

@@ -47,7 +47,7 @@ function CompleteAttendantProfile () {
 
     const sendData = (e) => {
         e.preventDefault();
-        var tempEmail = document.getElementById("email").value;
+        var tempEmail = user.email;
         var notuniqueEmail = checkEmailExists(tempEmail);
 
         if (notuniqueEmail === false) {
@@ -126,7 +126,7 @@ function CompleteAttendantProfile () {
                                         stayover_permit_start: currentDorm.stayover_permit_start,
                                         dorm_attendant_id: currentPerson._id,
                                         dorm_attendant_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value,
-                                        dorm_attendant_email: document.getElementById("email").value,
+                                        dorm_attendant_email: user.email,
                                         dorm_attendant_contact_number: document.getElementById("contact_number").value
                                     })
                                 })

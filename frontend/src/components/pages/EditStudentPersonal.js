@@ -83,7 +83,7 @@ function EditStudentPersonal () {
                     civil_status: document.getElementById("civil_status").value,
                     birthday: document.getElementById("birth-month").value + " " + document.getElementById("birth-day").value + ", " + document.getElementById("birth-year").value,
                     contact_number: document.getElementById("contact_number").value,
-                    email: document.getElementById("email").value,
+                    email: user.email,
                     home_address: document.getElementById("home_address").value,
                     region: document.getElementById("region").value,
                     college: document.getElementById("college").value,

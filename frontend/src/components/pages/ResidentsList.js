@@ -119,7 +119,7 @@ function ResidentsList () {
                 </div>
                 <br></br>
                 <div className='residents-list-middle'>
-                    <p className='payment-note'><i>You are now viewing the list of residents residing in {user.dorm}. To search for a specific student, enter their <b>student number</b> or <b>last name</b> in the search bar of this page.</i></p>
+                    <p className='payment-note'><i>You are now viewing the list of residents residing in {user.dorm}. To search for a specific student, enter their <b>first name</b> or <b>last name</b> in the search bar of this page.</i></p>
                     <div className='record-dropdowns'>
                     {viewValue === 'resident' ? <DropDown className = 'record-dropdown' type="order" options={orderFilter} value = {orderValue} onChange={orderChange}/>: 
                     ""} 

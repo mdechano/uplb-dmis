@@ -130,7 +130,10 @@ function CompleteManagerProfile () {
                     .then(response => {return response.json()})
                     .then(
                         alert("Successfully completed manager profile and submitted dorm information."),
-                        navigate("/dashboard")
+                        setTimeout(function(){
+                            window.location.reload();
+                         }, 1000),
+                        navigate("/dashboard"),
                     )
                 }
             }) 

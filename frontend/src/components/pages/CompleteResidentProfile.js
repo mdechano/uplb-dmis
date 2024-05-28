@@ -249,6 +249,9 @@ function CompleteResidentProfile () {
                     .then(response => {return response.json()})
                     .then(
                         alert("Successfully completed resident profile."),
+                        setTimeout(function(){
+                            window.location.reload();
+                         }, 1000),
                         navigate("/dashboard")
                         // setTimeout(function(){
                         //     window.location.reload();

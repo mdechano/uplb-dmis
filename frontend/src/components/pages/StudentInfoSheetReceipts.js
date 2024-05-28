@@ -275,7 +275,7 @@ function StudentInfoSheetReceipts () {
                 })
             })
             .then(response => {return response.json()})
-            .then(alert("Successfully editted violation."), setEditFlag(false), fetchData())
+            .then(alert("Successfully editted receipt."), setEditFlag(false), fetchData())
     }
 
     const deleteReceipt = (id) => {

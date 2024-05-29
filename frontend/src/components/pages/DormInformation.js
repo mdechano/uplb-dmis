@@ -155,7 +155,7 @@ function DormInformation () {
                             </div>
                             
                         : 
-                            <p className='profile-note'><i>No available information.</i></p>
+                            ""
                             )
                         }
                     )}

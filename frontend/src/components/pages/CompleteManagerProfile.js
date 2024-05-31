@@ -41,7 +41,7 @@ function CompleteManagerProfile () {
 
     const sendData = (e) => {
         e.preventDefault();
-        var tempEmail = document.getElementById("email").value;
+        var tempEmail = user.email;
         var notuniqueEmail = checkEmailExists(tempEmail);
 
         if (notuniqueEmail === false) {
@@ -70,7 +70,19 @@ function CompleteManagerProfile () {
                 })
             })
             .then(response => {return response.json()})
-            .then(getManagers)
+            .then((data) => {
+                if (data.success === true) {
+                    getManagers()
+                } else {
+                    alert("Unsuccessful upload. Please check if all necessary details are complete.")
+                    // reset allEmails
+                    while (allEmails.length > 0) {
+                        allEmails.pop();
+                    }
+                    // fetch again
+                    fetchData()
+                }
+            })
         } 
         else {
             alert("Inputted email address already exists!")
@@ -102,7 +114,7 @@ function CompleteManagerProfile () {
                             dorm_name: user.dorm,
                             dorm_manager_id: person._id,
                             dorm_manager_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value,
-                            dorm_manager_email: document.getElementById("email").value,
+                            dorm_manager_email: user.email,
                             dorm_manager_contact_number: document.getElementById("contact_number").value,
                             office_hours_start: document.getElementById("office_hours_start").value,
                             office_hours_end: document.getElementById("office_hours_end").value,
@@ -309,7 +321,9 @@ function CompleteManagerProfile () {
                                     </tr>
                                     <tr className='table-row'>
                                         <td className='cell-input'><input type='text' className='complete-input' id='contact_number' required></input></td>
+                                        { user ?
                                         <td className='cell-input'><input type="text" className='complete-input'  disabled value={user.email}></input></td>
+                                        : ""}
                                         <td className='cell-input'><input type='text' className='complete-input' id='home_address' required></input></td>
                                         
                                         

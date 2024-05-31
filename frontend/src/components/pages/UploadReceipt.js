@@ -66,7 +66,6 @@ function UploadReceipt () {
                 })
                 .then(response => {return response.json()})
                 .then(alert("Successfully uploaded receipt."), navigate('/resident-receipts/'+resident._id))
-           
     };
 
     

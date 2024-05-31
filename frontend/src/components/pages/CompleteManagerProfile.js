@@ -229,9 +229,9 @@ function CompleteManagerProfile () {
                                         <td className='cell-title'>Suffix</td>
                                     </tr>
                                     <tr className='table-row'>
-                                        <td className='cell-input'><input type="text" className='complete-input' id="first_name" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="first_name" required></input></td>
                                         <td className='cell-input'><input type="text" className='complete-input' id="middle_name" ></input></td>
-                                        <td className='cell-input'><input type="text" className='complete-input' id="last_name" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="last_name" required></input></td>
                                         <td className='cell-input'><input type="text" className='complete-input' id="suffix" ></input></td>
                                         
                                     </tr>
@@ -242,7 +242,7 @@ function CompleteManagerProfile () {
                                     </tr>
                                     <tr className='table-row'>
                                         <td className='cell-input'>
-                                            <select className='custom-select-sex' id="sex" >
+                                            <select className='custom-select-sex' id="sex" required>
                                                 <option>Select Sex</option>
                                                 <option value="female">Female</option>
                                                 <option value="male">Male</option>
@@ -309,9 +309,9 @@ function CompleteManagerProfile () {
                                         
                                     </tr>
                                     <tr className='table-row'>
-                                        <td className='cell-input'><input type='text' className='complete-input' id='contact_number' ></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='contact_number' required></input></td>
                                         <td className='cell-input'><input type="text" className='complete-input'  disabled value={user.email}></input></td>
-                                        <td className='cell-input'><input type='text' className='complete-input' id='home_address' ></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='home_address' required></input></td>
                                         
                                         
                                     </tr>

@@ -10,11 +10,11 @@ const ManagerSchema = new mongoose.Schema(
         last_name: {type: String, required: true},
         middle_name: {type: String, required: false},
         suffix: {type: String, required: false},
-        sex: {type: String},
-        birthday: {type: String},
-        contact_number: {type: String},
-        email: {type: String},
-        home_address: {type: String},
+        sex: {type: String, required: true},
+        birthday: {type: String, required: true},
+        contact_number: {type: String, required: true},
+        email: {type: String, required: true},
+        home_address: {type: String, required: true},
         picture_url: {type: String}
     }
 )

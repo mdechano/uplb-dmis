@@ -353,9 +353,9 @@ function CompleteResidentProfile () {
                                         <td className='cell-title'>Suffix</td>
                                     </tr>
                                     <tr className='table-row'>
-                                        <td className='cell-input'><input type="text" className='complete-input' id="first_name" name="firstname" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="first_name" name="firstname" required></input></td>
                                         <td className='cell-input'><input type="text" className='complete-input' id="middle_name" name="middlename"></input></td>
-                                        <td className='cell-input'><input type="text" className='complete-input' id="last_name" name="lastname" ></input></td>
+                                        <td className='cell-input'><input type="text" className='complete-input' id="last_name" name="lastname" required></input></td>
                                         <td className='cell-input'><input type="text" className='complete-input' id="suffix" name="suffix"></input></td>
                                         
                                     </tr>
@@ -368,7 +368,7 @@ function CompleteResidentProfile () {
                                     </tr>
                                     <tr className='table-row'>
                                         <td className='cell-input'>
-                                            <select className='custom-select-sex' id="sex" >
+                                            <select className='custom-select-sex' id="sex" required>
                                                 <option>Select Sex</option>
                                                 <option value="female">Female</option>
                                                 <option value="male">Male</option>
@@ -438,12 +438,12 @@ function CompleteResidentProfile () {
                                         <td className='cell-title'>Region*</td>
                                     </tr>
                                     <tr className='table-row'>
-                                        <td className='cell-input'><input type='text' className='complete-input' id='contact_number' name='contactnumber' ></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='contact_number' name='contactnumber' required></input></td>
                                         
                                         <td className='cell-input'><input type="text" className='complete-input'  disabled value={user.email}></input></td>
                                        
                                         
-                                        <td className='cell-input'><input type='text' className='complete-input' id='home_address' name='address' ></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='home_address' name='address' required></input></td>
                                         <td className='cell-input'>
                                             <select className='custom-select-sex' id='region' name='region'>
                                                 <option>Select Region</option>
@@ -478,7 +478,7 @@ function CompleteResidentProfile () {
                                     </tr>
                                     <tr className='table-row'>
                                         <td className='cell-input'>
-                                            <select className='custom-select-sex' id='college' name='college' >
+                                            <select className='custom-select-sex' id='college' name='college' required>
                                                 <option>Select College</option>
                                                 <option value="CAS">CAS</option>
                                                 <option value="CAFS">CAFS</option>
@@ -491,7 +491,7 @@ function CompleteResidentProfile () {
                                                 <option value="GS">Graduate School</option>
                                             </select>
                                         </td>
-                                        <td className='cell-input'><input type='text' className='complete-input' id='degree_program' placeholder='format: BS Computer Science' ></input></td>
+                                        <td className='cell-input'><input type='text' className='complete-input' id='degree_program' placeholder='format: BS Computer Science' required></input></td>
                                         <td className='cell-input'><input type='text' className='complete-input' id='last_school_attended'></input></td>
                                         <td className='cell-input'><input type='text' className='complete-input' id='classification' ></input></td>
                                         
@@ -611,9 +611,9 @@ function CompleteResidentProfile () {
                                         <td className='cell-title'>Cellphone/Telephone No.*</td>
                                     </tr>
                                     <tr>
-                                        <td className='cell-input'><input type = "text" className='complete-input' id = "emergency-contact-name-1" ></input></td>
-                                        <td className='cell-input'><input type = "text" className='complete-input' id = "emergency-contact-address-1" ></input></td>
-                                        <td className='cell-input'><input type = "text" className='complete-input' id = "emergency-contact-phone-1" ></input></td>
+                                        <td className='cell-input'><input type = "text" className='complete-input' id = "emergency-contact-name-1" required></input></td>
+                                        <td className='cell-input'><input type = "text" className='complete-input' id = "emergency-contact-address-1" required></input></td>
+                                        <td className='cell-input'><input type = "text" className='complete-input' id = "emergency-contact-phone-1" required></input></td>
                                     </tr>
                                     <tr>
                                         <td className='cell-input'><input type = "text" className='complete-input' id = "emergency-contact-name-2" ></input></td>

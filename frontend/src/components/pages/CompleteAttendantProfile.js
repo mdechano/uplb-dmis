@@ -47,7 +47,7 @@ function CompleteAttendantProfile () {
 
     const sendData = (e) => {
         e.preventDefault();
-        var tempEmail = document.getElementById("email").value;
+        var tempEmail = user.email;
         var notuniqueEmail = checkEmailExists(tempEmail);
 
         if (notuniqueEmail === false) {
@@ -76,7 +76,19 @@ function CompleteAttendantProfile () {
                 })
             })
             .then(response => {return response.json()})
-            .then(editDorm)
+            .then((data) => {
+                if (data.success === true) {
+                    editDorm()
+                } else {
+                    alert("Unsuccessful submission. Please check if all necessary details are complete.")
+                    // reset allEmails
+                    while (allEmails.length > 0) {
+                        allEmails.pop();
+                    }
+                    // fetch again
+                    fetchData()
+                }
+            })
         }
         else {
             alert("Inputted email address already exists!")
@@ -126,7 +138,7 @@ function CompleteAttendantProfile () {
                                         stayover_permit_start: currentDorm.stayover_permit_start,
                                         dorm_attendant_id: currentPerson._id,
                                         dorm_attendant_name: document.getElementById("first_name").value + " " + document.getElementById("last_name").value,
-                                        dorm_attendant_email: document.getElementById("email").value,
+                                        dorm_attendant_email: user.email,
                                         dorm_attendant_contact_number: document.getElementById("contact_number").value
                                     })
                                 })
@@ -228,7 +240,7 @@ function CompleteAttendantProfile () {
                                 <input className='custom-file-upload'  type="file" accept="image/png, image/jpeg, image/jpg" onChange={handleFileSelected} ></input>
                                 <br></br>
                                 <br></br>
-                                <button className='upload-img-submit' id='submit-btn' type="submit" onClick={handleSubmit}>UPLOAD IMAGE</button>
+                                <button className='upload-img-submit' id='submit-btn' type="submit" onClick={handleSubmit}>SUBMIT</button>
                             </div>
                             <div className='upload-note'>
                                 Upload Picture Here<br></br>(1x1 or 2x2)
@@ -330,7 +342,9 @@ function CompleteAttendantProfile () {
                                     </tr>
                                     <tr className='table-row'>
                                         <td className='cell-input'><input type='text' className='complete-input' id='contact_number' required></input></td>
+                                        { user ?
                                         <td className='cell-input'><input type="text" className='complete-input'  disabled value={user.email}></input></td>
+                                        : ""}
                                         <td className='cell-input'><input type='text' className='complete-input' id='home_address' required></input></td>
                                         
                                         

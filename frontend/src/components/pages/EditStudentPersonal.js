@@ -246,7 +246,7 @@ function EditStudentPersonal () {
                                         <br></br>
                                         <br></br>
                                         <br></br>
-                                        <button className='upload-img-submit' type="submit" onClick={handleSubmit} >UPLOAD IMAGE</button>
+                                        <button className='upload-img-submit' type="submit" onClick={handleSubmit} >SUBMIT</button>
                                     </div>
                                     <div className='upload-note'>
                                         Upload Picture Here<br></br>(1x1 or 2x2)

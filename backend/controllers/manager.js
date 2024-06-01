@@ -52,7 +52,7 @@ exports.addManager = async (req, res) => {
         const manager = await Manager.create(newManager);
         await UserLog.create(token.user, 'create', `manager ${manager._id}`)
         console.log(`New manager: \n ${manager}`);
-        return res.status(201).send({ message: 'New manager successfully added' });
+        return res.status(201).send({ message: 'New manager successfully added', success: true });
     }
     catch(err) {
         console.log(`Unable to create new manager. Error: ${err}`);

@@ -212,7 +212,19 @@ function CompleteResidentProfile () {
                     })
                 })
                 .then(response => {return response.json()})
-                .then(getResidents)
+                .then((data) => {
+                    if (data.success === true) {
+                        getResidents()
+                    } else {
+                        alert("Unsuccessful submission. Please check if all necessary details are complete and correct.")
+                        // reset allEmails
+                        while (allEmails.length > 0) {
+                            allEmails.pop();
+                        }
+                        // fetch again
+                        fetchData()
+                    }
+                })
             }
             else {
                 alert("Inputted email address already exists!")
@@ -332,7 +344,7 @@ function CompleteResidentProfile () {
                             <input type="file" className="custom-file-upload" accept="image/png, image/jpeg, image/jpg" onChange={handleFileSelected} />
                             <br></br>
                             <br></br>
-                            <button type="submit" className='upload-img-submit' onClick={handleSubmit}>UPLOAD IMAGE</button>
+                            <button type="submit" className='upload-img-submit' onClick={handleSubmit}>SUBMIT</button>
                         </div>
                         <div className='upload-note'>
                             Upload Picture Here<br></br>(1x1 or 2x2)
@@ -439,10 +451,9 @@ function CompleteResidentProfile () {
                                     </tr>
                                     <tr className='table-row'>
                                         <td className='cell-input'><input type='text' className='complete-input' id='contact_number' name='contactnumber' required></input></td>
-                                        
+                                        { user ?
                                         <td className='cell-input'><input type="text" className='complete-input'  disabled value={user.email}></input></td>
-                                       
-                                        
+                                        : ""}
                                         <td className='cell-input'><input type='text' className='complete-input' id='home_address' name='address' required></input></td>
                                         <td className='cell-input'>
                                             <select className='custom-select-sex' id='region' name='region'>

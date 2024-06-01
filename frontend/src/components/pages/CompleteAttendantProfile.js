@@ -76,7 +76,19 @@ function CompleteAttendantProfile () {
                 })
             })
             .then(response => {return response.json()})
-            .then(editDorm)
+            .then((data) => {
+                if (data.success === true) {
+                    editDorm()
+                } else {
+                    alert("Unsuccessful submission. Please check if all necessary details are complete and correct.")
+                    // reset allEmails
+                    while (allEmails.length > 0) {
+                        allEmails.pop();
+                    }
+                    // fetch again
+                    fetchData()
+                }
+            })
         }
         else {
             alert("Inputted email address already exists!")
@@ -229,7 +241,7 @@ function CompleteAttendantProfile () {
                                 <input className='custom-file-upload'  type="file" accept="image/png, image/jpeg, image/jpg" onChange={handleFileSelected} ></input>
                                 <br></br>
                                 <br></br>
-                                <button className='upload-img-submit' id='submit-btn' type="submit" onClick={handleSubmit}>UPLOAD IMAGE</button>
+                                <button className='upload-img-submit' id='submit-btn' type="submit" onClick={handleSubmit}>SUBMIT</button>
                             </div>
                             <div className='upload-note'>
                                 Upload Picture Here<br></br>(1x1 or 2x2)
@@ -331,7 +343,9 @@ function CompleteAttendantProfile () {
                                     </tr>
                                     <tr className='table-row'>
                                         <td className='cell-input'><input type='text' className='complete-input' id='contact_number' required></input></td>
+                                        { user ?
                                         <td className='cell-input'><input type="text" className='complete-input'  disabled value={user.email}></input></td>
+                                        : ""}
                                         <td className='cell-input'><input type='text' className='complete-input' id='home_address' required></input></td>
                                         
                                         

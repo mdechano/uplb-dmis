@@ -53,7 +53,7 @@ exports.addAttendant = async (req, res) => {
         const attendant = await Attendant.create(newAttendant);
         await UserLog.create(token.user, 'create', `attendant ${attendant._id}`)
         console.log(`New attendant: \n ${attendant}`);
-        return res.status(201).send({ message: 'New attendant successfully added' });
+        return res.status(201).send({ message: 'New attendant successfully added', success: true });
     }
     catch(err) {
         console.log(`Unable to create new attendant. Error: ${err}`);

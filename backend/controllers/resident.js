@@ -79,7 +79,7 @@ exports.addResident = async (req,res) => {
         const resident = await Resident.create(newResident);
         await UserLog.create(token.user, 'create', `resident ${resident._id}`)
         console.log(`New resident: \n ${resident}`);
-        return res.status(201).send({ message: 'New resident successfully added' });
+        return res.status(201).send({ message: 'New resident successfully added', success: true });
     }
     catch(err) {
         console.log(`Unable to create new resident. Error: ${err}`);

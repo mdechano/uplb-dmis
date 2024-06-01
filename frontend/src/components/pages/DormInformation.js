@@ -147,15 +147,14 @@ function DormInformation () {
                                                         
                                                     }
                                                 })
-                                            : "hello"
+                                            : ""
                                             }
                                             </table>
                                             
                                     </div>
                             </div>
                             
-                        : 
-                            <p className='profile-note'><i>No available information.</i></p>
+                        : ""
                             )
                         }
                     )}

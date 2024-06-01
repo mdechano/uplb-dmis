@@ -80,7 +80,7 @@ function CompleteAttendantProfile () {
                 if (data.success === true) {
                     editDorm()
                 } else {
-                    alert("Unsuccessful submission. Please check if all necessary details are complete.")
+                    alert("Unsuccessful submission. Please check if all necessary details are complete and correct.")
                     // reset allEmails
                     while (allEmails.length > 0) {
                         allEmails.pop();

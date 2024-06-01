@@ -74,7 +74,7 @@ function CompleteManagerProfile () {
                 if (data.success === true) {
                     getManagers()
                 } else {
-                    alert("Unsuccessful upload. Please check if all necessary details are complete.")
+                    alert("Unsuccessful submission. Please check if all necessary details are complete and correct.")
                     // reset allEmails
                     while (allEmails.length > 0) {
                         allEmails.pop();
@@ -219,7 +219,7 @@ function CompleteManagerProfile () {
                             <input type="file" className="custom-file-upload" accept="image/png, image/jpeg, image/jpg" onChange={handleFileSelected} />
                             <br></br>
                             <br></br>
-                            <button type="submit" className='upload-img-submit' onClick={handleSubmit}>UPLOAD IMAGE</button>
+                            <button type="submit" className='upload-img-submit' onClick={handleSubmit}>SUBMIT</button>
                             </div>
                             <div className='upload-note'>
                                 Upload Picture Here<br></br>(1x1 or 2x2)

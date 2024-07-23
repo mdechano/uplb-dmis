@@ -14,7 +14,6 @@ exports.addAttendant = async (req, res) => {
       
       // validate token
     const token = await utils.verifyToken(req);
-    // console.log("here");
     
       // error validating token
     if(!token.status){

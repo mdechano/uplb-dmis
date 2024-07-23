@@ -14,10 +14,6 @@ exports.start = () => {
     App.use(cookieParser());
     App.use(express.json({limit: '200mb'}));
     App.use(express.urlencoded({limit: '200mb',  extended: true }));
-    // App.use('/', express.static('dist'))
-    // App.use(myParser.json({limit: '200mb'}));
-    // App.use(myParser.urlencoded({limit: '200mb', extended: true}));
-    // App.use(myParser.text({limit: '200mb'}));
     
 
     App.use((req, res, next) => {

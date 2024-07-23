@@ -9,7 +9,7 @@ mongoose.connect(
         if (err) {
             console.log(err);
         } else {
-            console.log("Successfully connected to Mongo DB");
+            console.log("Successfully connected to MongoDB");
             
             try {
                 App.start();
